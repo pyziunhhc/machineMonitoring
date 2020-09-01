@@ -1,0 +1,110 @@
+@keyframes buttonAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes drawLine {
+  0% {
+    border-left: 0px solid white;
+  }
+  50% {
+    border-left: 0.5px solid white;
+  }
+  100% {
+    border-left: 1px solid white;
+  }
+}
+@keyframes hideMenu {
+  0% {
+    width: $normalMenuWidth;
+  }
+  100% {
+    width: $smallMenuWidth;
+  }
+}
+
+@keyframes decreaseHeader {
+  0% {
+    height: $normalHeader;
+  }
+  100% {
+    height: $smallHeader;
+  }
+}
+@keyframes decreaseImg {
+  0% {
+    width: $normalLogoImg;
+  }
+  100% {
+    width: $smallLogoImg;
+  }
+}
+@keyframes decreaseSection {
+  0% {
+    height: $normalMainSectionHeight;
+  }
+  100% {
+    height: $biggerMainSectionHeight;
+  }
+}
+
+@keyframes unhideMenu {
+  0% {
+    width: $smallMenuWidth;
+  }
+  100% {
+    width: $normalMenuWidth;
+  }
+}
+
+@keyframes enlargeHeader {
+  0% {
+    height: $smallHeader;
+  }
+  100% {
+    height: $normalHeader;
+  }
+}
+@keyframes enlargeImg {
+  0% {
+    width: $smallLogoImg;
+  }
+  100% {
+    width: $normalLogoImg;
+  }
+}
+@keyframes enlargeSection {
+  0% {
+    height: $biggerMainSectionHeight;
+  }
+  100% {
+    height: $normalMainSectionHeight;
+  }
+}
+@keyframes removeMessage {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

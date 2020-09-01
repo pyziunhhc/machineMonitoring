@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title= title
+        link(rel="icon" href="/images/favicon.ico")
+        link(rel='stylesheet' href='/stylesheets/styles.css')
+
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    .main__container
+        .auth__wrapper
+            .auth__container
+                h1()='Witaj'
+                img(src='images/logo.png' class='logo--img')
+                .auth__fields
+                    label(for="login" class="login--label")='Login:'
+                    input(id="login" name="login" class="auth--input login" required)
+                    label(for="password" class="password--label")='Hasło:'
+                    input(id="password" name="password" type="password" class="auth--input password" required)
+                    button(id='send' class="auth--button") Zaloguj
+    script(src=`/javascripts/${jsfiles}` type="module")

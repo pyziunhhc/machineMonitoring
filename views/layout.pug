@@ -1,0 +1,40 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="icon" href="/images/favicon.ico")
+    link(rel='stylesheet', href='/stylesheets/styles.css')
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js')
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css")
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  body
+  .background
+  .main__container
+    header.header__container
+        .minimized-panels
+        .logo__container
+          img(src="images/logo.png")
+          h1=title
+        .logged-user
+          p=`Zalogowany: ${login}`
+    .main__section
+      aside.navigation__container
+        button.button__hide-nav='<'
+        nav.header__navigation
+            ul
+              li.navigation__element
+                a(href="/dashboard")='Dashboard'
+              li.navigation__element
+                a(href="/monitoring")='Monitoring'
+              li.navigation__element
+                a(href="/reports")='Raporty'
+              li.navigation__element
+                a(href="/settings")='Ustawienia'
+              li.navigation__element
+                a(href="/logout")='Wyloguj'
+      block content
+
+    //- footer.footer__container
+    //-   p='Copyright 2020 MPY'

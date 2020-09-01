@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    .container
+        .dashboard__container
+            .dashboard__element
+                .summary__container--table
+                    table
+            .dashboard__element
+                .summary__container--graph
+
+    script(src=`javascripts/Dashboard/${jsfiles}` type='module')
