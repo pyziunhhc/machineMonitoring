@@ -67,6 +67,7 @@ router.get('/', (req, res, next) => {
         res.render('monitoring', {
             title: 'Monitoring | ITA Tools Sp. z o.o',
             jsfiles: 'monitoring.js',
+            cssfiles: 'monitoring',
             login: login
         })
     } else {

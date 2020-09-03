@@ -13,6 +13,7 @@ router.get('/', (req, res, next) => {
     res.render('users', {
       title: 'Użytkownicy | ITA Tools Sp. z o.o',
       jsfiles: 'controller.js',
+      cssfiles: 'users',
       login: login
     })
   } else {

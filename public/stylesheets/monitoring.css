@@ -781,4 +781,101 @@ table tbody tr td {
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
 
-/*# sourceMappingURL=styles.css.map */
+.monitoring__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow-y: scroll; }
+  .monitoring__container .monitoring__machines {
+    display: flex;
+    flex-direction: column;
+    width: 100%; }
+    .monitoring__container .monitoring__machines .monitoring__group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2.5%;
+      margin-top: 2.5%; }
+      .monitoring__container .monitoring__machines .monitoring__group h3 {
+        margin: 5%;
+        font-weight: bold; }
+      .monitoring__container .monitoring__machines .monitoring__group .monitoring__element {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1%;
+        margin: 2%;
+        width: 60%;
+        background: white;
+        box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+        .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img {
+          width: 70%; }
+          .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img:hover {
+            cursor: pointer;
+            transform: scale(0.95); }
+  .monitoring__container .main-machine-panel__container {
+    width: 70%;
+    position: absolute;
+    background: white;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+    .monitoring__container .main-machine-panel__container.minimized {
+      display: none; }
+    .monitoring__container .main-machine-panel__container .panel__container {
+      height: 95%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between; }
+      .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1%;
+        margin-bottom: 10%; }
+        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container p {
+          margin-bottom: 15%;
+          font-size: 2em; }
+        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table {
+          height: 50%;
+          width: 85%; }
+          .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table tbody tr td {
+            border: 1px solid black;
+            text-align: center;
+            font-size: 1em;
+            font-weight: bold; }
+      .monitoring__container .main-machine-panel__container .panel__container .charts-panel__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; }
+      .monitoring__container .main-machine-panel__container .panel__container .chartJS__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 12%; }
+
+@media screen and (min-width: 1366px) {
+  .main__container {
+    height: 100%; }
+    .main__container .main__section {
+      height: 90%; }
+      .main__container .main__section .monitoring__container .monitoring__machines {
+        flex-direction: row; }
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group h3 {
+          font-size: 2em;
+          text-align: center; }
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element {
+          width: 90%; }
+          .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element p {
+            text-align: center;
+            margin-bottom: 2%; }
+      .main__container .main__section .monitoring__container .main-machine-panel__container {
+        width: 85%; }
+        .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container {
+          flex-direction: row; }
+          .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container {
+            flex-direction: row; } }
+
+/*# sourceMappingURL=monitoring.css.map */

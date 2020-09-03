@@ -14,6 +14,7 @@ router.get('/', (req, res, next) => {
       res.render('dashboard', {
          title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
          jsfiles: 'dashboard.js',
+         cssfiles: 'dashboard',
          login: req.cookies.login,
       })
    } else {

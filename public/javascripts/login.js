@@ -2,14 +2,43 @@ import helpers from './helpers/fetch.js'
 
 window.onload = function () {
     const sendButton = document.querySelector('#send');
-    sendButton.addEventListener('click', (e) => {
-        const loginField = document.querySelector('#login').value,
-            passwordField = document.querySelector('#password').value;
-        //sprawdz login i haslo czy nie sa puste
-        const credentials = {
-            login: loginField,
-            password: passwordField
+
+
+    sendButton.addEventListener('click', authUser.bind(this))
+    password.addEventListener('keypress', authUser.bind(this))
+}
+
+const isEmpty = (e, credentials) => {
+    if (e.type == "keypress") {
+        if (e.keyCode == '13') {
+            if (!credentials.login || !credentials.password) {
+                alert('login i hasło nie mogą być puste')
+                return false;
+            } else {
+                return true;
+            }
         }
+    } else {
+        if (!credentials.login || !credentials.password) {
+            alert('login i hasło nie mogą być puste')
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+}
+
+const authUser = (e) => {
+    const loginField = document.querySelector('#login'),
+        passwordField = document.querySelector('#password');
+    const credentials = {
+        login: loginField.value,
+        password: passwordField.value
+    }
+    const credentialsIsEmpty = isEmpty(e, credentials);
+    if (credentialsIsEmpty) {
         fetch('/login', {
                 method: 'POST',
                 body: JSON.stringify(credentials),
@@ -26,5 +55,5 @@ window.onload = function () {
                     helpers.showMessage('error', res.message)
                 }
             })
-    })
+    }
 }

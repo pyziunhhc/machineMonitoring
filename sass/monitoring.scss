@@ -1,0 +1,133 @@
+@import "styles";
+
+.monitoring__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  overflow-y: scroll;
+  .monitoring__machines {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .monitoring__group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2.5%;
+      margin-top: 2.5%;
+      h3 {
+        margin: 5%;
+        font-weight: bold;
+      }
+      .monitoring__element {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1%;
+        margin: 2%;
+        width: 60%;
+        background: white;
+        box-shadow: $shadowBackground;
+        .monitoring__element--img {
+          width: 70%;
+          &:hover {
+            cursor: pointer;
+            transform: scale(0.95);
+          }
+        }
+      }
+    }
+  }
+  .main-machine-panel__container {
+    width: 70%;
+    position: absolute;
+
+    background: white;
+    box-shadow: $shadowBackground;
+    &.minimized {
+      display: none;
+    }
+    .panel__container {
+      height: 95%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      .statuses-panel__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1%;
+        margin-bottom: 10%;
+        p {
+          margin-bottom: 15%;
+          font-size: 2em;
+        }
+        table {
+          height: 50%;
+          width: 85%;
+          tbody {
+            tr {
+              td {
+                border: 1px solid black;
+                text-align: center;
+                font-size: 1em;
+                font-weight: bold;
+              }
+            }
+          }
+        }
+      }
+      .charts-panel__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .chartJS__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 12%;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  .main__container {
+    height: 100%;
+    .main__section {
+      height: 90%;
+      .monitoring__container {
+        .monitoring__machines {
+          flex-direction: row;
+          .monitoring__group {
+            h3 {
+              font-size: 2em;
+              text-align: center;
+            }
+            .monitoring__element {
+              width: 90%;
+              p {
+                text-align: center;
+                margin-bottom: 2%;
+              }
+            }
+          }
+        }
+        .main-machine-panel__container {
+          width: 85%;
+          .panel__container {
+            flex-direction: row;
+            .chartJS__container {
+              flex-direction: row;
+            }
+          }
+        }
+      }
+    }
+  }
+}

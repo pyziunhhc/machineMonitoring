@@ -16,8 +16,8 @@ class Table {
                 statusesClass = ['status'],
                 table = document.createElement('table'),
                 sumOfTimes = this.sumOfTimes;
-            const parent = document.querySelector(`.left-panel__container.${this.name}`),
-                oldTable = document.querySelector(`.left-panel__container.${this.name} > table`);
+            const parent = document.querySelector(`.statuses-panel__container.${this.name}`),
+                oldTable = document.querySelector(`.statuses-panel__container.${this.name} > table`);
             Object.values(this.data)
                 .filter(val => {
                     return val.data.time > 0

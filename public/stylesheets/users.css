@@ -781,4 +781,118 @@ table tbody tr td {
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
 
-/*# sourceMappingURL=styles.css.map */
+.main__container {
+  height: 100%; }
+
+.main__section {
+  height: 90%; }
+  .main__section .container {
+    flex-direction: column-reverse; }
+    .main__section .container .users__settings {
+      width: 98%;
+      height: 4vh;
+      margin-bottom: 1%;
+      padding: 1%;
+      box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center; }
+
+.users__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  background: white; }
+  .users__container .user__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+    .users__container .user__container img {
+      width: 40%; }
+  .users__container .registration__container {
+    width: 70%;
+    top: 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+    flex: 0.5;
+    color: white;
+    z-index: 1000; }
+    .users__container .registration__container h1 {
+      width: 100%;
+      font-size: 2em;
+      font-weight: bold;
+      margin-left: 2%; }
+    .users__container .registration__container:hover {
+      cursor: move; }
+    .users__container .registration__container .belt {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end; }
+    .users__container .registration__container .registration__wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      .users__container .registration__container .registration__wrapper input {
+        padding: 2%;
+        width: 50%;
+        margin-top: 2%;
+        margin-bottom: 2%; }
+        .users__container .registration__container .registration__wrapper input:focus {
+          outline: none; }
+      .users__container .registration__container .registration__wrapper select {
+        padding: 2%;
+        margin-top: 2%;
+        margin-bottom: 2%; }
+      .users__container .registration__container .registration__wrapper .belt {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end; }
+        .users__container .registration__container .registration__wrapper .belt button.close {
+          margin-right: 2%; }
+      .users__container .registration__container .registration__wrapper .submit {
+        width: 28%;
+        padding: 3%;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        background: none;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        background: linear-gradient(90deg, #117ec9 0%, #04c1bc 50%, #00b0ff 100%);
+        background-size: 400% 400%; }
+        .users__container .registration__container .registration__wrapper .submit:focus {
+          outline: none; }
+        .users__container .registration__container .registration__wrapper .submit:hover {
+          cursor: pointer;
+          -webkit-animation: buttonAnimation 5s ease infinite;
+                  animation: buttonAnimation 5s ease infinite; }
+  .users__container .change-password__container {
+    position: absolute;
+    left: 31%;
+    padding: 2%;
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 20px; }
+    .users__container .change-password__container .change-password__wrapper {
+      display: flex;
+      flex-direction: column; }
+      .users__container .change-password__container .change-password__wrapper .actions {
+        margin-top: 2%; }
+        .users__container .change-password__container .change-password__wrapper .actions button {
+          padding: 5%;
+          color: white;
+          font-weight: bold;
+          margin-left: 2%; }
+          .users__container .change-password__container .change-password__wrapper .actions button.submit-button {
+            background: green; }
+          .users__container .change-password__container .change-password__wrapper .actions button.cancel-button {
+            background: red; }
+
+/*# sourceMappingURL=users.css.map */

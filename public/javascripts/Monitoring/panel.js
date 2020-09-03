@@ -43,9 +43,9 @@ class Panel {
         controls.classList.add('controls');
         machinePanelContainer.classList.add('main-machine-panel__container');
         panelContainer.classList.add('panel__container')
-        leftPanelContainer.classList.add('left-panel__container');
+        leftPanelContainer.classList.add('statuses-panel__container');
         leftPanelContainer.classList.add(name);
-        middlePanelContainer.classList.add('middle-panel__container');
+        middlePanelContainer.classList.add('charts-panel__container');
         dygraphContainer.classList.add('dygraph__container');
         dygraphContainer.classList.add(name);
         chartJSContainer.classList.add('chartJS__container');

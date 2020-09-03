@@ -1,16 +1,17 @@
-$mainBackgroundColor:#17497c;
+$mainBackgroundColor: #17497c;
 $mainPanelColor: rgba(42, 48, 53, 0.7);
 $mainFontColor: #fff;
 
 $smallHeader: 5%;
 $normalHeader: 10%;
-$navigationContainerNormal: 90vh;
-$navigationContainerBigger: 95vh;
 $smallLogoImg: 3%;
 $normalLogoImg: 7%;
 
 $normalMenuWidth: 10%;
-$smallMenuWidth: 1.8%;
+$normalHiddenMenuWidth: 3%;
+
+$smallMenuWidth: 30%;
+$smallHiddenMenuWidth: 8.8%;
 
 $normalMainSectionHeight: 85%;
 $biggerMainSectionHeight: 90%;
@@ -18,67 +19,68 @@ $biggerMainSectionHeight: 90%;
 $shadowBackground: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
 $panelBackground: rgba(0, 0, 0, 0.7);
 $panelRadius: 20px;
-.eroding, .working  {
-    background-color: rgba(0, 82, 20, 1);
-    color: white;
+.eroding,
+.working {
+  background-color: rgba(0, 82, 20, 1);
+  color: white;
 }
 
 .grinding {
-    background-color: rgba(0, 209, 44, 1);
-    color: white;
+  background-color: rgba(0, 209, 44, 1);
+  color: white;
 }
 
 .measuring {
-    background-color: rgba(255, 177, 51, 1);
-    color: white;
+  background-color: rgba(255, 177, 51, 1);
+  color: white;
 }
 
 .robotLoading {
-    background-color: rgba(200, 0, 200, 1);
-    color: white;
+  background-color: rgba(200, 0, 200, 1);
+  color: white;
 }
 
 .manualLoading {
-    background-color: rgba(81, 182, 215, 1);
-    color: white;
+  background-color: rgba(81, 182, 215, 1);
+  color: white;
 }
 
 .stop {
-    background-color: rgba(255, 233, 40, 1);
-    color: black;
+  background-color: rgba(255, 233, 40, 1);
+  color: black;
 }
 
 .alarm {
-    background-color: rgba(255, 0, 0, 1);
-    color: white;
+  background-color: rgba(255, 0, 0, 1);
+  color: white;
 }
 
 .disconnect {
-    background-color: rgba(145, 145, 145, 1);
-    color: white;
+  background-color: rgba(145, 145, 145, 1);
+  color: white;
 }
 
 .wheelReplacement {
-    background-color: rgba(0, 0, 0, 1);
-    color: white;
+  background-color: rgba(0, 0, 0, 1);
+  color: white;
 }
 
 .toolChange {
-    background-color: rgba(206, 183, 119, 1);
-    color: white;
+  background-color: rgba(206, 183, 119, 1);
+  color: white;
 }
 
 .transition {
-    background-color: rgba(255, 112, 183, 1);
-    color: white;
+  background-color: rgba(255, 112, 183, 1);
+  color: white;
 }
 
 .warmup {
-    background-color: rgba(168, 80, 80, 1);
-    color: white;
+  background-color: rgba(168, 80, 80, 1);
+  color: white;
 }
 
 .suspend {
-    background-color: rgba(145, 19, 19, 1);
-    color: white;
+  background-color: rgba(145, 19, 19, 1);
+  color: white;
 }

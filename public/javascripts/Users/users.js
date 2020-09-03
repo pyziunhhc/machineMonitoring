@@ -14,86 +14,96 @@ class Users {
         helpers.showUsers()
             .then(res => {
                 if (res.status == 200) {
-                    this.prepareUsers(res.users);
-                    this.createUserTable()
+                    this.createUsers(res.users)
                     this.createRegistrationContainer();
                 }
             })
     }
-    getUser() {
 
-    }
-    prepareUsers(users) {
-        this.logins = ['Login'];
-        this.email = ['Email'];
-        this.name = ['Imię'];
-        this.surname = ['Nazwisko'];
-        this.role = ['Rola'];
-        this.lastUpdate = ['Ostatnia aktualizacja'];
-        users.forEach(element => {
-            this.logins.push(element.login)
-            this.email.push(element.email)
-            this.name.push(element.name)
-            this.surname.push(element.surname)
-            this.role.push(element.role)
-            this.lastUpdate.push(element.updatedAt)
-        });
-    }
-    createUserTable() {
-        const table = document.createElement('table');
-        const container = document.querySelector('.users__container'),
-            old = document.querySelector('table');
-        for (let i in this.logins) {
-            let row = table.insertRow(i);
-            row.setAttribute('data-value', this.logins[i])
-            row.addEventListener('contextmenu', (e) => {
-                this.menu(e)
-            })
-            row.addEventListener('click', (e) => {
-                const isExist = document.querySelector('.additional-menu__container');
-                if (isExist) {
-                    isExist.remove();
-                }
-            })
-            row.addEventListener('dblclick', (e) => {
-                //włącz panel edycji
-                const user = e.target.parentNode.dataset.value;
-                helpers.getUser(user)
-                    .then(userData => {
-                        this.editPanel(userData)
-                    })
+    createUsers(users) {
+        const container = document.querySelector('.users__container');
+        Object.values(users)
+            .map(user => {
+                const userContainer = document.createElement('div'),
+                    userImage = document.createElement('img'),
+                    userLogin = document.createElement('h3');
 
+                userContainer.classList.add('user__container');
+                userImage.classList.add('user__image');
+                userLogin.classList.add('user__login');
+
+                userImage.setAttribute('src', `/images/user_icon.png`)
+                userImage.setAttribute('data-value', user.login)
+                userLogin.innerText = user.login;
+
+                userImage.addEventListener('dblclick', e => {
+                    console.log(e)
+                    const user = e.srcElement.dataset.value;
+                    helpers.getUser(user)
+                        .then(userData => {
+                            this.editPanel(userData)
+                        })
+                })
+                userContainer.appendChild(userImage);
+                userContainer.appendChild(userLogin);
+
+                container.appendChild(userContainer)
             })
-            for (let j = 0; j < 7; j++) {
-                if (j === 0) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.logins[i];
-                    //cell.classList.add(statusesClass[i])
-                } else if (j === 1) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.name[i];
-                    //cell.classList.add(statusesClass[i])
-                } else if (j === 2) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.surname[i];
-                    //cell.classList.add(statusesClass[i])
-                } else if (j === 3) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.role[i];
-                    //cell.classList.add(statusesClass[i])
-                } else if (j === 4) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.email[i];
-                    //cell.classList.add(statusesClass[i])
-                } else if (j === 5) {
-                    let cell = row.insertCell(j);
-                    cell.innerText = this.lastUpdate[i];
-                    //cell.classList.add(statusesClass[i])
-                }
-            }
-        }
-        console.log(table, old)
-        container.replaceChild(table, old)
+
+        // const table = document.createElement('table');
+        // const container = document.querySelector('.users__container'),
+        //     old = document.querySelector('table');
+        // for (let i in this.logins) {
+        //     let row = table.insertRow(i);
+        //     row.setAttribute('data-value', this.logins[i])
+        //     row.addEventListener('contextmenu', (e) => {
+        //         this.menu(e)
+        //     })
+        //     row.addEventListener('click', (e) => {
+        //         const isExist = document.querySelector('.additional-menu__container');
+        //         if (isExist) {
+        //             isExist.remove();
+        //         }
+        //     })
+        //     row.addEventListener('dblclick', (e) => {
+        //         //włącz panel edycji
+        //         const user = e.target.parentNode.dataset.value;
+        //         helpers.getUser(user)
+        //             .then(userData => {
+        //                 this.editPanel(userData)
+        //             })
+
+        //     })
+        //     for (let j = 0; j < 7; j++) {
+        //         if (j === 0) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.logins[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         } else if (j === 1) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.name[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         } else if (j === 2) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.surname[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         } else if (j === 3) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.role[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         } else if (j === 4) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.email[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         } else if (j === 5) {
+        //             let cell = row.insertCell(j);
+        //             cell.innerText = this.lastUpdate[i];
+        //             //cell.classList.add(statusesClass[i])
+        //         }
+        //     }
+        // }
+        // console.log(table, old)
+        // container.replaceChild(table, old)
     }
     createRegistrationContainer() {
         const button = document.querySelector('.users__new--button');
@@ -171,7 +181,7 @@ class Users {
 
             //Łączenie
             belt.appendChild(closeButton)
-            registrationWrapper.appendChild(belt)
+            registrationContainer.appendChild(belt)
             registrationWrapper.appendChild(loginLabel)
             registrationWrapper.appendChild(loginInput);
             registrationWrapper.appendChild(passwordLabel)

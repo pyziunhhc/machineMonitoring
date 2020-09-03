@@ -3,7 +3,7 @@ html
   head
     title= title
     link(rel="icon" href="/images/favicon.ico")
-    link(rel='stylesheet', href='/stylesheets/styles.css')
+    link(rel='stylesheet', href=`/stylesheets/${cssfiles}.css`)
     link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js')
     script(src="https://cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js")
@@ -20,8 +20,11 @@ html
         .logged-user
           p=`Zalogowany: ${login}`
     .main__section
-      aside.navigation__container
-        button.button__hide-nav='<'
+      aside.navigation__container.unhidden
+        button.button__hide-nav
+          span
+          span
+          span
         nav.header__navigation
             ul
               li.navigation__element

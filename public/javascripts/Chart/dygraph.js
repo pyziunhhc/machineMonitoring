@@ -164,7 +164,7 @@ class myDygraph {
                 stepPlot: true,
                 fillGraph: true,
                 fillAlpha: 1,
-                width: window.outerWidth > 1000 ? window.outerWidth * 0.65 : window.outerWidth * 0.91,
+                width: window.outerWidth > 1000 ? window.outerWidth * 0.65 : window.outerWidth * 0.61,
                 height: 150,
                 //legend: 'always',
                 title: this.name,

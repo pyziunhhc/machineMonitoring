@@ -6,7 +6,7 @@ const gulp = require('gulp'),
 
 
 gulp.task('styles', function () {
-    return gulp.src('./styles.scss')
+    return gulp.src('./*.scss')
         .pipe(plumber())
         .pipe(sourcemaps.init())
         .pipe(sass.sync())

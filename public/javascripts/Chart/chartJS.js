@@ -62,9 +62,9 @@ class myChartJS {
             fontSize = 20;
         } else if (window.outerWidth < 1000) {
             if (chartType == 'pie') {
-                width = window.outerWidth * 0.4;
+                width = window.outerWidth * 0.5;
                 height = width;
-                fontSize = 20;
+                fontSize = 10;
             } else {
                 width = window.outerWidth * 0.3;
                 height = window.outerWidth * 0.3;

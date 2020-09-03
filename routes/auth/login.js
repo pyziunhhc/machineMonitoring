@@ -3,22 +3,26 @@ const router = express.Router();
 const User = require('../../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const{checkCookie} = require('../../helpers/checkCookie')
+const {
+  checkCookie
+} = require('../../helpers/checkCookie')
 
 router.get('/', (req, res, next) => {
   //dodać sprawdzenie czy użytkownik jest zalogowany
   const cookie = checkCookie(req.cookies)
   const login = req.cookies.login;
-  if(cookie){
+  if (cookie) {
     res.render('dashboard', {
       title: "Dashboad | ITA Tools Sp z o.o",
       jsfiles: 'dashboard.js',
+      cssfiles: 'auth',
       login: login
     });
-  }else {
+  } else {
     res.render('login', {
       title: "Logowanie | ITA Tools Sp z o.o",
-      jsfiles: 'login.js'
+      jsfiles: 'login.js',
+      cssfiles: 'auth'
     });
   }
 

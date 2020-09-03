@@ -1,0 +1,36 @@
+@import "styles";
+
+.main__container {
+  height: 100%;
+  .main__section {
+    height: 100%;
+  }
+}
+
+.dashboard__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1%;
+  .dashboard__element {
+    height: 90%;
+    padding: 2%;
+    margin-right: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    box-shadow: $shadowBackground;
+    h1 {
+      font-size: 3em;
+      margin-bottom: 5%;
+    }
+  }
+}
+
+@media screen and (min-width: 1366px) {
+  .dashboard__container {
+    flex-direction: row;
+  }
+}
