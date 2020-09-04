@@ -1,15 +1,14 @@
 const fetch = require('node-fetch');
-const user = 'admin';
-const pass = 'test123';
+const auth = require('../bin/password.json');
 
-`Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
+//`Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`;
 
 const API_VERSION = 1;
 const fetchData = (url) => {
     return fetch(`http://192.168.2.98:3000/api/v${API_VERSION}/${url}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Basic ${Buffer.from(`${user}:${pass}`).toString('base64')}`
+                'Authorization': `Basic ${Buffer.from(`${auth[0].user}:${auth[0].pass}`).toString('base64')}`
             }
         }).then(res => res.json())
         .catch(e => console.log(e));
