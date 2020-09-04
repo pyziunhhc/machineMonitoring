@@ -1,5 +1,5 @@
 @import "variables";
-
+$rotationTime: .5s;
 .navigation__container {
   width: $smallMenuWidth;
   margin-right: 2%;
@@ -11,16 +11,16 @@
   box-shadow: $shadowBackground;
   &.hidden {
     width: $smallHiddenMenuWidth;
-    animation: hideSmallMenu 0.3s ease;
+    animation: hideSmallMenu $rotationTime ease;
     .button__hide-nav {
       :nth-child(1) {
-        animation: unrotateFirstLine .3s ease;
+        animation: unrotateFirstLine $rotationTime ease;
       }
       :nth-child(2) {
-        animation: showLine .3s ease;
+        animation: showLine $rotationTime ease;
       }
       :nth-child(3) {
-        animation: unrotateSecondLine .3s ease;
+        animation: unrotateSecondLine $rotationTime ease;
       }
     }
   }
@@ -29,15 +29,15 @@
     animation: unhideSmallMenu 0.3s ease;
     .button__hide-nav {
       :nth-child(1) {
-        animation: rotateFirstLine .3s ease;
+        animation: rotateFirstLine $rotationTime ease;
         transform: rotate(45deg);
       }
       :nth-child(2) {
         display: none;
-        animation: hideLine .3s ease;
+        animation: hideLine $rotationTime ease;
       }
       :nth-child(3) {
-        animation: rotateSecondLine .3s ease;
+        animation: rotateSecondLine $rotationTime ease;
         transform: rotate(135deg);
         bottom: 23%;
         position: relative;
@@ -89,13 +89,13 @@
 
 @media screen and (min-width: 768px) {
   .navigation__container {
-    width: 10%;
+    width: 15%;
     &.hidden {
-      width: $normalHiddenMenuWidth;
+      width: 5%;
       animation: hideNormalMenu 0.3s ease;
     }
     &.unhidden {
-      width: $normalMenuWidth;
+      width: 15%;
       animation: unhideNormalMenu 0.3s ease;
     }
   }

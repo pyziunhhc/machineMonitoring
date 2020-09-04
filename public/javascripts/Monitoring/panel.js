@@ -12,7 +12,7 @@ class Panel {
         this.currentStatus = null;
         this.intervalID = null;
     }
-    createMachinePanel(data, name) {
+    createMachinePanel(data) {
         //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
             moveContainerBeam = document.createElement('div'),
@@ -34,22 +34,25 @@ class Panel {
 
         //Tekst
         minimizedMachine.innerText = data.name;
+        minimizedMachine.setAttribute('name', data.name)
         closePanelButton.innerText = 'X';
         status.innerText = this.currentStatus;
+
         //Klasy
         moveContainerBeam.classList.add('move-belt');
         closePanelButton.classList.add('close');
         minimizePanelButton.classList.add('minimize');
         controls.classList.add('controls');
         machinePanelContainer.classList.add('main-machine-panel__container');
+        machinePanelContainer.classList.add(data.name)
         panelContainer.classList.add('panel__container')
         leftPanelContainer.classList.add('statuses-panel__container');
-        leftPanelContainer.classList.add(name);
+        leftPanelContainer.classList.add(data.name);
         middlePanelContainer.classList.add('charts-panel__container');
         dygraphContainer.classList.add('dygraph__container');
-        dygraphContainer.classList.add(name);
+        dygraphContainer.classList.add(data.name);
         chartJSContainer.classList.add('chartJS__container');
-        chartJSContainer.classList.add(name);
+        chartJSContainer.classList.add(data.name);
 
         //ID
 

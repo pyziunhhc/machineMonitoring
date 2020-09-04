@@ -160,32 +160,32 @@ table {
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
   .navigation__container.hidden {
     width: 8.8%;
-    -webkit-animation: hideSmallMenu 0.3s ease;
-            animation: hideSmallMenu 0.3s ease; }
+    -webkit-animation: hideSmallMenu 0.5s ease;
+            animation: hideSmallMenu 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(1) {
-      -webkit-animation: unrotateFirstLine .3s ease;
-              animation: unrotateFirstLine .3s ease; }
+      -webkit-animation: unrotateFirstLine 0.5s ease;
+              animation: unrotateFirstLine 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(2) {
-      -webkit-animation: showLine .3s ease;
-              animation: showLine .3s ease; }
+      -webkit-animation: showLine 0.5s ease;
+              animation: showLine 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(3) {
-      -webkit-animation: unrotateSecondLine .3s ease;
-              animation: unrotateSecondLine .3s ease; }
+      -webkit-animation: unrotateSecondLine 0.5s ease;
+              animation: unrotateSecondLine 0.5s ease; }
   .navigation__container.unhidden {
     width: 30%;
     -webkit-animation: unhideSmallMenu 0.3s ease;
             animation: unhideSmallMenu 0.3s ease; }
     .navigation__container.unhidden .button__hide-nav :nth-child(1) {
-      -webkit-animation: rotateFirstLine .3s ease;
-              animation: rotateFirstLine .3s ease;
+      -webkit-animation: rotateFirstLine 0.5s ease;
+              animation: rotateFirstLine 0.5s ease;
       transform: rotate(45deg); }
     .navigation__container.unhidden .button__hide-nav :nth-child(2) {
       display: none;
-      -webkit-animation: hideLine .3s ease;
-              animation: hideLine .3s ease; }
+      -webkit-animation: hideLine 0.5s ease;
+              animation: hideLine 0.5s ease; }
     .navigation__container.unhidden .button__hide-nav :nth-child(3) {
-      -webkit-animation: rotateSecondLine .3s ease;
-              animation: rotateSecondLine .3s ease;
+      -webkit-animation: rotateSecondLine 0.5s ease;
+              animation: rotateSecondLine 0.5s ease;
       transform: rotate(135deg);
       bottom: 23%;
       position: relative; }
@@ -221,13 +221,13 @@ table {
 
 @media screen and (min-width: 768px) {
   .navigation__container {
-    width: 10%; }
+    width: 15%; }
     .navigation__container.hidden {
-      width: 3%;
+      width: 5%;
       -webkit-animation: hideNormalMenu 0.3s ease;
               animation: hideNormalMenu 0.3s ease; }
     .navigation__container.unhidden {
-      width: 10%;
+      width: 15%;
       -webkit-animation: unhideNormalMenu 0.3s ease;
               animation: unhideNormalMenu 0.3s ease; } }
 
@@ -242,6 +242,59 @@ table {
               animation: unhideNormalMenu .3s ease; }
     .navigation__container .header__navigation ul .navigation__element a {
       font-size: 1.2em; } }
+
+.eroding,
+.working {
+  background-color: #005214;
+  color: white; }
+
+.grinding {
+  background-color: #00d12c;
+  color: white; }
+
+.measuring {
+  background-color: #ffb133;
+  color: white; }
+
+.robotLoading {
+  background-color: #c800c8;
+  color: white; }
+
+.manualLoading {
+  background-color: #51b6d7;
+  color: white; }
+
+.stop {
+  background-color: #ffe928;
+  color: black; }
+
+.alarm {
+  background-color: red;
+  color: white; }
+
+.disconnect {
+  background-color: #919191;
+  color: white; }
+
+.wheelReplacement {
+  background-color: black;
+  color: white; }
+
+.toolChange {
+  background-color: #ceb777;
+  color: white; }
+
+.transition {
+  background-color: #ff70b7;
+  color: white; }
+
+.warmup {
+  background-color: #a85050;
+  color: white; }
+
+.suspend {
+  background-color: #911313;
+  color: white; }
 
 @-webkit-keyframes buttonAnimation {
   0% {
@@ -387,27 +440,27 @@ table {
 
 @-webkit-keyframes hideNormalMenu {
   0% {
-    width: 10%; }
+    width: 15%; }
   100% {
-    width: 3%; } }
+    width: 5%; } }
 
 @keyframes hideNormalMenu {
   0% {
-    width: 10%; }
+    width: 15%; }
   100% {
-    width: 3%; } }
+    width: 5%; } }
 
 @-webkit-keyframes unhideNormalMenu {
   0% {
-    width: 3%; }
+    width: 5%; }
   100% {
-    width: 10%; } }
+    width: 15%; } }
 
 @keyframes unhideNormalMenu {
   0% {
-    width: 3%; }
+    width: 5%; }
   100% {
-    width: 10%; } }
+    width: 15%; } }
 
 @-webkit-keyframes decreaseHeader {
   0% {
@@ -509,6 +562,36 @@ table {
   100% {
     background-position: 0% 50%; } }
 
+@-webkit-keyframes hideMachinePanel {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5;
+    left: 10%;
+    width: 40%;
+    height: 50%; }
+  100% {
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+    left: 0%;
+    display: none; } }
+
+@keyframes hideMachinePanel {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5;
+    left: 10%;
+    width: 40%;
+    height: 50%; }
+  100% {
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+    left: 0%;
+    display: none; } }
+
 body {
   font-family: "Quicksand", sans-serif; }
 
@@ -536,7 +619,10 @@ body {
       -webkit-animation: enlargeHeader 0.3s ease;
               animation: enlargeHeader 0.3s ease; }
     .main__container .header__container .minimized-panels {
-      overflow: hidden; }
+      overflow: hidden;
+      display: flex;
+      flex: 1;
+      align-items: center; }
       .main__container .header__container .minimized-panels button {
         background: none;
         border: 2px solid white;
@@ -635,15 +721,17 @@ body {
     justify-content: flex-end; }
     .move-belt .controls button {
       border: none;
-      margin-left: 25%; }
+      margin-left: 10%; }
       .move-belt .controls button:hover {
         cursor: pointer;
         transform: scale(0.9); }
       .move-belt .controls button:focus {
         outline: none; }
       .move-belt .controls button.minimize {
-        height: 20%;
-        background-color: white; }
+        width: 30px;
+        height: 30px;
+        border-bottom: 4px solid white;
+        background: none; }
 
 button {
   border: none; }
@@ -702,70 +790,6 @@ table tbody tr td {
   -webkit-animation: removeMessage 0.3s 4.8s ease;
           animation: removeMessage 0.3s 4.8s ease; }
 
-.additional-menu__container {
-  display: flex;
-  position: absolute;
-  width: 62%;
-  height: 20vh;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 3%;
-  text-align: left;
-  left: 5%;
-  top: 31%;
-  color: white;
-  z-index: 100; }
-  .additional-menu__container ul li {
-    width: 100%;
-    height: 20px;
-    padding: 10%; }
-    .additional-menu__container ul li:hover {
-      color: black; }
-
-.edit-panel__container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  padding: 1%;
-  color: white;
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-  .edit-panel__container:hover {
-    cursor: move; }
-  .edit-panel__container .belt {
-    display: flex;
-    justify-content: flex-end; }
-  .edit-panel__container h3 {
-    font-size: 2em;
-    font-weight: bold;
-    color: white; }
-  .edit-panel__container .edit-panel__wrapper {
-    display: flex;
-    flex-direction: row;
-    margin-top: 8%; }
-    .edit-panel__container .edit-panel__wrapper .edit-panel__information {
-      flex: 2; }
-    .edit-panel__container .edit-panel__wrapper .edit-panel__actions {
-      flex: 1; }
-      .edit-panel__container .edit-panel__wrapper .edit-panel__actions button {
-        width: 90%;
-        padding: 7%;
-        margin: 2%;
-        background: none;
-        color: white;
-        font-weight: bold;
-        border: none;
-        border-radius: 20px;
-        background: linear-gradient(90deg, #117ec9 0%, #04c1bc 50%, #00b0ff 100%);
-        background-size: 400% 400%; }
-        .edit-panel__container .edit-panel__wrapper .edit-panel__actions button:focus {
-          outline: none; }
-        .edit-panel__container .edit-panel__wrapper .edit-panel__actions button:hover {
-          cursor: pointer;
-          -webkit-animation: buttonAnimation 5s ease infinite;
-                  animation: buttonAnimation 5s ease infinite; }
-      .edit-panel__container .edit-panel__wrapper .edit-panel__actions .remove {
-        background: red; }
-
 @media screen and (min-width: 1366px) {
   .main__container .header__container .logo__container h1 {
     font-size: 1.2em; }
@@ -821,21 +845,21 @@ table tbody tr td {
           justify-content: center; }
           .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs label {
             color: white;
-            padding: 4%;
+            padding: 1.5%;
+            margin-bottom: 3%;
             position: relative;
-            width: 60%;
-            font-size: 1em; }
+            width: 80%;
+            font-size: 1em;
+            border-bottom: 1px solid white; }
           .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs .auth__input {
-            width: 100%;
+            width: 85%;
             border: none;
             background: none;
-            border-bottom: 1px solid white;
             color: white;
             font-size: 1em;
             box-sizing: border-box;
             position: absolute;
-            left: 7%;
-            padding-left: 48px; }
+            left: 60px; }
             .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs .auth__input:focus {
               outline: none; }
         .main__container .auth__wrapper .auth__container .auth__fields .auth--button {

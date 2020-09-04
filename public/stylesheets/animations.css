@@ -1,0 +1,350 @@
+.eroding,
+.working {
+  background-color: #005214;
+  color: white; }
+
+.grinding {
+  background-color: #00d12c;
+  color: white; }
+
+.measuring {
+  background-color: #ffb133;
+  color: white; }
+
+.robotLoading {
+  background-color: #c800c8;
+  color: white; }
+
+.manualLoading {
+  background-color: #51b6d7;
+  color: white; }
+
+.stop {
+  background-color: #ffe928;
+  color: black; }
+
+.alarm {
+  background-color: red;
+  color: white; }
+
+.disconnect {
+  background-color: #919191;
+  color: white; }
+
+.wheelReplacement {
+  background-color: black;
+  color: white; }
+
+.toolChange {
+  background-color: #ceb777;
+  color: white; }
+
+.transition {
+  background-color: #ff70b7;
+  color: white; }
+
+.warmup {
+  background-color: #a85050;
+  color: white; }
+
+.suspend {
+  background-color: #911313;
+  color: white; }
+
+@-webkit-keyframes buttonAnimation {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+
+@keyframes buttonAnimation {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+
+@-webkit-keyframes rotateFirstLine {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(45deg); } }
+
+@keyframes rotateFirstLine {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(45deg); } }
+
+@-webkit-keyframes unrotateFirstLine {
+  0% {
+    transform: rotate(45deg); }
+  100% {
+    transform: rotate(0deg); } }
+
+@keyframes unrotateFirstLine {
+  0% {
+    transform: rotate(45deg); }
+  100% {
+    transform: rotate(0deg); } }
+
+@-webkit-keyframes rotateSecondLine {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(135deg); } }
+
+@keyframes rotateSecondLine {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(135deg); } }
+
+@-webkit-keyframes unrotateSecondLine {
+  0% {
+    transform: rotate(135deg); }
+  100% {
+    transform: rotate(0deg); } }
+
+@keyframes unrotateSecondLine {
+  0% {
+    transform: rotate(135deg); }
+  100% {
+    transform: rotate(0deg); } }
+
+@-webkit-keyframes showLine {
+  0% {
+    display: none;
+    opacity: 0; }
+  50% {
+    display: inline-block;
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+
+@keyframes showLine {
+  0% {
+    display: none;
+    opacity: 0; }
+  50% {
+    display: inline-block;
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
+
+@-webkit-keyframes hideLine {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    display: none;
+    opacity: 0; } }
+
+@keyframes hideLine {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    display: none;
+    opacity: 0; } }
+
+@-webkit-keyframes drawLine {
+  0% {
+    border-left: 0px solid white; }
+  50% {
+    border-left: 0.5px solid white; }
+  100% {
+    border-left: 1px solid white; } }
+
+@keyframes drawLine {
+  0% {
+    border-left: 0px solid white; }
+  50% {
+    border-left: 0.5px solid white; }
+  100% {
+    border-left: 1px solid white; } }
+
+@-webkit-keyframes hideSmallMenu {
+  0% {
+    width: 30%; }
+  100% {
+    width: 8.8%; } }
+
+@keyframes hideSmallMenu {
+  0% {
+    width: 30%; }
+  100% {
+    width: 8.8%; } }
+
+@-webkit-keyframes unhideSmallMenu {
+  0% {
+    width: 8.8%; }
+  100% {
+    width: 30%; } }
+
+@keyframes unhideSmallMenu {
+  0% {
+    width: 8.8%; }
+  100% {
+    width: 30%; } }
+
+@-webkit-keyframes hideNormalMenu {
+  0% {
+    width: 15%; }
+  100% {
+    width: 5%; } }
+
+@keyframes hideNormalMenu {
+  0% {
+    width: 15%; }
+  100% {
+    width: 5%; } }
+
+@-webkit-keyframes unhideNormalMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 15%; } }
+
+@keyframes unhideNormalMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 15%; } }
+
+@-webkit-keyframes decreaseHeader {
+  0% {
+    height: 10%; }
+  100% {
+    height: 5%; } }
+
+@keyframes decreaseHeader {
+  0% {
+    height: 10%; }
+  100% {
+    height: 5%; } }
+
+@-webkit-keyframes decreaseImg {
+  0% {
+    width: 7%; }
+  100% {
+    width: 3%; } }
+
+@keyframes decreaseImg {
+  0% {
+    width: 7%; }
+  100% {
+    width: 3%; } }
+
+@-webkit-keyframes decreaseSection {
+  0% {
+    height: 85%; }
+  100% {
+    height: 90%; } }
+
+@keyframes decreaseSection {
+  0% {
+    height: 85%; }
+  100% {
+    height: 90%; } }
+
+@-webkit-keyframes enlargeHeader {
+  0% {
+    height: 5%; }
+  100% {
+    height: 10%; } }
+
+@keyframes enlargeHeader {
+  0% {
+    height: 5%; }
+  100% {
+    height: 10%; } }
+
+@-webkit-keyframes enlargeImg {
+  0% {
+    width: 3%; }
+  100% {
+    width: 7%; } }
+
+@keyframes enlargeImg {
+  0% {
+    width: 3%; }
+  100% {
+    width: 7%; } }
+
+@-webkit-keyframes enlargeSection {
+  0% {
+    height: 90%; }
+  100% {
+    height: 85%; } }
+
+@keyframes enlargeSection {
+  0% {
+    height: 90%; }
+  100% {
+    height: 85%; } }
+
+@-webkit-keyframes removeMessage {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
+@keyframes removeMessage {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
+@-webkit-keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
+
+@-webkit-keyframes hideMachinePanel {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5;
+    left: 10%;
+    width: 40%;
+    height: 50%; }
+  100% {
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+    left: 0%;
+    display: none; } }
+
+@keyframes hideMachinePanel {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5;
+    left: 10%;
+    width: 40%;
+    height: 50%; }
+  100% {
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+    left: 0%;
+    display: none; } }
+
+/*# sourceMappingURL=animations.css.map */

@@ -4,7 +4,7 @@ import Panel from './panel.js'
 window.onload = function () {
     const MENU = new Menu();
     MENU.hideMenu();
-    MENU.showSettings()
+    MENU.showSettings();
     const MONITORING = new Monitoring();
     MONITORING.createDOM();
 }
@@ -139,25 +139,31 @@ class Monitoring {
 
 
     getStatuses(e) {
-        const dataToSend = {
-            name: e.target.dataset.name,
-            from: new Date(new Date() - 86400000),
-            to: new Date()
-        };
-        const panel = new Panel();
-        helpers.getStatuses(dataToSend).then(res => {
-            panel.data = res;
-            panel.currentStatus = res.currentStatus;
+        const isExist = document.querySelector(`.main-machine-panel__container.${e.target.dataset.name}.minimized`)
+        if (isExist) {
+            isExist.classList.remove('minimized');
+            document.querySelector(`button[name=${e.target.dataset.name}]`).remove();
+        } else {
+            const dataToSend = {
+                name: e.target.dataset.name,
+                from: new Date(new Date() - 86400000),
+                to: new Date()
+            };
+            const panel = new Panel();
+            helpers.getStatuses(dataToSend).then(res => {
+                panel.data = res;
+                panel.currentStatus = res.status;
+                panel.createMachinePanel(dataToSend);
+                panel.createDygraph(res.dygraph, dataToSend.name);
+                panel.createTable(res.summary, dataToSend.name)
+                panel.createChartJS(res.chartJS, dataToSend.name, 'pie');
 
-            panel.createMachinePanel(dataToSend, dataToSend.name);
-            panel.createDygraph(res.dygraph, dataToSend.name);
-            panel.createTable(res.summary, dataToSend.name)
-            panel.createChartJS(res.chartJS, dataToSend.name, 'pie');
+                return panel;
+            }).then(panel => {
+                //this.updateStatuses(dataToSend.name, panel);
+            })
+        }
 
-            return panel;
-        }).then(panel => {
-            //this.updateStatuses(dataToSend.name, panel);
-        })
     }
     updateStatuses(name, panel) {
         this.intervalID = setInterval(() => {

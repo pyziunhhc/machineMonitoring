@@ -62,32 +62,32 @@
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
   .navigation__container.hidden {
     width: 8.8%;
-    -webkit-animation: hideSmallMenu 0.3s ease;
-            animation: hideSmallMenu 0.3s ease; }
+    -webkit-animation: hideSmallMenu 0.5s ease;
+            animation: hideSmallMenu 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(1) {
-      -webkit-animation: unrotateFirstLine .3s ease;
-              animation: unrotateFirstLine .3s ease; }
+      -webkit-animation: unrotateFirstLine 0.5s ease;
+              animation: unrotateFirstLine 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(2) {
-      -webkit-animation: showLine .3s ease;
-              animation: showLine .3s ease; }
+      -webkit-animation: showLine 0.5s ease;
+              animation: showLine 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(3) {
-      -webkit-animation: unrotateSecondLine .3s ease;
-              animation: unrotateSecondLine .3s ease; }
+      -webkit-animation: unrotateSecondLine 0.5s ease;
+              animation: unrotateSecondLine 0.5s ease; }
   .navigation__container.unhidden {
     width: 30%;
     -webkit-animation: unhideSmallMenu 0.3s ease;
             animation: unhideSmallMenu 0.3s ease; }
     .navigation__container.unhidden .button__hide-nav :nth-child(1) {
-      -webkit-animation: rotateFirstLine .3s ease;
-              animation: rotateFirstLine .3s ease;
+      -webkit-animation: rotateFirstLine 0.5s ease;
+              animation: rotateFirstLine 0.5s ease;
       transform: rotate(45deg); }
     .navigation__container.unhidden .button__hide-nav :nth-child(2) {
       display: none;
-      -webkit-animation: hideLine .3s ease;
-              animation: hideLine .3s ease; }
+      -webkit-animation: hideLine 0.5s ease;
+              animation: hideLine 0.5s ease; }
     .navigation__container.unhidden .button__hide-nav :nth-child(3) {
-      -webkit-animation: rotateSecondLine .3s ease;
-              animation: rotateSecondLine .3s ease;
+      -webkit-animation: rotateSecondLine 0.5s ease;
+              animation: rotateSecondLine 0.5s ease;
       transform: rotate(135deg);
       bottom: 23%;
       position: relative; }
@@ -123,13 +123,13 @@
 
 @media screen and (min-width: 768px) {
   .navigation__container {
-    width: 10%; }
+    width: 15%; }
     .navigation__container.hidden {
-      width: 3%;
+      width: 5%;
       -webkit-animation: hideNormalMenu 0.3s ease;
               animation: hideNormalMenu 0.3s ease; }
     .navigation__container.unhidden {
-      width: 10%;
+      width: 15%;
       -webkit-animation: unhideNormalMenu 0.3s ease;
               animation: unhideNormalMenu 0.3s ease; } }
 

@@ -22,6 +22,7 @@ class Users {
 
     createUsers(users) {
         const container = document.querySelector('.users__container');
+        console.log(users)
         Object.values(users)
             .map(user => {
                 const userContainer = document.createElement('div'),
@@ -37,73 +38,22 @@ class Users {
                 userLogin.innerText = user.login;
 
                 userImage.addEventListener('dblclick', e => {
-                    console.log(e)
                     const user = e.srcElement.dataset.value;
                     helpers.getUser(user)
                         .then(userData => {
-                            this.editPanel(userData)
+                            this.editPanel(userData, userContainer)
                         })
                 })
+                userImage.addEventListener('contextmenu',
+                    e => {
+                        this.menu(e)
+                    })
                 userContainer.appendChild(userImage);
                 userContainer.appendChild(userLogin);
 
                 container.appendChild(userContainer)
             })
 
-        // const table = document.createElement('table');
-        // const container = document.querySelector('.users__container'),
-        //     old = document.querySelector('table');
-        // for (let i in this.logins) {
-        //     let row = table.insertRow(i);
-        //     row.setAttribute('data-value', this.logins[i])
-        //     row.addEventListener('contextmenu', (e) => {
-        //         this.menu(e)
-        //     })
-        //     row.addEventListener('click', (e) => {
-        //         const isExist = document.querySelector('.additional-menu__container');
-        //         if (isExist) {
-        //             isExist.remove();
-        //         }
-        //     })
-        //     row.addEventListener('dblclick', (e) => {
-        //         //włącz panel edycji
-        //         const user = e.target.parentNode.dataset.value;
-        //         helpers.getUser(user)
-        //             .then(userData => {
-        //                 this.editPanel(userData)
-        //             })
-
-        //     })
-        //     for (let j = 0; j < 7; j++) {
-        //         if (j === 0) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.logins[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         } else if (j === 1) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.name[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         } else if (j === 2) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.surname[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         } else if (j === 3) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.role[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         } else if (j === 4) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.email[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         } else if (j === 5) {
-        //             let cell = row.insertCell(j);
-        //             cell.innerText = this.lastUpdate[i];
-        //             //cell.classList.add(statusesClass[i])
-        //         }
-        //     }
-        // }
-        // console.log(table, old)
-        // container.replaceChild(table, old)
     }
     createRegistrationContainer() {
         const button = document.querySelector('.users__new--button');
@@ -227,9 +177,10 @@ class Users {
                     helpers.showUsers()
                         .then(res => {
                             if (res.status == 200) {
-                                this.prepareUsers(res.users);
-                                this.createUserTable()
-                                this.createRegistrationContainer();
+                                const user = {
+                                    user: res.users[res.users.length - 1]
+                                }
+                                this.createUsers(user)
                             }
                         })
                 } else {
@@ -237,33 +188,37 @@ class Users {
                 }
             })
     }
-
-
     menu(e) {
+        const that = e;
         e.preventDefault();
         const menu = document.createElement('div'),
             menuElements = document.createElement('ul'),
             editUser = document.createElement('li'),
             deleteUser = document.createElement('li');
         const isExist = document.querySelector('.additional-menu__container')
-
         editUser.innerText = 'Edytuj';
         deleteUser.innerText = 'Usuń';
         //Akcje
-
+        window.addEventListener('click', e => {
+            const isExist = document.querySelector('.additional-menu__container')
+            if (isExist) {
+                isExist.remove()
+            }
+        })
         editUser.addEventListener('click', (e) => {
-            const user = e.path[4].dataset.value;
+            const user = e.path[3].childNodes[0].dataset.value
             helpers.getUser(user)
                 .then(userData => {
-                    this.editPanel(userData)
+                    this.editPanel(userData, that.path[1])
+                    menu.remove();
                 })
         })
         deleteUser.addEventListener('click', (e) => {
             const user = {
-                login: e.path[4].dataset.value
+                login: e.path[3].childNodes[0].dataset.value
             };
 
-            this.removeUser(user)
+            this.removeUser(user, that)
         })
 
         menuElements.appendChild(editUser);
@@ -271,19 +226,19 @@ class Users {
 
         menu.classList.add('additional-menu__container');
 
-        if (e.button == 2) {
+        if (that.button == 2) {
             if (isExist) {
                 isExist.remove();
                 menu.appendChild(menuElements)
-                e.target.appendChild(menu)
+                that.path[1].appendChild(menu)
             } else {
                 menu.appendChild(menuElements)
-                e.target.appendChild(menu)
+                that.path[1].appendChild(menu)
             }
 
         }
     }
-    editPanel(data) {
+    editPanel(data, e) {
         const panel = document.createElement('div'),
             panelWrapper = document.createElement('div'),
             infoPanel = document.createElement('div'),
@@ -293,7 +248,8 @@ class Users {
             closeButton = document.createElement('button'),
             removeButton = document.createElement('button');
 
-        const container = document.querySelector('.users__container');
+        const container = e;
+
 
         //Tekst
         heading.innerText = 'Edycja użytkownika'
@@ -369,6 +325,7 @@ class Users {
                 login: data.user.login
             }
             this.removeUser(user)
+            container.remove();
         })
         //Łączenie
         belt.appendChild(closeButton)
@@ -442,17 +399,14 @@ class Users {
             }
         })
     }
-    removeUser(user) {
-        console.log(user)
+    removeUser(user, event) {
         helpers.removeUser(user).then(res => {
             if (res.status == 200) {
                 helpers.showMessage('success', res.message)
                 helpers.showUsers()
                     .then(res => {
                         if (res.status == 200) {
-                            this.prepareUsers(res.users);
-                            this.createUserTable()
-                            this.createRegistrationContainer();
+                            event.target.parentElement.remove()
                         }
                     })
             } else {

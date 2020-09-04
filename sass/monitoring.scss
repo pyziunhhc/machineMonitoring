@@ -46,6 +46,7 @@
     background: white;
     box-shadow: $shadowBackground;
     &.minimized {
+
       display: none;
     }
     .panel__container {

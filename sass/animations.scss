@@ -1,3 +1,5 @@
+@import "variables";
+
 @keyframes buttonAnimation {
   0% {
     background-position: 0% 50%;
@@ -97,19 +99,19 @@
 
 @keyframes hideNormalMenu {
   0% {
-    width: $normalMenuWidth;
+    width: 15%;
   }
   100% {
-    width: $normalHiddenMenuWidth;
+    width: 5%;
   }
 }
 
 @keyframes unhideNormalMenu {
   0% {
-    width: $normalHiddenMenuWidth;
+    width: 5%;
   }
   100% {
-    width: $normalMenuWidth;
+    width: 15%;
   }
 }
 
@@ -180,5 +182,25 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes hideMachinePanel {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    left:10%;
+    width: 40%;
+    height: 50%;
+
+  }
+  100% {
+    opacity: 0;
+    width: 0%;
+    height: 0%;
+    left:0%;
+    display: none;
   }
 }

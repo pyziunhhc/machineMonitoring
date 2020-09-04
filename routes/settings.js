@@ -6,7 +6,7 @@ router.post('/', (req, res, next) => {
     const role = req.cookies.role;
 
     switch (role) {
-        case 'Administrator': {
+        case 'administrator': {
             res.send({
                 users: {
                     name: 'Użytkownicy',
