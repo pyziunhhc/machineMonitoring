@@ -1,12 +1,13 @@
 import Menu from '../Menu/menu.js';
-import helpers from '../helpers/fetch.js'
-import Panel from './panel.js'
+import helpers from '../helpers/fetch/machines.js'
+import Panel from './panel.js';
 window.onload = function () {
     const MENU = new Menu();
     MENU.hideMenu();
     MENU.showSettings();
     const MONITORING = new Monitoring();
     MONITORING.createDOM();
+
 }
 
 class Monitoring {
@@ -139,29 +140,35 @@ class Monitoring {
 
 
     getStatuses(e) {
-        const isExist = document.querySelector(`.main-machine-panel__container.${e.target.dataset.name}.minimized`)
-        if (isExist) {
-            isExist.classList.remove('minimized');
-            document.querySelector(`button[name=${e.target.dataset.name}]`).remove();
-        } else {
-            const dataToSend = {
-                name: e.target.dataset.name,
-                from: new Date(new Date() - 86400000),
-                to: new Date()
-            };
-            const panel = new Panel();
-            helpers.getStatuses(dataToSend).then(res => {
-                panel.data = res;
-                panel.currentStatus = res.status;
-                panel.createMachinePanel(dataToSend);
-                panel.createDygraph(res.dygraph, dataToSend.name);
-                panel.createTable(res.summary, dataToSend.name)
-                panel.createChartJS(res.chartJS, dataToSend.name, 'pie');
+        try {
+            const isExist = document.querySelector(`.main-machine-panel__container.${e.target.dataset.name}.minimized`)
+            if (isExist) {
+                isExist.classList.remove('minimized');
+                document.querySelector(`button[name=${e.target.dataset.name}]`).remove();
+            } else {
+                const dataToSend = {
+                    name: e.target.dataset.name,
+                    from: new Date(new Date() - 86400000),
+                    to: new Date()
+                };
+                const panel = new Panel();
+                helpers.getStatuses(dataToSend).then(res => {
+                    this.data = res;
+                    panel.data = res;
+                    panel.currentStatus = res.status;
+                    this.currentStatus = res.status;
+                    panel.createMachinePanel(dataToSend);
+                    panel.createDygraph(res.dygraph, dataToSend.name);
+                    panel.createTable(res.summary, dataToSend.name)
+                    panel.createChartJS(res.chartJS, dataToSend.name, 'pie');
 
-                return panel;
-            }).then(panel => {
-                //this.updateStatuses(dataToSend.name, panel);
-            })
+                    return panel;
+                }).then(panel => {
+                    this.updateStatuses(dataToSend.name, panel);
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
 
     }
@@ -174,15 +181,12 @@ class Monitoring {
                 oldData: this.data,
                 lastStatus: this.currentStatus
             };
-            helpers.updateStatuses(dataToSend).then(res => {
-                //this.data = res;
-                //this.currentStatus = res.status;
 
-                panel.data = res;
+            helpers.updateStatuses(dataToSend).then(res => {
+                this.data = res;
                 panel.currentStatus = res.status;
-                //console.log(res)
-                // panel.updateDygraph(res, panel.dygraph)
-                // panel.updateChartJS(res, panel.chartJS)
+                panel.updateDygraph(res, panel.dygraph)
+                panel.updateChartJS(res, panel.chartJS)
                 panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
             })
         }, 1000)

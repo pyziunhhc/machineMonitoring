@@ -64,10 +64,11 @@ router.get('/', (req, res, next) => {
             login: login
         })
     } else {
-        res.render('login', {
-            title: 'Logowanie | ITA Tools Sp. z o.o',
-            jsfiles: 'controller.js'
-        })
+        res.redirect('/login')
+        // res.render('login', {
+        //     title: 'Logowanie | ITA Tools Sp. z o.o',
+        //     jsfiles: 'controller.js'
+        // })
     }
 })
 router.get('/setting', (req, res, next) => {

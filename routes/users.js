@@ -17,10 +17,11 @@ router.get('/', (req, res, next) => {
       login: login
     })
   } else {
-    res.render('login', {
-      title: 'Witaj | ITA Tools Sp. z o.o',
-      jsfiles: 'controller.js',
-    })
+    res.redirect('/login')
+    // res.render('login', {
+    //   title: 'Witaj | ITA Tools Sp. z o.o',
+    //   jsfiles: 'controller.js',
+    // })
   }
 
 
@@ -240,18 +241,34 @@ router.post('/register',
 
 router.post('/myAccount', (req, res, next) => {
   const login = req.cookies.login;
+  if (login) {
+    User.findOne({
+      login: login
+    }, (err, user) => {
+      if (user) {
+        res.render('myaccount', {
+          title: 'Moje konto | ITA Tools Sp. z o.o',
+          jsfiles: 'myAccount.js',
+          cssfiles: 'users',
+          userData: user,
+          login: login
+        })
 
-  User.findOne({
-    login: login
-  }, (err, user) => {
-    if (user) {
+      } else {
+        res.send({
+          status: 500,
+          message: ['Błąd bazy danych']
+        })
+      }
+    })
 
-    } else {
-      res.send({
-        status: 500,
-        message: ['Błąd bazy danych']
-      })
-    }
-  })
+  } else {
+    res.redirect('/login')
+    // res.render('login', {
+    //   title: 'Witaj | ITA Tools Sp. z o.o',
+    //   jsfiles: 'controller.js',
+    // })
+  }
+
 })
 module.exports = router;

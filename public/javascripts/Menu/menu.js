@@ -1,4 +1,5 @@
-import helpers from '../helpers/fetch.js';
+import settings from '../helpers/fetch/appSettings.js';
+import helpers from '../helpers/auxiliaryFunctions.js'
 class Menu {
 
     hideMenu() {
@@ -68,11 +69,11 @@ class Menu {
             closeButton.classList.add('close');
             controls.classList.add('controls')
             //Akcje
-            closeButton.addEventListener('click',(e)=>{
+            closeButton.addEventListener('click', (e) => {
                 settingsContainer.remove();
             })
             belt.onmousedown = helpers.dragMouseDown.bind(null, this, settingsContainer);
-            helpers.showSettings().then(data => {
+            settings.showSettings().then(data => {
                 Object.values(data)
                     .map(val => {
                         const settingsElement = document.createElement('li'),

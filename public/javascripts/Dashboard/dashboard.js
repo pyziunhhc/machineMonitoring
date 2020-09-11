@@ -1,24 +1,33 @@
-import fetch from '../helpers/fetch.js';
+import machines from '../helpers/fetch/machines.js';
 import Menu from '../Menu/menu.js';
+
+
 window.onload = function () {
     const DASHBOARD = new Dashboard();
     const MENU = new Menu();
 
-    //setInterval(, 1000);
-    DASHBOARD.createTable();
+    DASHBOARD.createTables();
     DASHBOARD.createChart();
+    //setInterval(DASHBOARD.updateChart, 1000);
+
     MENU.hideMenu();
     MENU.showSettings();
 }
 
 class Dashboard {
     constructor() {
-
+        this.whatMachinesDoingNowGraph = null;
     }
-    createTable() {
-        fetch.getDataForTable();
+    createTables() {
+        //setInterval(machines.whatMachinesDoingNow, 1000) DZIAŁA, ODKOMENTOWAĆ
+        machines.whatMachinesDoingNow();
+        machines.summaryMachinesWork();
     }
     createChart() {
-        fetch.getDataForGraph();
+        this.whatMachinesDoingNowGraph = machines.whatMachinesDoingNowGraph();
+
+    }
+    updateChart() {
+        //console.log(this.whatMachinesDoingNowGraph)
     }
 }

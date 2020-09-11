@@ -12,12 +12,13 @@ router.get('/', (req, res, next) => {
   const cookie = checkCookie(req.cookies)
   const login = req.cookies.login;
   if (cookie) {
-    res.render('dashboard', {
-      title: "Dashboad | ITA Tools Sp z o.o",
-      jsfiles: 'dashboard.js',
-      cssfiles: 'auth',
-      login: login
-    });
+    res.redirect('/dashboard')
+    // res.render('dashboard', {
+    //   title: "Dashboad | ITA Tools Sp z o.o",
+    //   jsfiles: 'dashboard.js',
+    //   cssfiles: 'auth',
+    //   login: login
+    // });
   } else {
     res.render('login', {
       title: "Logowanie | ITA Tools Sp z o.o",

@@ -1,4 +1,4 @@
-import helpers from '../helpers/fetch.js';
+import helpers from '../helpers/auxiliaryFunctions.js';
 class Table {
     constructor(data, name) {
         this.data = data;
@@ -8,7 +8,7 @@ class Table {
     }
 
 
-    create() {
+    create(parent, oldTable) {
         try {
             let statusesName = ['Status'],
                 statusesValues = ['Czas'],
@@ -16,8 +16,6 @@ class Table {
                 statusesClass = ['status'],
                 table = document.createElement('table'),
                 sumOfTimes = this.sumOfTimes;
-            const parent = document.querySelector(`.statuses-panel__container.${this.name}`),
-                oldTable = document.querySelector(`.statuses-panel__container.${this.name} > table`);
             Object.values(this.data)
                 .filter(val => {
                     return val.data.time > 0
@@ -28,7 +26,6 @@ class Table {
                     statusesValues.push(helpers.parseMillisecondsIntoReadableTime(val.data.time));
                     statusesPercent.push(((val.data.time * 100) / sumOfTimes).toFixed(2));
                 })
-
             table.classList.add(this.name);
             //tableContainer.classList.add(timeType);
             //if (tableType == 'vertical') {
@@ -82,11 +79,11 @@ class Table {
             // document.querySelector(`.${timeType}-table.${machineName}`).appendChild(table);
             // }
             //parent.appendChild(table)
-            parent.replaceChild(table, oldTable)
+            parent.appendChild(table)
 
 
 
-            this.table =  table;
+            this.table = table;
 
         } catch (e) {
             console.log(e)
@@ -100,8 +97,8 @@ class Table {
                 statusesClass = ['status'],
                 table = document.createElement('table'),
                 sumOfTimes = this.sumOfTimes;
-            const parent = document.querySelector(`.left-panel__container.${name}`),
-                oldTable = document.querySelector(`.left-panel__container.${this.name} > table.${this.name}`);
+            const parent = document.querySelector(`.statuses-panel__container.${name}`),
+                oldTable = document.querySelector(`.statuses-panel__container.${this.name} > table.${this.name}`);
             Object.values(data)
                 .filter(val => {
                     return val.data.time > 0
@@ -114,8 +111,6 @@ class Table {
                 })
 
             table.classList.add(this.name);
-            //tableContainer.classList.add(timeType);
-            //if (tableType == 'vertical') {
             for (let i in statusesName) {
                 let row = table.insertRow(i);
                 for (let j = 0; j < 3; j++) {
@@ -134,38 +129,6 @@ class Table {
                     }
                 }
             }
-            //} else if (tableType == 'horizontal') {
-            // for (let i = 0; i < 3; i++) {
-            //     let row = table.insertRow(i);
-            //     if (i == 0) {
-            //         for (let j in statusesName) {
-            //             let cell = row.insertCell(j);
-            //             cell.innerText = statusesName[j]
-            //             cell.classList.add(statusesClass[j])
-            //         }
-            //     } else if (i == 1) {
-            //         for (let j in statusesName) {
-            //             let cell = row.insertCell(j);
-            //             cell.innerText = statusesValues[j]
-            //             cell.classList.add(statusesClass[j])
-            //         }
-            //     } else if (i == 2) {
-            //         for (let j in statusesName) {
-            //             let cell = row.insertCell(j);
-            //             cell.innerText = `${statusesPercent[j]}%`
-            //             cell.classList.add(statusesClass[j])
-            //         }
-            //     }
-
-            // }
-            //}
-            //if (timeType) {
-            // let parent = document.querySelector(`.${timeType}-table.${machineName}`),
-            //     toChange = document.querySelector(`.${timeType}-table.${machineName} > table`);
-            // parent.replaceChild(table, toChange)
-            // document.querySelector(`.${timeType}-table.${machineName}`).appendChild(table);
-            // }
-            //parent.appendChild(table)
             parent.replaceChild(table, oldTable)
         } catch (e) {
             console.log(e)

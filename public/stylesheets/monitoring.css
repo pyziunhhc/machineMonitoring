@@ -896,7 +896,7 @@ table tbody tr td {
             text-align: center;
             margin-bottom: 2%; }
       .main__container .main__section .monitoring__container .main-machine-panel__container {
-        width: 85%; }
+        width: 80%; }
         .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container {
           flex-direction: row; }
           .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container {

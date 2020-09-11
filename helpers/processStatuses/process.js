@@ -192,16 +192,16 @@ const summaryMachineStatistics = (data) => {
         },
 
     };
-
-    DATA.forEach(status => {
-        let start = new Date(status.start),
-            end = new Date(status.end),
+    DATA.forEach(data => {
+        let start = new Date(data.start),
+            end = new Date(data.end),
             time = end - start,
             feedValue = 0,
-            potentiometrValue = 0;
+            potentiometrValue = 0,
+            status = `${data.value}`;
 
         //jeżeli trafi na koniec to zamiast błędu w czasie obliczy go poprawnie
-        if (status.end == null) {
+        if (data.end == null) {
             time = new Date() - start;
             summaryMachineStatistics.sumOfTimes.data.time += time;
         } else {
@@ -209,7 +209,7 @@ const summaryMachineStatistics = (data) => {
         }
 
 
-        switch (status.value) {
+        switch (status) {
             case 'ERODOWANIE': {
                 summaryMachineStatistics.erodowanie.data.time += time;
                 summaryMachineStatistics.erodowanie.data.averageFeedCounter++;
@@ -221,7 +221,14 @@ const summaryMachineStatistics = (data) => {
         }
 
         break;
-        case 'DISCONNECT' || null: {
+        case 'DISCONNECT': {
+            summaryMachineStatistics.disconnect.data.time += time;
+            summaryMachineStatistics.disconnect.data.feedValue = feedValue;
+        }
+
+        break;
+
+        case 'null': {
             summaryMachineStatistics.disconnect.data.time += time;
             summaryMachineStatistics.disconnect.data.feedValue = feedValue;
         }
@@ -281,6 +288,7 @@ const summaryMachineStatistics = (data) => {
         break;
         }
     });
+
     return summaryMachineStatistics;
 }
 const statusesForDygraph = (data) => {
@@ -397,6 +405,7 @@ const statusesForChartJS = (data) => {
 }
 const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastStatus) => {
     try {
+        console.log(currentStatus, lastStatus)
         if (currentStatus != lastStatus) {
             const sumMachineStats = oldData,
                 data = newData;
@@ -594,5 +603,6 @@ const updateStatusesForTable = (data, newData) => {
 module.exports = {
     summaryMachineStatistics,
     statusesForDygraph,
-    statusesForChartJS
+    statusesForChartJS,
+    updateSummaryMachineStatistics,
 };

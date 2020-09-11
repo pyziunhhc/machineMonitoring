@@ -1,4 +1,4 @@
-import helpers from './helpers/fetch.js'
+import message from './helpers/messages.js'
 
 window.onload = function () {
     const sendButton = document.querySelector('#send');
@@ -52,7 +52,7 @@ const authUser = (e) => {
                 if (res.status == 'success') {
                     window.location = res.redirect;
                 } else {
-                    helpers.showMessage('error', res.message)
+                    message.showMessage('error', res.message)
                 }
             })
     }

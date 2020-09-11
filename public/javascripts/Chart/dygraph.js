@@ -1,4 +1,5 @@
-import helpers from '../helpers/fetch.js';
+import machines from '../helpers/fetch/machines.js';
+import helpers from '../helpers/auxiliaryFunctions.js'
 class myDygraph {
     constructor(data, name) {
         this.data = data;
@@ -193,7 +194,7 @@ class myDygraph {
                             that.minDate = minDate; //dodaj wartosci z zoomu jako minDate
                             that.maxDate = maxDate; // dodaj wartosci z zoomu jako maxDate
                             //const MACHINE = new Machine(that.fullName, that.shortName)
-                            helpers.getStatuses(data).then(res => {
+                            machines.getStatuses(data).then(res => {
                                 //processStatuses(res, MACHINE)
                                 //createTable(MACHINE, timeType, 'vertical')
                             })
@@ -205,7 +206,7 @@ class myDygraph {
                         that.minDate = minDate;
                         that.maxDate = maxDate;
                         //const MACHINE = new Machine(that.fullName, that.shortName)
-                        helpers.getStatuses(data).then(res => {
+                        machines.getStatuses(data).then(res => {
 
                             //processStatuses(res, MACHINE)
                             //createTable(MACHINE, timeType, 'vertical')

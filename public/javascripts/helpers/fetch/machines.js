@@ -1,6 +1,46 @@
-import config from './config.js'
+import Table from '../../Table/table.js';
 
-function getDataForTable() {
+
+function getMachines() {
+    return fetch('data/get/machines', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function getStatuses(data) {
+    return fetch('/monitoring/data/get', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function updateStatuses(data) {
+    return fetch('/monitoring/data/update', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+}
+
+function whatMachinesDoingNow() {
     const time = {
             from: new Date(),
             to: new Date(),
@@ -13,7 +53,7 @@ function getDataForTable() {
     }];
     const summaryTable = document.querySelector('.summary__container--table > table'),
         summaryContainer = document.querySelector('.summary__container--table');
-    fetch('/dashboard/get/table', { //zrobic z tego osobne funkcje
+    fetch('/dashboard/get/table/whatMachinesDoingNow', { //zrobic z tego osobne funkcje
             method: 'POST',
             body: JSON.stringify(time),
             credentials: 'include',
@@ -64,7 +104,70 @@ function getDataForTable() {
 
 }
 
-function getDataForGraph() {
+function summaryMachinesWork() {
+    const time = {
+        from: new Date(new Date() - 86400000),
+        to: new Date(),
+    };
+    fetch('/dashboard/get/table/summaryMachinesWork', {
+            method: 'POST',
+            body: JSON.stringify(time),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            const data = res.currentWork,
+                tableArray = [];
+            data.map((element, index) => {
+                const TABLE = new Table(element.data, element.name);
+                const parent = document.querySelector('.summary-container__table--current'),
+                    container = document.createElement('div'),
+                    title = document.createElement('h3');
+                title.innerText = element.name;
+
+                container.classList.add('statuses-panel__container');
+                container.classList.add(element.name)
+                container.appendChild(title);
+                parent.appendChild(container);
+                TABLE.create(container);
+                tableArray.push(TABLE);
+                if (data.length - 1 == index) {
+                    return tableArray;
+                }
+            })
+            return tableArray;
+        })
+        .then((tableArray) => {
+            setInterval(() => {
+                const time = {
+                    from: new Date(),
+                    to: new Date(),
+                };
+                fetch('/dashboard/get/table/summaryMachinesWork', {
+                        method: 'POST',
+                        body: JSON.stringify(time),
+                        credentials: 'include',
+                        headers: {
+                            'Accept': '*',
+                            'Content-Type': 'application/json',
+                        }
+                    }).then(res => res.json())
+                    .then(res => {
+                        tableArray.forEach(table=>{
+                            // console.log(table)
+                        })
+                    })
+
+            }, 1000)
+
+        })
+}
+
+function whatMachinesDoingNowGraph() {
     const time = {
         from: new Date(),
         to: new Date()
@@ -77,7 +180,7 @@ function getDataForGraph() {
     percentageCanvas.height = '250'
     let percentageChart = null;
 
-    fetch('/dashboard/get/graph', {
+    fetch('/dashboard/get/graph/whatMachinesDoingNow', {
             method: 'POST',
             body: JSON.stringify(time),
             headers: {
@@ -182,210 +285,40 @@ function getDataForGraph() {
 
     return percentageChart;
 }
-function getMachines(){
-    return fetch('data/get/machines', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Accept': '*',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(res => res.json())
-}
-function getStatuses(data) {
-    return fetch('/monitoring/data/get', {
+
+function updateWhatMachinesDoingNowGraph(graph) {
+    fetch('/dashboard/get/graph/whatMachinesDoingNow', {
             method: 'POST',
-            body: JSON.stringify(data),
-            credentials: 'include',
+            body: JSON.stringify(time),
             headers: {
                 'Accept': '*',
                 'Content-Type': 'application/json',
             }
         })
-        .then(res => res.json())
-}
-function updateStatuses(data) {
-    return fetch('/monitoring/data/update', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
+        .then(res => {
+            return res.json()
         })
-        .then(res => res.json())
-        .catch(err => console.log(err))
-}
-
-function parseMillisecondsIntoReadableTime(milliseconds) {
-    //Get hours from milliseconds
-
-    let hours = milliseconds / 1000 / 60 / 60,
-        absoluteHours = Math.floor(hours),
-        h = absoluteHours > 9 ? absoluteHours : '0' + absoluteHours,
-
-        //Get remainder from hours and convert to minutes
-        minutes = (hours - absoluteHours) * 60,
-        absoluteMinutes = Math.floor(minutes),
-        m = absoluteMinutes > 9 ? absoluteMinutes : '0' + absoluteMinutes,
-
-        //Get remainder from minutes and convert to seconds
-        seconds = (minutes - absoluteMinutes) * 60,
-        absoluteSeconds = Math.floor(seconds),
-        s = absoluteSeconds > 9 ? absoluteSeconds : '0' + absoluteSeconds;
-
-
-    return `${h}:${m}:${s}`
-};
-
-function showSettings() {
-    return fetch('/settings', {
-            method: 'POST',
-            //body: JSON.stringify(data),
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
+        .then(data => {
+            const percentageBarChartData = {
+                labels: data.forGraph[0],
+                datasets: [{
+                    label: 'WARTOSC PROCENTOWA',
+                    borderWidth: 1,
+                    borderColor: 'black',
+                    barStrokeWidth: 0,
+                    weight: 100,
+                    backgroundColor: data.forGraph[2],
+                    data: data.forGraph[1]
+                }, ],
+            };
         })
-        .then(res => res.json())
-        .catch(e => console.log(e))
 }
 
-function showUsers() {
-    return fetch('/users/list', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => res.json())
-        .catch(e => console.log(e))
-}
-
-function registerUser(data) {
-    return fetch('/users/register', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => res.json())
-        .catch(e => console.log(e))
-}
-function removeUser(data) {
-    return fetch('/users/delete', {
-        method: 'DELETE',
-        body: JSON.stringify(data),
-        credentials: 'include',
-        headers: {
-            'Accept': '*',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(res => res.json())
-    .catch(e => console.log(e))
-}
-
-function changePassword(data) {
-    return fetch('/users/update/password', {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => res.json())
-        .catch(e => console.log(e))
-}
-
-function getUser(name) {
-    return fetch('/users/user', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: name
-            }),
-            credentials: 'include',
-            headers: {
-                'Accept': '*',
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => res.json())
-        .catch(e => console.log(e))
-}
-
-function dragMouseDown(e, container) {
-    let pos1 = 0,
-        pos2 = 0,
-        pos3 = e.clientX,
-        pos4 = e.clientY;
-
-
-    function moveObject(e) {
-        e.stopPropagation();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        container.style.top = `${(container.offsetTop - pos2)}px`
-        container.style.left = `${(container.offsetLeft - pos1)}px`
-    }
-
-    function removeMove() {
-        container.onmouseup = null;
-        container.onmousemove = null;
-    }
-    container.onmousemove = moveObject;
-    container.onmouseup = removeMove;
-}
-
-function showMessage(type, message) {
-    const errorContainer = document.createElement('div'),
-        container = document.querySelector('.main__container');
-
-    message.forEach(val => {
-        const messageParagraph = document.createElement('p');
-        errorContainer.appendChild(messageParagraph);
-        messageParagraph.innerText = val;
-    })
-    if (type == 'error') {
-        errorContainer.classList.add('error__container');
-    } else {
-        errorContainer.classList.add('success__container');
-    }
-
-
-    container.appendChild(errorContainer);
-
-    setTimeout(() => {
-        errorContainer.classList.add('remove')
-        errorContainer.remove()
-    }, 5000)
-
-}
 export default {
     getMachines,
-    getDataForTable,
-    getDataForGraph,
     getStatuses,
     updateStatuses,
-    parseMillisecondsIntoReadableTime,
-    showSettings,
-    showUsers,
-    registerUser,
-    changePassword,
-    removeUser,
-    dragMouseDown,
-    getUser,
-    showMessage
+    whatMachinesDoingNow,
+    summaryMachinesWork,
+    whatMachinesDoingNowGraph
 }

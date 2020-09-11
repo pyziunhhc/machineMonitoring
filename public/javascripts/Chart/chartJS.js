@@ -1,4 +1,4 @@
-import helpers from '../helpers/fetch.js';
+import helpers from '../helpers/auxiliaryFunctions.js';
 class myChartJS {
     constructor(data, name, type) {
         this.data = data;

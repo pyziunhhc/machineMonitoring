@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const fetchData = require('../helpers/fetchData');
+const fetchData = require('../helpers/fetchFromMainApp');
+//const machines = require('../helpers/machines/functionsForMachines')
 const {
     checkCookie
 } = require('../helpers/checkCookie')
@@ -71,45 +72,28 @@ router.get('/', (req, res, next) => {
             login: login
         })
     } else {
-        res.render('login', {
-            title: 'Witaj | ITA Tools Sp. z o.o',
-            jsfiles: 'controller.js',
-        })
+        res.redirect('/login')
+        // res.render('login', {
+        //     title: 'Witaj | ITA Tools Sp. z o.o',
+        //     jsfiles: 'controller.js',
+        // })
     }
 
 })
 
 router.post('/', (req, res, next) => {
-    let machinesArray = [];
-    fetchData.getGroups().then(groups => {
-        const firstHall = groups[0].name;
-        fetchData.getMachines(firstHall).then(machines => {
-            for (let i = 0; i < machines.length; i++) {
-                machineTypes.map(machine => {
-                    if (machine.name == machines[i].name) {
-                        machinesArray.push({
-                            name: machine.name,
-                            type: machine.type
-                        })
-                    }
-                })
-
-            }
-            return machinesArray;
-        }).then(machines => {
-            res.send({
-                machines: machines
-            })
+    machines.getMachines.then(machines => {
+        res.send({
+            machines: machines
         })
-
     })
+
 })
 
 router.post('/data/get', (req, res, next) => {
     const NAME = req.body.name,
         FROM = req.body.from,
         TO = req.body.to;
-    console.log('GET', req.body)
     fetchData.getStatuses(NAME, FROM, TO).then(data => {
         const dataForDygraph = processData.statusesForDygraph(data);
         const summaryMachineStatistics = processData.summaryMachineStatistics(data);
@@ -131,8 +115,6 @@ router.post('/data/update', (req, res, next) => {
         TO = req.body.to,
         LAST_STATUS = req.body.lastStatus;
     let oldData = req.body.oldData;
-
-    //console.log(oldData)
     fetchData.getStatuses(NAME, FROM, TO).then(newData => {
         const currentStatus = newData[0].value;
         const dataForDygraph = processData.updateStatusesForDygraph(newData, oldData.dygraph, currentStatus, LAST_STATUS);

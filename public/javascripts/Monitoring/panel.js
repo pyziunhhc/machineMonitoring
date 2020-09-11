@@ -1,7 +1,7 @@
 import Dygraph from '../Chart/dygraph.js';
 import ChartJS from '../Chart/chartJS.js';
 import Table from '../Table/table.js';
-import helpers from '../helpers/fetch.js'
+import helpers from '../helpers/auxiliaryFunctions.js'
 
 class Panel {
     constructor() {
@@ -104,7 +104,9 @@ class Panel {
     }
     createTable(data, name) {
         const TABLE = new Table(data, name);
-        TABLE.create();
+        const parent = document.querySelector(`.statuses-panel__container.${name}`),
+            oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
+        TABLE.create(parent, oldTable);
         this.tableObject = TABLE;
     }
     updateTable(data, name) {

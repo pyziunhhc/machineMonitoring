@@ -462,7 +462,7 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
         } else {
             const sumMachineStats = oldData;
             sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
-
+            sumMachineStats.sumOfTimes.data.time += 1000;
             return sumMachineStats;
         }
 

@@ -9,7 +9,7 @@ const {
 const {
     parseMillisecondsIntoReadableTime
 } = require('../helpers/helpers');
-const fetchData = require('../helpers/fetchData');
+const fetchData = require('../helpers/fetchFromMainApp');
 const machineTypes = [{
         name: 'WPD4_2065-6307',
         type: 'Ostrzenie-Erodowanie'
@@ -208,7 +208,7 @@ router.post('/get/chartJS', (req, res, next) => {
 
 router.post('/get/machines', (req, res, next) => {
     let machinesArray = [];
-    fetchData.getGroups().then(groups => {
+    return fetchData.getGroups().then(groups => {
         const firstHall = groups[0].name;
         fetchData.getMachines(firstHall).then(machines => {
             for (let i = 0; i < machines.length; i++) {

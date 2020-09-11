@@ -1,3 +1,7 @@
+const {
+    summaryMachineStatistics
+} = require('../../helpers/processStatuses/process')
+
 const whatMachineDoingTable = (data) => {
     let processedStatuses = [];
     data.map(machine => {
@@ -74,7 +78,7 @@ const whatMachineDoingTable = (data) => {
                 class: 'measuring'
             })
         }
-
+        break;
         case 'EMERGENCY': {
             processedStatuses.push({
                 name: machine.name,
@@ -135,12 +139,12 @@ const whatMachineDoingGraph = (data) => {
         WARMUP: {
             name: 'WARMUP',
             value: 0,
-            color: 'rgba(200,0,200,1)'
+            color: 'rgba(81, 182, 215,1)'
         },
         MANUAL: {
             name: 'MANUAL',
             value: 0,
-            color: 'rgba(81, 182, 215,1)'
+            color: 'rgba(200,0,200,1)'
         },
         WYMIANA_SCIERNICY: {
             name: 'WYMIANA_SCIERNICY',
@@ -184,55 +188,56 @@ const whatMachineDoingGraph = (data) => {
                 processedStatuses[machine.statuses].value++;
             }
             break;
-        case 'SZLIFOWANIE': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'DISCONNECT': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case null: {
-            processedStatuses['DISCONNECT'].value++;
-        }
-        break;
-        case 'WARMUP': {
-            processedStatuses[machine.statuses].value++;
-        }
+            case 'SZLIFOWANIE': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'DISCONNECT': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case null: {
+                processedStatuses['DISCONNECT'].value++;
+            }
+            break;
+            case 'WARMUP': {
+                processedStatuses[machine.statuses].value++;
+            }
 
-        break;
-        case 'MANUAL': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'WYMIANA_SCIERNICY': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'STOP': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'SUSPEND': {
-            processedStatuses[machine.statuses].value++;
-        }
+            break;
+            case 'MANUAL': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'WYMIANA_SCIERNICY': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'STOP': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'SUSPEND': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'EMERGENCY': {
 
-        case 'EMERGENCY': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'ROZGRZEWKA': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'ZATRZYMANIE': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
-        case 'PRACA': {
-            processedStatuses[machine.statuses].value++;
-        }
-        break;
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'ROZGRZEWKA': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'ZATRZYMANIE': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
+            case 'PRACA': {
+                processedStatuses[machine.statuses].value++;
+            }
+            break;
         }
     })
     let temp = Object.values(processedStatuses)
@@ -244,7 +249,27 @@ const whatMachineDoingGraph = (data) => {
 
     return [labels, values, colors]
 }
+
+const currentMachinesWork = (data) => {
+    let currentMachinesWork = data,
+        dataToSend = [];
+
+    currentMachinesWork.map((element, index) => {
+        if (index == 0) {
+            element.statuses
+        }
+        let processedData = summaryMachineStatistics(element.statuses)
+        dataToSend.push({
+            name: element.name,
+            data: processedData
+        })
+    });
+    return dataToSend;
+
+}
+
 module.exports = {
     whatMachineDoingTable,
-    whatMachineDoingGraph
+    whatMachineDoingGraph,
+    currentMachinesWork
 };

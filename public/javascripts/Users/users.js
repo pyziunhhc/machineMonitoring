@@ -1,5 +1,5 @@
-import helpers from '../helpers/fetch.js'
-
+import users from '../helpers/fetch/user.js'
+import helpers from '../helpers/auxiliaryFunctions.js'
 class Users {
     constructor() {
         this.logins = ['Login'],
@@ -11,7 +11,7 @@ class Users {
         this.oldPassword = null;
     }
     getUsers() {
-        helpers.showUsers()
+        users.showUsers()
             .then(res => {
                 if (res.status == 200) {
                     this.createUsers(res.users)
@@ -22,7 +22,6 @@ class Users {
 
     createUsers(users) {
         const container = document.querySelector('.users__container');
-        console.log(users)
         Object.values(users)
             .map(user => {
                 const userContainer = document.createElement('div'),
@@ -39,7 +38,7 @@ class Users {
 
                 userImage.addEventListener('dblclick', e => {
                     const user = e.srcElement.dataset.value;
-                    helpers.getUser(user)
+                    users.getUser(user)
                         .then(userData => {
                             this.editPanel(userData, userContainer)
                         })
@@ -161,20 +160,20 @@ class Users {
     }
     register(login, password, repassword, name, surname, email, role) {
         const dataToSend = {
-            login: login,
+            login: login.toLowerCase(),
             password: password,
             repassword: repassword,
             name: name,
             surname: surname,
-            email: email,
+            email: email.toLowerCase(),
             role: role
         }
 
-        helpers.registerUser(dataToSend)
+        users.registerUser(dataToSend)
             .then(res => {
                 if (res.status == 200) {
-                    helpers.showMessage('success', res.message);
-                    helpers.showUsers()
+                    users.showMessage('success', res.message);
+                    users.showUsers()
                         .then(res => {
                             if (res.status == 200) {
                                 const user = {
@@ -184,7 +183,7 @@ class Users {
                             }
                         })
                 } else {
-                    helpers.showMessage('error', res.message)
+                    users.showMessage('error', res.message)
                 }
             })
     }
@@ -207,7 +206,7 @@ class Users {
         })
         editUser.addEventListener('click', (e) => {
             const user = e.path[3].childNodes[0].dataset.value
-            helpers.getUser(user)
+            users.getUser(user)
                 .then(userData => {
                     this.editPanel(userData, that.path[1])
                     menu.remove();
@@ -390,27 +389,27 @@ class Users {
             reNewPassword: renewpasswd.value
         }
         console.log(this)
-        helpers.changePassword(data).then(res => {
+        users.changePassword(data).then(res => {
             if (res.status == 200) {
-                helpers.showMessage('success', res.message)
+                users.showMessage('success', res.message)
                 container.remove();
             } else {
-                helpers.showMessage('error', res.message)
+                users.showMessage('error', res.message)
             }
         })
     }
     removeUser(user, event) {
-        helpers.removeUser(user).then(res => {
+        users.removeUser(user).then(res => {
             if (res.status == 200) {
-                helpers.showMessage('success', res.message)
-                helpers.showUsers()
+                users.showMessage('success', res.message)
+                users.showUsers()
                     .then(res => {
                         if (res.status == 200) {
                             event.target.parentElement.remove()
                         }
                     })
             } else {
-                helpers.showMessage('error', res.message)
+                users.showMessage('error', res.message)
             }
         })
     }
