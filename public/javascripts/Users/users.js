@@ -1,5 +1,6 @@
 import users from '../helpers/fetch/user.js'
 import helpers from '../helpers/auxiliaryFunctions.js'
+import message from '../helpers/messages.js'
 class Users {
     constructor() {
         this.logins = ['Login'],
@@ -20,9 +21,9 @@ class Users {
             })
     }
 
-    createUsers(users) {
+    createUsers(data) {
         const container = document.querySelector('.users__container');
-        Object.values(users)
+        Object.values(data)
             .map(user => {
                 const userContainer = document.createElement('div'),
                     userImage = document.createElement('img'),
@@ -90,7 +91,7 @@ class Users {
             // submitButton.addEventListener('click', this.register.bind(this, loginInput.value, passwordInput.value, repasswordInput.value, nameInput.value, surnameInput.value, emailInput.value, roleInput.value));
 
             submitButton.addEventListener('click', (e) => {
-                this.register(loginInput.value, passwordInput.value, repasswordInput.value, nameInput.value, surnameInput.value, emailInput.value, roleInput.value)
+                this.register(loginInput.value, passwordInput.value, repasswordInput.value, nameInput.value, surnameInput.value, emailInput.value, roleInput.value, registrationContainer);
             })
             belt.addEventListener('click', (e) => {
                 registrationContainer.remove();
@@ -158,7 +159,7 @@ class Users {
 
 
     }
-    register(login, password, repassword, name, surname, email, role) {
+    register(login, password, repassword, name, surname, email, role, container) {
         const dataToSend = {
             login: login.toLowerCase(),
             password: password,
@@ -166,13 +167,14 @@ class Users {
             name: name,
             surname: surname,
             email: email.toLowerCase(),
-            role: role
+            role: role.toLowerCase()
         }
 
         users.registerUser(dataToSend)
             .then(res => {
                 if (res.status == 200) {
-                    users.showMessage('success', res.message);
+                    message.showMessage('success', res.message);
+                    container.remove();
                     users.showUsers()
                         .then(res => {
                             if (res.status == 200) {
@@ -183,7 +185,8 @@ class Users {
                             }
                         })
                 } else {
-                    users.showMessage('error', res.message)
+                    message.showMessage('error', res.message);
+                    container.remove();
                 }
             })
     }
@@ -248,7 +251,6 @@ class Users {
             removeButton = document.createElement('button');
 
         const container = e;
-
 
         //Tekst
         heading.innerText = 'Edycja użytkownika'

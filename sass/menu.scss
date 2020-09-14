@@ -1,5 +1,5 @@
 @import "variables";
-$rotationTime: .5s;
+$rotationTime: 0.5s;
 .navigation__container {
   width: $smallMenuWidth;
   margin-right: 2%;
@@ -9,18 +9,24 @@ $rotationTime: .5s;
   align-items: center;
   background-color: $mainPanelColor;
   box-shadow: $shadowBackground;
+  z-index: 999999999;
   &.hidden {
     width: $smallHiddenMenuWidth;
     animation: hideSmallMenu $rotationTime ease;
     .button__hide-nav {
       :nth-child(1) {
+        transform: rotate(0deg);
         animation: unrotateFirstLine $rotationTime ease;
       }
       :nth-child(2) {
         animation: showLine $rotationTime ease;
+        display: inline-block;
       }
       :nth-child(3) {
         animation: unrotateSecondLine $rotationTime ease;
+        transform: rotate(0deg);
+        bottom: 0%;
+        position: relative;
       }
     }
   }
@@ -64,14 +70,27 @@ $rotationTime: .5s;
       height: 6px;
       padding: 0.2%;
     }
+    :nth-child(1) {
+      transform: rotate(45deg);
+    }
+    :nth-child(2) {
+      display: none;
+    }
+    :nth-child(3) {
+      transform: rotate(135deg);
+      bottom: 23%;
+      position: relative;
+    }
   }
 
   .header__navigation {
+    width: 85%;
     &.hidden {
       display: none;
     }
     .navigation__element {
       padding: 10%;
+      position: relative;
       a {
         color: $mainFontColor;
         font-size: 0.8em;
@@ -79,8 +98,11 @@ $rotationTime: .5s;
       &:hover {
         &:before {
           content: "";
-          margin-right: 3%;
-          border: 4px solid white;
+          position: absolute;
+          height: 40%;
+          left: 0%;
+          border: 2px solid white;
+          animation: draw .2s ease;
         }
       }
     }
@@ -92,11 +114,11 @@ $rotationTime: .5s;
     width: 15%;
     &.hidden {
       width: 5%;
-      animation: hideNormalMenu 0.3s ease;
+      animation: hideTabletMenu 0.3s ease;
     }
     &.unhidden {
       width: 15%;
-      animation: unhideNormalMenu 0.3s ease;
+      animation: unhideTabletMenu 0.3s ease;
     }
   }
 }
@@ -104,10 +126,12 @@ $rotationTime: .5s;
   .navigation__container {
     width: 10%;
     &.hidden {
-      animation: hideNormalMenu .3s ease;
+      animation: hideDesktopMenu 0.3s ease;
+      width: 5%;
     }
     &.unhidden {
-      animation: unhideNormalMenu .3s ease;
+      animation: unhideDesktopMenu 0.3s ease;
+      width: 10%;
     }
     .header__navigation {
       ul {

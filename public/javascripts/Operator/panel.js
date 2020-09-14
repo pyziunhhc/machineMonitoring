@@ -7,11 +7,12 @@ class Panel {
     constructor() {
         this.chartJS = null;
         this.tableObject = null;
-        this.dygraph = null;
+        this.chartJSContainer = null;
+        this.morningChangeContainer = null;
+        this.afternoonChangeContainer = null;
+        this.nightChangeContainer = null;
         this.data = null;
         this.currentStatus = null;
-        this.lastStatus = null;
-        this.statusContainer = null;
         this.intervalID = null;
     }
     createMachinePanel(data, containerToAppend) {
@@ -22,8 +23,11 @@ class Panel {
             panelContainer = document.createElement('div'),
             leftPanelContainer = document.createElement('div'),
             middlePanelContainer = document.createElement('div'),
-            dygraphContainer = document.createElement('div'),
             chartJSContainer = document.createElement('div'),
+            changesContainer = document.createElement('div'),
+            morningChangeContainer = document.createElement('div'),
+            afternoonChangeContainer = document.createElement('div'),
+            nightChangeContainer = document.createElement('div'),
             status = document.createElement('p'),
             table = document.createElement('table');
 
@@ -38,7 +42,7 @@ class Panel {
         minimizedMachine.setAttribute('name', data.name)
         closePanelButton.innerText = 'X';
         status.innerText = this.currentStatus;
-        this.statusContainer = status;
+
         //Klasy
         moveContainerBeam.classList.add('move-belt');
         closePanelButton.classList.add('close');
@@ -50,8 +54,12 @@ class Panel {
         leftPanelContainer.classList.add('statuses-panel__container');
         leftPanelContainer.classList.add(data.name);
         middlePanelContainer.classList.add('charts-panel__container');
-        dygraphContainer.classList.add('dygraph__container');
-        dygraphContainer.classList.add(data.name);
+        changesContainer.classList.add('changes__container')
+        morningChangeContainer.classList.add('morning__container');
+        afternoonChangeContainer.classList.add('afternoon__container');
+        nightChangeContainer.classList.add('night__container');
+
+
         chartJSContainer.classList.add('chartJS__container');
         chartJSContainer.classList.add(data.name);
 
@@ -86,23 +94,42 @@ class Panel {
         controls.appendChild(closePanelButton);
         leftPanelContainer.appendChild(status)
         leftPanelContainer.appendChild(table);
-        middlePanelContainer.appendChild(dygraphContainer);
+
         middlePanelContainer.appendChild(chartJSContainer);
+        changesContainer.appendChild(morningChangeContainer);
+        changesContainer.appendChild(afternoonChangeContainer);
+        changesContainer.appendChild(nightChangeContainer);
         panelContainer.appendChild(leftPanelContainer);
         panelContainer.appendChild(middlePanelContainer);
+        panelContainer.appendChild(changesContainer);
         machinePanelContainer.appendChild(panelContainer);
         containerToAppend.appendChild(machinePanelContainer);
+
+        this.chartJSContainer = chartJSContainer;
+        this.morningChangeContainer = morningChangeContainer;
+        this.afternoonChangeContainer = afternoonChangeContainer;
+        this.nightChangeContainer = nightChangeContainer;
     }
     createChartJS(data, name, type) {
-        const CHART = new ChartJS(data, name, type),
+        const CHART = new ChartJS(data, name, type, this.chartJSContainer),
             chart = CHART.create();
         this.chartJS = chart;
     }
-    createDygraph(data, name) {
-        const GRAPH = new Dygraph(data, name),
-            graph = GRAPH.create();
-        this.dygraph = graph;
+    createChangesChartJS(data, name, type, change) {
+        if (change == 'morning') {
+            const CHART = new ChartJS(data, name, type, this.morningChangeContainer),
+                chart = CHART.create();
+        } else if (change == 'afternoon') {
+            const CHART = new ChartJS(data, name, type, this.afternoonChangeContainer),
+                chart = CHART.create();
+        } else if (change == 'night') {
+            const CHART = new ChartJS(data, name, type, this.nightChangeContainer),
+                chart = CHART.create();
+        }
+
+        //this.chartJS[change] = chart;
     }
+
     createTable(data, name) {
         const TABLE = new Table(data, name);
         const parent = document.querySelector(`.statuses-panel__container.${name}`),
@@ -121,32 +148,7 @@ class Panel {
         chart.percentage.update();
         chart.time.update();
     }
-    updateDygraph(data, chart) {
-        //przeniesc do klasy dygraph
-        try {
-            const finalData = data.dygraph.map((arrays, index) => {
-                let finalData = [];
-                arrays.map((val, index) => {
-                    if (index == 0) {
-                        finalData.push(new Date(val));
-                    } else {
-                        finalData.push(val)
-                    }
-                    return finalData;
-                })
-                return finalData;
 
-            })
-            chart.updateOptions({
-                'file': finalData,
-            });
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    updateStatus(){
-        this.statusContainer.innerText = this.currentStatus.toUpperCase();
-    }
 }
 
 export default Panel;

@@ -1,13 +1,16 @@
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: #005214;
   color: white; }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: #00d12c;
   color: white; }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: #ffb133;
   color: white; }
 
@@ -193,29 +196,53 @@
   100% {
     width: 30%; } }
 
-@-webkit-keyframes hideNormalMenu {
+@-webkit-keyframes hideTabletMenu {
   0% {
     width: 15%; }
   100% {
     width: 5%; } }
 
-@keyframes hideNormalMenu {
+@keyframes hideTabletMenu {
   0% {
     width: 15%; }
   100% {
     width: 5%; } }
 
-@-webkit-keyframes unhideNormalMenu {
+@-webkit-keyframes unhideTabletMenu {
   0% {
     width: 5%; }
   100% {
     width: 15%; } }
 
-@keyframes unhideNormalMenu {
+@keyframes unhideTabletMenu {
   0% {
     width: 5%; }
   100% {
     width: 15%; } }
+
+@-webkit-keyframes hideDesktopMenu {
+  0% {
+    width: 10%; }
+  100% {
+    width: 5%; } }
+
+@keyframes hideDesktopMenu {
+  0% {
+    width: 10%; }
+  100% {
+    width: 5%; } }
+
+@-webkit-keyframes unhideDesktopMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 10%; } }
+
+@keyframes unhideDesktopMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 10%; } }
 
 @-webkit-keyframes decreaseHeader {
   0% {
@@ -243,15 +270,15 @@
 
 @-webkit-keyframes decreaseSection {
   0% {
-    height: 85%; }
+    height: 90%; }
   100% {
-    height: 90%; } }
+    height: 95%; } }
 
 @keyframes decreaseSection {
   0% {
-    height: 85%; }
+    height: 90%; }
   100% {
-    height: 90%; } }
+    height: 95%; } }
 
 @-webkit-keyframes enlargeHeader {
   0% {
@@ -279,15 +306,15 @@
 
 @-webkit-keyframes enlargeSection {
   0% {
-    height: 90%; }
+    height: 95%; }
   100% {
-    height: 85%; } }
+    height: 90%; } }
 
 @keyframes enlargeSection {
   0% {
-    height: 90%; }
+    height: 95%; }
   100% {
-    height: 85%; } }
+    height: 90%; } }
 
 @-webkit-keyframes removeMessage {
   0% {
@@ -346,5 +373,17 @@
     height: 0%;
     left: 0%;
     display: none; } }
+
+@-webkit-keyframes draw {
+  0% {
+    height: 0%; }
+  100% {
+    height: 40%; } }
+
+@keyframes draw {
+  0% {
+    height: 0%; }
+  100% {
+    height: 40%; } }
 
 /*# sourceMappingURL=animations.css.map */

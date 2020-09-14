@@ -1,7 +1,6 @@
 function showSettings() {
-    return fetch('/settings', {
+    return fetch('/api/menu/settings', {
             method: 'POST',
-            //body: JSON.stringify(data),
             credentials: 'include',
             headers: {
                 'Accept': '*',

@@ -1,6 +1,7 @@
 @import "styles";
 
-.monitoring__container {
+.monitoring__container,
+.operator__container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -46,7 +47,6 @@
     background: white;
     box-shadow: $shadowBackground;
     &.minimized {
-
       display: none;
     }
     .panel__container {
@@ -61,7 +61,6 @@
         align-items: center;
         justify-content: center;
         padding: 1%;
-        margin-bottom: 10%;
         p {
           margin-bottom: 15%;
           font-size: 2em;
@@ -102,7 +101,7 @@
     height: 100%;
     .main__section {
       height: 90%;
-      .monitoring__container {
+      .monitoring__container, .operator__container {
         .monitoring__machines {
           flex-direction: row;
           .monitoring__group {
@@ -114,7 +113,8 @@
               width: 90%;
               p {
                 text-align: center;
-                margin-bottom: 2%;
+                margin: 2% 0% 2% 0%;
+                font-size: 1.5em;
               }
             }
           }

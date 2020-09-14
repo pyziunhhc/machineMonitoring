@@ -44,15 +44,18 @@ table {
   border-spacing: 0; }
 
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: #005214;
   color: white; }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: #00d12c;
   color: white; }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: #ffb133;
   color: white; }
 
@@ -97,15 +100,18 @@ table {
   color: white; }
 
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: #005214;
   color: white; }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: #00d12c;
   color: white; }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: #ffb133;
   color: white; }
 
@@ -157,20 +163,26 @@ table {
   position: relative;
   align-items: center;
   background-color: rgba(42, 48, 53, 0.7);
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+  z-index: 999999999; }
   .navigation__container.hidden {
     width: 8.8%;
     -webkit-animation: hideSmallMenu 0.5s ease;
             animation: hideSmallMenu 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(1) {
+      transform: rotate(0deg);
       -webkit-animation: unrotateFirstLine 0.5s ease;
               animation: unrotateFirstLine 0.5s ease; }
     .navigation__container.hidden .button__hide-nav :nth-child(2) {
       -webkit-animation: showLine 0.5s ease;
-              animation: showLine 0.5s ease; }
+              animation: showLine 0.5s ease;
+      display: inline-block; }
     .navigation__container.hidden .button__hide-nav :nth-child(3) {
       -webkit-animation: unrotateSecondLine 0.5s ease;
-              animation: unrotateSecondLine 0.5s ease; }
+              animation: unrotateSecondLine 0.5s ease;
+      transform: rotate(0deg);
+      bottom: 0%;
+      position: relative; }
   .navigation__container.unhidden {
     width: 30%;
     -webkit-animation: unhideSmallMenu 0.3s ease;
@@ -207,52 +219,72 @@ table {
       width: 30px;
       height: 6px;
       padding: 0.2%; }
-  .navigation__container .header__navigation.hidden {
-    display: none; }
-  .navigation__container .header__navigation .navigation__element {
-    padding: 10%; }
-    .navigation__container .header__navigation .navigation__element a {
-      color: #fff;
-      font-size: 0.8em; }
-    .navigation__container .header__navigation .navigation__element:hover:before {
-      content: "";
-      margin-right: 3%;
-      border: 4px solid white; }
+    .navigation__container .button__hide-nav :nth-child(1) {
+      transform: rotate(45deg); }
+    .navigation__container .button__hide-nav :nth-child(2) {
+      display: none; }
+    .navigation__container .button__hide-nav :nth-child(3) {
+      transform: rotate(135deg);
+      bottom: 23%;
+      position: relative; }
+  .navigation__container .header__navigation {
+    width: 85%; }
+    .navigation__container .header__navigation.hidden {
+      display: none; }
+    .navigation__container .header__navigation .navigation__element {
+      padding: 10%;
+      position: relative; }
+      .navigation__container .header__navigation .navigation__element a {
+        color: #fff;
+        font-size: 0.8em; }
+      .navigation__container .header__navigation .navigation__element:hover:before {
+        content: "";
+        position: absolute;
+        height: 40%;
+        left: 0%;
+        border: 2px solid white;
+        -webkit-animation: draw .2s ease;
+                animation: draw .2s ease; }
 
 @media screen and (min-width: 768px) {
   .navigation__container {
     width: 15%; }
     .navigation__container.hidden {
       width: 5%;
-      -webkit-animation: hideNormalMenu 0.3s ease;
-              animation: hideNormalMenu 0.3s ease; }
+      -webkit-animation: hideTabletMenu 0.3s ease;
+              animation: hideTabletMenu 0.3s ease; }
     .navigation__container.unhidden {
       width: 15%;
-      -webkit-animation: unhideNormalMenu 0.3s ease;
-              animation: unhideNormalMenu 0.3s ease; } }
+      -webkit-animation: unhideTabletMenu 0.3s ease;
+              animation: unhideTabletMenu 0.3s ease; } }
 
 @media screen and (min-width: 1366px) {
   .navigation__container {
     width: 10%; }
     .navigation__container.hidden {
-      -webkit-animation: hideNormalMenu .3s ease;
-              animation: hideNormalMenu .3s ease; }
+      -webkit-animation: hideDesktopMenu 0.3s ease;
+              animation: hideDesktopMenu 0.3s ease;
+      width: 5%; }
     .navigation__container.unhidden {
-      -webkit-animation: unhideNormalMenu .3s ease;
-              animation: unhideNormalMenu .3s ease; }
+      -webkit-animation: unhideDesktopMenu 0.3s ease;
+              animation: unhideDesktopMenu 0.3s ease;
+      width: 10%; }
     .navigation__container .header__navigation ul .navigation__element a {
       font-size: 1.2em; } }
 
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: #005214;
   color: white; }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: #00d12c;
   color: white; }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: #ffb133;
   color: white; }
 
@@ -438,29 +470,53 @@ table {
   100% {
     width: 30%; } }
 
-@-webkit-keyframes hideNormalMenu {
+@-webkit-keyframes hideTabletMenu {
   0% {
     width: 15%; }
   100% {
     width: 5%; } }
 
-@keyframes hideNormalMenu {
+@keyframes hideTabletMenu {
   0% {
     width: 15%; }
   100% {
     width: 5%; } }
 
-@-webkit-keyframes unhideNormalMenu {
+@-webkit-keyframes unhideTabletMenu {
   0% {
     width: 5%; }
   100% {
     width: 15%; } }
 
-@keyframes unhideNormalMenu {
+@keyframes unhideTabletMenu {
   0% {
     width: 5%; }
   100% {
     width: 15%; } }
+
+@-webkit-keyframes hideDesktopMenu {
+  0% {
+    width: 10%; }
+  100% {
+    width: 5%; } }
+
+@keyframes hideDesktopMenu {
+  0% {
+    width: 10%; }
+  100% {
+    width: 5%; } }
+
+@-webkit-keyframes unhideDesktopMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 10%; } }
+
+@keyframes unhideDesktopMenu {
+  0% {
+    width: 5%; }
+  100% {
+    width: 10%; } }
 
 @-webkit-keyframes decreaseHeader {
   0% {
@@ -488,15 +544,15 @@ table {
 
 @-webkit-keyframes decreaseSection {
   0% {
-    height: 85%; }
+    height: 90%; }
   100% {
-    height: 90%; } }
+    height: 95%; } }
 
 @keyframes decreaseSection {
   0% {
-    height: 85%; }
+    height: 90%; }
   100% {
-    height: 90%; } }
+    height: 95%; } }
 
 @-webkit-keyframes enlargeHeader {
   0% {
@@ -524,15 +580,15 @@ table {
 
 @-webkit-keyframes enlargeSection {
   0% {
-    height: 90%; }
+    height: 95%; }
   100% {
-    height: 85%; } }
+    height: 90%; } }
 
 @keyframes enlargeSection {
   0% {
-    height: 90%; }
+    height: 95%; }
   100% {
-    height: 85%; } }
+    height: 90%; } }
 
 @-webkit-keyframes removeMessage {
   0% {
@@ -591,6 +647,18 @@ table {
     height: 0%;
     left: 0%;
     display: none; } }
+
+@-webkit-keyframes draw {
+  0% {
+    height: 0%; }
+  100% {
+    height: 40%; } }
+
+@keyframes draw {
+  0% {
+    height: 0%; }
+  100% {
+    height: 40%; } }
 
 body {
   font-family: "Quicksand", sans-serif; }
@@ -658,7 +726,7 @@ body {
     display: flex;
     position: relative; }
     .main__container .main__section.reduced {
-      height: 100%;
+      height: 95%;
       -webkit-animation: decreaseSection 0.3s ease;
               animation: decreaseSection 0.3s ease; }
     .main__container .main__section.normal {
@@ -773,7 +841,8 @@ table tbody tr td {
   color: white;
   font-weight: bold;
   -webkit-animation: removeMessage 0.3s 4.7s ease;
-          animation: removeMessage 0.3s 4.7s ease; }
+          animation: removeMessage 0.3s 4.7s ease;
+  z-index: 99999; }
 
 .success__container {
   display: flex;
@@ -788,7 +857,56 @@ table tbody tr td {
   color: white;
   font-weight: bold;
   -webkit-animation: removeMessage 0.3s 4.8s ease;
-          animation: removeMessage 0.3s 4.8s ease; }
+          animation: removeMessage 0.3s 4.8s ease;
+  z-index: 99999; }
+
+.edit-panel__container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  z-index: 1000;
+  padding: 4%;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+  .edit-panel__container:hover {
+    cursor: move; }
+  .edit-panel__container .belt {
+    display: flex;
+    justify-content: flex-end; }
+  .edit-panel__container h3 {
+    font-size: 2em;
+    font-weight: bold;
+    color: white; }
+  .edit-panel__container .edit-panel__wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-top: 8%; }
+    .edit-panel__container .edit-panel__wrapper .edit-panel__information {
+      flex: 2; }
+    .edit-panel__container .edit-panel__wrapper .edit-panel__actions {
+      flex: 1; }
+      .edit-panel__container .edit-panel__wrapper .edit-panel__actions button {
+        width: 90%;
+        padding: 7%;
+        margin: 2%;
+        background: none;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #117ec9 0%, #04c1bc 50%, #00b0ff 100%);
+        background-size: 400% 400%; }
+        .edit-panel__container .edit-panel__wrapper .edit-panel__actions button:focus {
+          outline: none; }
+        .edit-panel__container .edit-panel__wrapper .edit-panel__actions button:hover {
+          cursor: pointer;
+          -webkit-animation: buttonAnimation 5s ease infinite;
+                  animation: buttonAnimation 5s ease infinite; }
+      .edit-panel__container .edit-panel__wrapper .edit-panel__actions .remove {
+        background: red; }
 
 @media screen and (min-width: 1366px) {
   .main__container .header__container .logo__container h1 {
@@ -805,25 +923,30 @@ table tbody tr td {
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
 
-.monitoring__container {
+.monitoring__container,
+.operator__container {
   width: 100%;
   height: 100%;
   display: flex;
   overflow-y: scroll; }
-  .monitoring__container .monitoring__machines {
+  .monitoring__container .monitoring__machines,
+  .operator__container .monitoring__machines {
     display: flex;
     flex-direction: column;
     width: 100%; }
-    .monitoring__container .monitoring__machines .monitoring__group {
+    .monitoring__container .monitoring__machines .monitoring__group,
+    .operator__container .monitoring__machines .monitoring__group {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-bottom: 2.5%;
       margin-top: 2.5%; }
-      .monitoring__container .monitoring__machines .monitoring__group h3 {
+      .monitoring__container .monitoring__machines .monitoring__group h3,
+      .operator__container .monitoring__machines .monitoring__group h3 {
         margin: 5%;
         font-weight: bold; }
-      .monitoring__container .monitoring__machines .monitoring__group .monitoring__element {
+      .monitoring__container .monitoring__machines .monitoring__group .monitoring__element,
+      .operator__container .monitoring__machines .monitoring__group .monitoring__element {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -833,47 +956,57 @@ table tbody tr td {
         width: 60%;
         background: white;
         box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-        .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img {
+        .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img,
+        .operator__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img {
           width: 70%; }
-          .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img:hover {
+          .monitoring__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img:hover,
+          .operator__container .monitoring__machines .monitoring__group .monitoring__element .monitoring__element--img:hover {
             cursor: pointer;
             transform: scale(0.95); }
-  .monitoring__container .main-machine-panel__container {
+  .monitoring__container .main-machine-panel__container,
+  .operator__container .main-machine-panel__container {
     width: 70%;
     position: absolute;
     background: white;
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-    .monitoring__container .main-machine-panel__container.minimized {
+    .monitoring__container .main-machine-panel__container.minimized,
+    .operator__container .main-machine-panel__container.minimized {
       display: none; }
-    .monitoring__container .main-machine-panel__container .panel__container {
+    .monitoring__container .main-machine-panel__container .panel__container,
+    .operator__container .main-machine-panel__container .panel__container {
       height: 95%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between; }
-      .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container {
+      .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container,
+      .operator__container .main-machine-panel__container .panel__container .statuses-panel__container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 1%;
-        margin-bottom: 10%; }
-        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container p {
+        padding: 1%; }
+        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container p,
+        .operator__container .main-machine-panel__container .panel__container .statuses-panel__container p {
           margin-bottom: 15%;
           font-size: 2em; }
-        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table {
+        .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table,
+        .operator__container .main-machine-panel__container .panel__container .statuses-panel__container table {
           height: 50%;
           width: 85%; }
-          .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table tbody tr td {
+          .monitoring__container .main-machine-panel__container .panel__container .statuses-panel__container table tbody tr td,
+          .operator__container .main-machine-panel__container .panel__container .statuses-panel__container table tbody tr td {
             border: 1px solid black;
             text-align: center;
             font-size: 1em;
             font-weight: bold; }
-      .monitoring__container .main-machine-panel__container .panel__container .charts-panel__container {
+      .monitoring__container .main-machine-panel__container .panel__container .charts-panel__container,
+      .operator__container .main-machine-panel__container .panel__container .charts-panel__container {
         display: flex;
         flex-direction: column;
         justify-content: center; }
-      .monitoring__container .main-machine-panel__container .panel__container .chartJS__container {
+      .monitoring__container .main-machine-panel__container .panel__container .chartJS__container,
+      .operator__container .main-machine-panel__container .panel__container .chartJS__container {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -885,21 +1018,22 @@ table tbody tr td {
     height: 100%; }
     .main__container .main__section {
       height: 90%; }
-      .main__container .main__section .monitoring__container .monitoring__machines {
+      .main__container .main__section .monitoring__container .monitoring__machines, .main__container .main__section .operator__container .monitoring__machines {
         flex-direction: row; }
-        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group h3 {
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group h3, .main__container .main__section .operator__container .monitoring__machines .monitoring__group h3 {
           font-size: 2em;
           text-align: center; }
-        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element {
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element, .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element {
           width: 90%; }
-          .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element p {
+          .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element p, .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element p {
             text-align: center;
-            margin-bottom: 2%; }
-      .main__container .main__section .monitoring__container .main-machine-panel__container {
+            margin: 2% 0% 2% 0%;
+            font-size: 1.5em; }
+      .main__container .main__section .monitoring__container .main-machine-panel__container, .main__container .main__section .operator__container .main-machine-panel__container {
         width: 80%; }
-        .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container {
+        .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container, .main__container .main__section .operator__container .main-machine-panel__container .panel__container {
           flex-direction: row; }
-          .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container {
+          .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container, .main__container .main__section .operator__container .main-machine-panel__container .panel__container .chartJS__container {
             flex-direction: row; } }
 
 /*# sourceMappingURL=monitoring.css.map */

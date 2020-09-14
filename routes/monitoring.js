@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const fetchData = require('../helpers/fetchFromMainApp');
-//const machines = require('../helpers/machines/functionsForMachines')
 const {
     checkCookie
 } = require('../helpers/checkCookie')
-const processData = require('../helpers/processStatuses/monitoring');
+const process = require('../helpers/processStatuses/process')
 const {
     default: fetch
 } = require('node-fetch');
@@ -73,10 +72,6 @@ router.get('/', (req, res, next) => {
         })
     } else {
         res.redirect('/login')
-        // res.render('login', {
-        //     title: 'Witaj | ITA Tools Sp. z o.o',
-        //     jsfiles: 'controller.js',
-        // })
     }
 
 })
@@ -95,10 +90,16 @@ router.post('/data/get', (req, res, next) => {
         FROM = req.body.from,
         TO = req.body.to;
     fetchData.getStatuses(NAME, FROM, TO).then(data => {
-        const dataForDygraph = processData.statusesForDygraph(data);
-        const summaryMachineStatistics = processData.summaryMachineStatistics(data);
-        const dataForChartJS = processData.statusesForChartJS(summaryMachineStatistics);
-        const currentStatus = data[data.length - 1].value;
+        const dataForDygraph = process.statusesForDygraph(data);
+        const summaryMachineStatistics = process.summaryMachineStatistics(data, FROM, TO);
+        const dataForChartJS = process.statusesForChartJS(summaryMachineStatistics);
+        const workingCurrentStatus = `${data[data.length - 1].value}`;
+        let currentStatus = null;
+        if (workingCurrentStatus == 'null') {
+            currentStatus = 'WYŁĄCZONA'
+        } else {
+            currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase()
+        }
         res.send({
             dygraph: dataForDygraph,
             chartJS: dataForChartJS,
@@ -110,23 +111,37 @@ router.post('/data/get', (req, res, next) => {
 })
 
 router.post('/data/update', (req, res, next) => {
-    const NAME = req.body.name,
-        FROM = req.body.from,
-        TO = req.body.to,
-        LAST_STATUS = req.body.lastStatus;
-    let oldData = req.body.oldData;
-    fetchData.getStatuses(NAME, FROM, TO).then(newData => {
-        const currentStatus = newData[0].value;
-        const dataForDygraph = processData.updateStatusesForDygraph(newData, oldData.dygraph, currentStatus, LAST_STATUS);
-        const summaryMachineStatistics = processData.updateSummaryMachineStatistics(newData, oldData.summary, currentStatus, LAST_STATUS);
-        const dataForChartJS = processData.updateStatusesForChartJS(summaryMachineStatistics);
-        res.send({
-            dygraph: dataForDygraph,
-            chartJS: dataForChartJS,
-            summary: summaryMachineStatistics,
-            status: currentStatus
+    try {
+        const NAME = req.body.name,
+            FROM = req.body.from,
+            TO = req.body.to,
+            LAST_STATUS = `${req.body.lastStatus}`;
+        let oldData = req.body.oldData;
+        //console.log(oldData.dygraph)
+        fetchData.getStatuses(NAME, FROM, TO).then(newData => {
+            const workingCurrentStatus = `${newData[0].value}`;
+            const dataForDygraph = process.updateStatusesForDygraph(newData, oldData.dygraph, workingCurrentStatus, LAST_STATUS);
+            const summaryMachineStatistics = process.updateSummaryMachineStatistics(newData, oldData.summary, workingCurrentStatus, LAST_STATUS);
+            const dataForChartJS = process.updateStatusesForChartJS(summaryMachineStatistics);
+            let currentStatus = null;
+            if (workingCurrentStatus == 'null') {
+                currentStatus = 'WYŁĄCZONA'
+            } else {
+                currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase();
+            }
+            res.send({
+                dygraph: dataForDygraph,
+                chartJS: dataForChartJS,
+                summary: summaryMachineStatistics,
+                status: currentStatus
+            })
+            //DODAĆ FUNKCJONALNOŚĆ GDZIE BĘDZIE ODEJMOWANY CZAS (SUMA CZASÓW SIĘ NIE ZGADZA)
+        }).catch(error => {
+            console.log(error)
         })
-    })
+    } catch (error) {
+        console.log(error)
+    }
 
 })
 

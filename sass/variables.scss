@@ -13,24 +13,27 @@ $normalHiddenMenuWidth: 3%;
 $smallMenuWidth: 30%;
 $smallHiddenMenuWidth: 8.8%;
 
-$normalMainSectionHeight: 85%;
-$biggerMainSectionHeight: 90%;
+$normalMainSectionHeight: 90%;
+$biggerMainSectionHeight: 95%;
 
 $shadowBackground: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
 $panelBackground: rgba(0, 0, 0, 0.7);
 $panelRadius: 20px;
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: rgba(0, 82, 20, 1);
   color: white;
 }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: rgba(0, 209, 44, 1);
   color: white;
 }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: rgba(255, 177, 51, 1);
   color: white;
 }

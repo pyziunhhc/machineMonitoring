@@ -21,10 +21,6 @@ router.get('/', (req, res, next) => {
       })
    } else {
       res.redirect('/login')
-      // res.render('login', {
-      //    title: 'Login | Monitoring ITA Tools Sp. z o.o',
-      //    jsfiles: 'dashboard.js',
-      // })
    }
 
 })
@@ -112,7 +108,7 @@ router.post('/get/table/summaryMachinesWork', (req, res, next) => {
                   statuses: statuses
                })
                if (len == machinesArray.length) {
-                  const data = currentMachinesWork(machinesArray);
+                  const data = currentMachinesWork(machinesArray, from, to);
                   res.send({
                      currentWork: data
                   })

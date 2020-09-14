@@ -1,6 +1,12 @@
-const summaryMachineStatistics = (data) => {
+const summaryMachineStatistics = (data, from, to) => {
     const DATA = data;
     let summaryMachineStatistics = {
+        firstStatus: {
+            name: '',
+            data: {
+                time: 0
+            }
+        },
         erodowanie: {
             name: 'erodowanie',
             displayName: 'Erodowanie',
@@ -192,15 +198,19 @@ const summaryMachineStatistics = (data) => {
         },
 
     };
-    DATA.forEach(data => {
+    DATA.map((data, index) => {
         let start = new Date(data.start),
             end = new Date(data.end),
             time = end - start,
             feedValue = 0,
             potentiometrValue = 0,
             status = `${data.value}`;
-
-        //jeżeli trafi na koniec to zamiast błędu w czasie obliczy go poprawnie
+        if (index == 0) {
+            if (start != new Date(from)) {
+                let start = new Date(from)
+                time = end - start;
+            }
+        }
         if (data.end == null) {
             time = new Date() - start;
             summaryMachineStatistics.sumOfTimes.data.time += time;
@@ -294,31 +304,36 @@ const summaryMachineStatistics = (data) => {
 const statusesForDygraph = (data) => {
     const DATA = data;
     let machineStatsForDygraph = [];
-    DATA.forEach(status => {
-        const start = new Date(status.start),
-            end = new Date(status.end),
+    DATA.forEach(data => {
+        let start = new Date(data.start),
+            end = new Date(data.end),
             time = end - start,
-            feedValue = 0;
-        switch (status.value) {
+            feedValue = 0,
+            status = `${data.value}`;
+        if (data.end == null) {
+            time = new Date() - start;
+        }
+        switch (status) {
             case 'ERODOWANIE': {
                 machineStatsForDygraph.push([start, feedValue, time, null, null, null, null, null, null, null, null, null, null, null, null, null]);
             }
             break;
         case 'SZLIFOWANIE': {
             machineStatsForDygraph.push([start, feedValue, null, time, null, null, null, null, null, null, null, null, null, null, null, null]);
-            break;
+
         }
-        case 'DISCONNECT' || null: {
-
+        break;
+        case 'DISCONNECT': {
             machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-
+        }
+        break;
+        case 'null': {
+            machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
         }
         break;
         case 'WARMUP': {
             machineStatsForDygraph.push([start, feedValue, null, null, null, time, null, null, null, null, null, null, null, null, null, null]);
-
         }
-
         break;
         case 'MANUAL': {
             machineStatsForDygraph.push([start, feedValue, null, null, null, null, time, null, null, null, null, null, null, null, null, null]);
@@ -331,19 +346,17 @@ const statusesForDygraph = (data) => {
         }
         break;
         case 'STOP': {
-
             machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, time, null, null, null, null, null, null, null, null]);
         }
         break;
         case 'SUSPEND': {
             machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
-            break;
-        }
 
+        }
+        break;
         case 'EMERGENCY': {
             machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
         }
-        break;
         break;
         case 'ROZGRZEWKA': {
             machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
@@ -380,12 +393,9 @@ const statusesForChartJS = (data) => {
             return val;
         })
         .map((val, index) => {
-
-            //data[val.name].data.percentage = parseFloat(data[val.name].data.time * 100 / data.sumOfTimes.data.time).toFixed(2);
             if (val.name) {
                 percentageValuesForChartJS.push((parseFloat(val.data.time) * 100 / data.sumOfTimes.data.time).toFixed(2));
             }
-
             return val;
         })
         .map(val => {
@@ -405,11 +415,11 @@ const statusesForChartJS = (data) => {
 }
 const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastStatus) => {
     try {
-        console.log(currentStatus, lastStatus)
         if (currentStatus != lastStatus) {
             const sumMachineStats = oldData,
-                data = newData;
-            switch (data[0].value) {
+                data = newData[0],
+                status = `${data.value}`;
+            switch (status) {
                 case 'ERODOWANIE': {
                     sumMachineStats.erodowanie.data.time += 1000;
                 }
@@ -426,7 +436,7 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                 sumMachineStats.disconnect.data.time += 1000;
             }
             break;
-            case null: {
+            case 'null': {
                 sumMachineStats.disconnect.data.time += 1000;
             }
             break;
@@ -467,7 +477,12 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
             return sumMachineStats;
         } else {
             const sumMachineStats = oldData;
-            sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
+            if (currentStatus == 'null') {
+                sumMachineStats.disconnect.data.time += 1000;
+            } else {
+                sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
+            }
+            sumMachineStats.sumOfTimes.data.time += 1000;
 
             return sumMachineStats;
         }
@@ -480,15 +495,18 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
 }
 const updateStatusesForDygraph = (newData, oldData, currentStatus, lastStatus) => {
     try {
+        console.log(currentStatus, lastStatus)
         if (currentStatus != lastStatus) {
             const DATA = newData;
             let machineStatsForDygraph = oldData;
-            DATA.forEach(status => {
-                const start = new Date(status.start),
-                    end = new Date,
+            DATA.forEach(data => {
+                const start = new Date(data.start),
+                    end = new Date(),
                     time = end - start,
+                    status = `${data.value}`,
                     feedValue = 0;
-                switch (status.value) {
+
+                switch (status) {
                     case 'ERODOWANIE': {
                         machineStatsForDygraph.push([start, feedValue, time, null, null, null, null, null, null, null, null, null, null, null, null, null]);
                     }
@@ -498,9 +516,12 @@ const updateStatusesForDygraph = (newData, oldData, currentStatus, lastStatus) =
 
                     break;
                 }
-                case 'DISCONNECT' || null: {
+                case 'DISCONNECT': {
                     machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-
+                }
+                break;
+                case 'null': {
+                    machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
                 }
                 break;
                 case 'WARMUP': {
@@ -522,23 +543,19 @@ const updateStatusesForDygraph = (newData, oldData, currentStatus, lastStatus) =
                 break;
                 case 'SUSPEND': {
                     machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
-
                     break;
                 }
 
                 case 'EMERGENCY': {
                     machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
-
                 }
                 break;
                 case 'ROZGRZEWKA': {
                     machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
-
                 }
                 break;
                 case 'ZATRZYMANIE': {
                     machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, time, null]);
-
                 }
                 break;
                 case 'PRACA': {
@@ -605,4 +622,6 @@ module.exports = {
     statusesForDygraph,
     statusesForChartJS,
     updateSummaryMachineStatistics,
+    updateStatusesForDygraph,
+    updateStatusesForChartJS
 };

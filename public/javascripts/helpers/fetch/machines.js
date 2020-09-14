@@ -40,6 +40,33 @@ function updateStatuses(data) {
         .catch(err => console.log(err))
 }
 
+function saveStatusesForUser(data) {
+    return fetch('/api/stats/save', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+}
+
+function updateStatusesForUser(data) {
+    return fetch('/api/stats/save', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+}
 function whatMachinesDoingNow() {
     const time = {
             from: new Date(),
@@ -157,7 +184,7 @@ function summaryMachinesWork() {
                         }
                     }).then(res => res.json())
                     .then(res => {
-                        tableArray.forEach(table=>{
+                        tableArray.forEach(table => {
                             // console.log(table)
                         })
                     })
@@ -320,5 +347,7 @@ export default {
     updateStatuses,
     whatMachinesDoingNow,
     summaryMachinesWork,
-    whatMachinesDoingNowGraph
+    whatMachinesDoingNowGraph,
+    saveStatusesForUser,
+    updateStatusesForUser
 }

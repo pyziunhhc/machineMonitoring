@@ -1,24 +1,32 @@
+import Panel from './panel.js'
 import machines from '../helpers/fetch/machines.js'
-import Panel from './panel.js';
 window.onload = function () {
-    const monitoringContainer = document.querySelector('.monitoring__container');
-    const MONITORING = new Monitoring();
-    MONITORING.createDOM(monitoringContainer);
+    const currentChangeContainer = document.querySelector('.operator__container'),
+        morningContainer = document.querySelector('.morning__container'),
+        afternoonContainer = document.querySelector('.afternoon__container'),
+        nightContainer = document.querySelector('.night__container');
+    const operator = new Operator(currentChangeContainer, morningContainer, afternoonContainer, nightContainer);
+    operator.createDOM();
 }
 
-class Monitoring {
-    constructor(container) {
+
+class Operator {
+
+    constructor(currentChangeContainer, morningContainer, afternoonContainer, nightContainer) {
         this.chartJS = null;
         this.table = null;
         this.dygraph = null;
         this.data = null;
         this.currentStatus = null;
         this.intervalID = null;
-        this.container = null;
+        this.currentChangeContainer = currentChangeContainer;
+        this.morningChangeContainer = morningContainer;
+        this.afternoonChangeContainer = afternoonContainer;
+        this.nightChangeContainer = nightContainer;
+        this.choosenMachine = null;
     }
-    createDOM(monitoringContainer) {
 
-        this.container = monitoringContainer;
+    createDOM() {
         //Kontenery
         const containerForMachines = document.createElement('div'),
             productionErodingContainer = document.createElement('div'),
@@ -26,7 +34,8 @@ class Monitoring {
             sharpeningErodingContainer = document.createElement('div'),
             drillSharpeningVHMContainer = document.createElement('div'),
             vhmProductionContainer = document.createElement('div'),
-            bodyManufacturerContainer = document.createElement('div');
+            bodyManufacturerContainer = document.createElement('div'),
+            monitoringContainer = this.currentChangeContainer;
         //Treść
         const productionErodingHeader = document.createElement('h3'),
             sharpeningVHMHeader = document.createElement('h3'),
@@ -159,19 +168,17 @@ class Monitoring {
         })
 
     }
+    selectTimePeriod() {
+        const now = new Date(),
+            hour = now.getHours();
+        if (hour >= 7 && hour <= 15) {
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 7)
+        } else if (hour >= 15 && hour <= 23) {
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15)
+        } else if (hour >= 23 || hour <= 7) {
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23)
+        }
 
-    getStatus(machine, status) {
-        const dataToSend = {
-            name: machine.name,
-            from: new Date(),
-            to: new Date()
-        };
-        setInterval(() => {
-            machines.getStatuses(dataToSend).then(res => {
-                //status.classList.add(res.status.toLowerCase())
-                status.innerText = res.status;
-            })
-        }, 1000);
 
     }
     getData(e) {
@@ -183,30 +190,119 @@ class Monitoring {
             } else {
                 const isExist = document.querySelector(`.main-machine-panel__container`)
                 if (!isExist) {
+                    const from = new Date(this.selectTimePeriod())
+
                     const dataToSend = {
                         name: e.target.dataset.name,
-                        from: new Date(new Date() - 86400000),
+                        from: from,
                         to: new Date()
                     };
-                    const panel = new Panel();
-                    machines.getStatuses(dataToSend).then(res => {
-                        this.data = res;
-                        this.currentStatus = res.status;
-                        panel.currentStatus = res.status;
-                        panel.createMachinePanel(dataToSend, this.container);
-                        panel.createDygraph(res.dygraph, dataToSend.name);
-                        panel.createTable(res.summary, dataToSend.name)
-                        panel.createChartJS(res.chartJS, dataToSend.name, 'bar');
-                        return panel;
-                    }).then(panel => {
-                        this.updateStatuses(dataToSend.name, panel);
-                    })
+                    this.createStartPanel(dataToSend)
+
+
+
+
                 }
 
             }
         } catch (error) {
             console.log(error)
         }
+
+    }
+    createStartPanel(dataToSend) {
+        const startPanelWrapper = document.createElement('div'),
+            startPanel = document.createElement('div'),
+            title = document.createElement('h3'),
+            agreeButton = document.createElement('button'),
+            cancelButton = document.createElement('button'),
+            container = this.currentChangeContainer;
+
+        startPanelWrapper.classList.add('accept__container--wrapper')
+        startPanel.classList.add('accept__container')
+
+        agreeButton.classList.add('accept')
+        cancelButton.classList.add('cancel')
+
+        title.innerText = `Czy na pewno chcesz wybrać maszynę ${dataToSend.name}?`;
+        agreeButton.innerText = 'Tak';
+        cancelButton.innerText = 'Nie';
+
+        startPanel.appendChild(title);
+        startPanel.appendChild(agreeButton);
+        startPanel.appendChild(cancelButton);
+        startPanelWrapper.appendChild(startPanel);
+        container.appendChild(startPanelWrapper);
+
+        agreeButton.addEventListener('click', () => {
+            this.choosenMachine = dataToSend.name;
+            const panel = new Panel();
+            this.createPanel(dataToSend, panel, this.currentChangeContainer, startPanelWrapper);
+        })
+        cancelButton.addEventListener('click', () => {
+            startPanelWrapper.remove();
+        })
+
+
+    }
+    createPanel(dataToSend, panel, container, startPanelWrapper) {
+        machines.getStatuses(dataToSend).then(res => {
+                this.data = res;
+                this.currentStatus = res.status;
+                panel.data = res;
+                panel.currentStatus = res.status;
+                panel.createMachinePanel(dataToSend, container);
+                panel.createTable(res.summary, dataToSend.name);
+                panel.createChartJS(res.chartJS, dataToSend.name, 'bar');
+                return panel;
+            })
+            .then(panel => {
+                this.updateStatuses(dataToSend.name, panel);
+                this.createChangePanel(dataToSend.name, panel)
+                startPanelWrapper.remove();
+            }).then(()=>{
+                const dataToSave = {
+                    data: this.data.summary,
+                    date: dataToSend.from,
+                    lockedStats: false,
+                    lockedMachine: true,
+                }
+                machines.saveStatusesForUser(dataToSave)
+                .then(res=>{
+                    console.log(res)
+                })
+                //wysłanie danych do bazy per user
+            })
+    }
+    createChangePanel(name, panel) {
+        const now = new Date();
+        const morningChangeData = {
+                name: name,
+                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 7),
+                to: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 59, 59, 59)
+            },
+            afternoonChangeData = {
+                name: name,
+                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15),
+                to: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 22, 59, 59, 59)
+            },
+            nightChangeData = {
+                name: name,
+                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23),
+                to: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 59, 59, 59)
+            };
+        machines.getStatuses(morningChangeData).then(res => {
+            panel.createChangesChartJS(res.chartJS, name, 'bar', 'morning');
+            return panel;
+        })
+        machines.getStatuses(afternoonChangeData).then(res => {
+            panel.createChangesChartJS(res.chartJS, name, 'bar', 'afternoon');
+            return panel;
+        })
+        machines.getStatuses(nightChangeData).then(res => {
+            panel.createChangesChartJS(res.chartJS, name, 'bar', 'night');
+            return panel;
+        })
 
     }
     updateStatuses(name, panel) {
@@ -222,11 +318,11 @@ class Monitoring {
                 machines.updateStatuses(dataToSend).then(res => {
                     this.data = res;
                     panel.currentStatus = res.status;
-                    panel.lastStatus = dataToSend.lastStatus;
-                    panel.updateDygraph(res, panel.dygraph)
                     panel.updateChartJS(res, panel.chartJS)
                     panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
-                    panel.updateStatus();
+                })
+                .then(()=>{
+                    //albo tu wyslanie danych
                 })
             }, 1000)
             panel.intervalID = this.intervalID
@@ -235,6 +331,7 @@ class Monitoring {
         }
 
     }
+
 }
 
-export default Monitoring;
+export default Operator

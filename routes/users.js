@@ -18,10 +18,6 @@ router.get('/', (req, res, next) => {
     })
   } else {
     res.redirect('/login')
-    // res.render('login', {
-    //   title: 'Witaj | ITA Tools Sp. z o.o',
-    //   jsfiles: 'controller.js',
-    // })
   }
 
 
@@ -206,12 +202,14 @@ router.post('/register',
                       status: 500,
                       message: ['Adres email istnieje w bazie danych. Wprowadź inny.']
                     })
+                    return false;
                 }
                 res.status(500)
                   .send({
                     status: 500,
                     message: ['Błąd rejestracji']
                   })
+                  return false;
               } else {
                 res.status(200)
                   .send({
@@ -219,6 +217,7 @@ router.post('/register',
                     message: ['Rejestracja przebiegła pomyślnie'],
                     user: newUser
                   })
+                  return true;
               }
             })
           }
@@ -246,11 +245,11 @@ router.post('/myAccount', (req, res, next) => {
       login: login
     }, (err, user) => {
       if (user) {
-        res.render('myaccount', {
+        res.send({
           title: 'Moje konto | ITA Tools Sp. z o.o',
           jsfiles: 'myAccount.js',
           cssfiles: 'users',
-          userData: user,
+          user: user,
           login: login
         })
 
@@ -264,10 +263,6 @@ router.post('/myAccount', (req, res, next) => {
 
   } else {
     res.redirect('/login')
-    // res.render('login', {
-    //   title: 'Witaj | ITA Tools Sp. z o.o',
-    //   jsfiles: 'controller.js',
-    // })
   }
 
 })

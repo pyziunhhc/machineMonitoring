@@ -1,13 +1,16 @@
 .eroding,
-.working {
+.working,
+.erodowanie {
   background-color: #005214;
   color: white; }
 
-.grinding {
+.grinding,
+.szlifowanie {
   background-color: #00d12c;
   color: white; }
 
-.measuring {
+.measuring,
+.pomiar {
   background-color: #ffb133;
   color: white; }
 

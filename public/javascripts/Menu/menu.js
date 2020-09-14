@@ -1,7 +1,39 @@
 import settings from '../helpers/fetch/appSettings.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
-class Menu {
+import User from '../Users/users.js'
 
+
+class Menu {
+    createMenu() {
+        const menu = document.querySelector('.header__navigation > ul');
+        return fetch('/api/menu', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': '*',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => res.json())
+            .then(res => {
+                Object.values(res)
+                    .forEach(element => {
+                        const menuElement = document.createElement('li'),
+                            menuAnchor = document.createElement('a');
+
+                        menuElement.classList.add('navigation__element')
+                        menuAnchor.innerText = element.name;
+                        menuAnchor.setAttribute('href', element.href);
+                        if (element.name == 'Ustawienia') {
+                            this.showSettings(menuAnchor)
+                        }
+                        menuElement.appendChild(menuAnchor);
+                        menu.appendChild(menuElement);
+                    })
+                this.hideMenu()
+            })
+            .catch(e => console.log(e))
+    }
     hideMenu() {
         const button = document.querySelector('.button__hide-nav'),
             nav = document.querySelector('.header__navigation'),
@@ -12,7 +44,6 @@ class Menu {
 
 
         button.addEventListener('click', (e) => {
-            console.log(navContainer.classList)
             if (navContainer.classList[1] == 'hidden') {
                 nav.classList.add('unhidden');
                 navContainer.classList.add('unhidden')
@@ -43,13 +74,14 @@ class Menu {
         })
 
     }
-    showSettings() {
-        const button = document.querySelector('.navigation__element>a[href="/settings"]'),
-            container = document.querySelector('.main__section');
+    showSettings(button) {
+        const container = document.querySelector('.main__section');
 
 
         button.addEventListener('click', (e) => {
+            console.log(e)
             e.preventDefault();
+            e.stopPropagation();
             const settingsContainer = document.createElement('div'),
                 belt = document.createElement('div'),
                 settingsList = document.createElement('ul'),
@@ -80,7 +112,26 @@ class Menu {
                             settingsAnchor = document.createElement('a');
 
                         settingsAnchor.innerText = val.name;
-                        settingsAnchor.setAttribute('href', val.href);
+                        if (val.href) {
+                            settingsAnchor.setAttribute('href', val.href);
+                        } else {
+                            settingsAnchor.addEventListener('click', e => {
+                                fetch('/users/myAccount', {
+                                        method: 'POST',
+                                        credentials: 'include',
+                                        headers: {
+                                            'Accept': '*',
+                                            'Content-Type': 'application/json',
+                                        }
+                                    }).then(res => res.json())
+                                    .then(data => {
+                                        const user = new User();
+                                        user.editPanel(data, container)
+                                    })
+                            })
+
+                        }
+
                         settingsElement.appendChild(settingsAnchor);
                         settingsList.appendChild(settingsElement);
                     })
@@ -96,5 +147,5 @@ class Menu {
         })
     }
 }
-
-export default Menu;
+const MENU = new Menu()
+MENU.createMenu();

@@ -1,12 +1,13 @@
 import helpers from '../helpers/auxiliaryFunctions.js';
 class myChartJS {
-    constructor(data, name, type) {
+    constructor(data, name, type, container) {
         this.data = data;
         this.name = name;
         this.type = type;
+        this.container = container;
     }
     create() {
-        let chartContainer = document.querySelector(`.chartJS__container.${this.name}`),
+        let chartContainer = this.container,
             percentageCanvas = document.createElement('canvas'),
             timeCanvas = document.createElement('canvas'),
             chartType = this.type,
@@ -46,7 +47,7 @@ class myChartJS {
                 height = width;
                 fontSize = 20;
             } else if (chartType == 'bar') {
-                width = window.outerWidth * 0.3;
+                width = window.outerWidth * 0.2;
                 height = window.outerWidth * 0.12;
                 rotation = 270;
                 fontSize = 17;
@@ -219,7 +220,7 @@ class myChartJS {
                     plugins: {
                         datalabels: {
                             align: 'end',
-                            //anchor: 'center',
+                            anchor: 'center',
                             clamp: true,
                             overlap: true,
                             clip: true,
@@ -252,6 +253,9 @@ class myChartJS {
             time: timeChart,
             percentage: percentageChart
         }
+    }
+    update(){
+
     }
 }
 

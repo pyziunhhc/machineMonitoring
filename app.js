@@ -28,6 +28,8 @@ const tasksRouter = require('./routes/tasks');
 const settingsRouter = require('./routes/settings');
 const reportsRouter = require('./routes/reports');
 const dataRouter = require('./routes/data');
+const operatorRouter = require('./routes/operator')
+const statsRouter = require('./routes/stats');
 
 
 /*LADOWANIE ZALEZNOSCI */
@@ -45,14 +47,16 @@ app.use(logger('dev'));
 //app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(bodyParser.json({
-  limit: '100mb',
-  extended: true
-}))
-app.use(bodyParser.urlencoded({
-  limit: '100mb',
-  extended: true
-}))
+// app.use(bodyParser.json({
+//   limit: '100mb',
+//   extended: true,
+//   parameterLimit: 1000000
+// }))
+// app.use(bodyParser.urlencoded({
+//   limit: '100mb',
+//   extended: true,
+//   parameterLimit: 1000000
+// }))
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -63,12 +67,14 @@ app.use('/data', dataRouter)
 app.use('/dashboard', dashboardRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
-app.use('/settings', settingsRouter);
+app.use('/api/menu', settingsRouter);
 app.use('/reports', reportsRouter);
 app.use('/users', usersRouter);
 app.use('/api/checkCookie', checkCookie);
 app.use('/monitoring', machineRouter);
-app.use('/api/tasks', tasksRouter);
+app.use('/operator', operatorRouter);
+app.use('/api/stats', statsRouter);
+//app.use('/api/tasks', tasksRouter);
 
 
 // catch 404 and forward to error handler

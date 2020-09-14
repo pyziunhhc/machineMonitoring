@@ -250,15 +250,15 @@ const whatMachineDoingGraph = (data) => {
     return [labels, values, colors]
 }
 
-const currentMachinesWork = (data) => {
+const currentMachinesWork = (data, from, to) => {
     let currentMachinesWork = data,
         dataToSend = [];
 
     currentMachinesWork.map((element, index) => {
         if (index == 0) {
-            element.statuses
+
         }
-        let processedData = summaryMachineStatistics(element.statuses)
+        let processedData = summaryMachineStatistics(element.statuses, from, to)
         dataToSend.push({
             name: element.name,
             data: processedData

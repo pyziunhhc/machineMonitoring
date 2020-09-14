@@ -1,9 +1,5 @@
-import Users from './users.js'
-import Menu from '../Menu/menu.js';
+import Users from './users.js';
 window.onload = function () {
-    const users = new Users(),
-        menu = new Menu();
+    const users = new Users();
     users.getUsers()
-    menu.hideMenu();
-    menu.showSettings();
 }
