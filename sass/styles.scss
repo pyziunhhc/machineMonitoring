@@ -125,6 +125,7 @@ body {
         color: black;
         font-size: 1.5em;
         &:hover {
+          cursor: pointer;
           font-weight: bold;
         }
       }
@@ -230,7 +231,7 @@ table {
   color: white;
   font-weight: bold;
   animation: removeMessage 0.3s 4.7s ease;
-  z-index:99999;
+  z-index: 99999;
 }
 
 .success__container {
@@ -246,7 +247,7 @@ table {
   color: white;
   font-weight: bold;
   animation: removeMessage 0.3s 4.8s ease;
-  z-index:99999;
+  z-index: 99999;
 }
 .edit-panel__container {
   display: flex;
@@ -339,7 +340,7 @@ table {
   }
 }
 
-.locked-machines__container {
+.locked-machines__container--wrapper {
   display: flex;
   position: absolute;
   background: white;
@@ -347,4 +348,36 @@ table {
   height: 80%;
   left: 15%;
   top: 5%;
+  flex-direction: column;
+  &.minimized {
+    display: none;
+  }
+  .locked-machines__container {
+    display: flex;
+    .panel__element {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2%;
+      margin-top: 1%;
+      border-right: 0.1px solid black;
+      &--text {
+        font-size: 1.5em;
+        :nth-child(2) {
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+      button {
+        width: 50%;
+        padding: 5%;
+        margin-top: 4%;
+        background: red;
+        color: white;
+        font-size: 1em;
+      }
+    }
+  }
 }

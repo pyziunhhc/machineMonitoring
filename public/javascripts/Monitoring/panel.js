@@ -29,6 +29,7 @@ class Panel {
             morningChangeContainer: null,
             afternoonChangeContainer: null,
             nightChangeContainer: null,
+            statusContainer: null
         };
     }
     createMachinePanel() {
@@ -55,7 +56,7 @@ class Panel {
         minimizedMachine.setAttribute('name', this.machineName)
         closePanelButton.innerText = 'X';
         status.innerText = this.currentStatus;
-        this.statusContainer = status;
+        this.containers.statusContainer = status;
         //Klasy
         moveContainerBeam.classList.add('move-belt');
         closePanelButton.classList.add('close');

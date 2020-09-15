@@ -1,8 +1,6 @@
 import ChartJS from '../Chart/chartJS.js';
 import Table from '../Table/table.js';
-import helpers from '../helpers/auxiliaryFunctions.js'
-import machines from '../helpers/fetch/machines.js';
-import message from '../helpers/messages.js';
+import Movebelt from '../Movebelt/movebelt.js';
 
 class Panel {
     constructor(name) {
@@ -25,14 +23,13 @@ class Panel {
             morningChangeContainer: null,
             afternoonChangeContainer: null,
             nightChangeContainer: null,
+            statusContainer: null
         };
 
     }
     createMachinePanel(data, containerToAppend) {
         //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
-            moveContainerBeam = document.createElement('div'),
-            controls = document.createElement('div'),
             panelContainer = document.createElement('div'),
             leftPanelContainer = document.createElement('div'),
             middlePanelContainer = document.createElement('div'),
@@ -43,24 +40,18 @@ class Panel {
             nightChangeContainer = document.createElement('div'),
             status = document.createElement('p'),
             table = document.createElement('table');
-
-        const minimizePanelButton = document.createElement('button'),
-            closePanelButton = document.createElement('button'),
-            minimizedMachine = document.createElement('button');
-
         const minimizedPanelContainer = document.querySelector('.minimized-panels');
 
+        const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer)
+        moveBelt.create(this.intervalID)
+        this.containers.statusContainer = status;
         //Tekst
-        minimizedMachine.innerText = data.name;
-        minimizedMachine.setAttribute('name', data.name)
-        closePanelButton.innerText = 'X';
+
         status.innerText = this.currentStatus;
 
         //Klasy
-        moveContainerBeam.classList.add('move-belt');
-        closePanelButton.classList.add('close');
-        minimizePanelButton.classList.add('minimize');
-        controls.classList.add('controls');
+
+
         machinePanelContainer.classList.add('main-machine-panel__container');
         machinePanelContainer.classList.add(data.name)
         panelContainer.classList.add('panel__container')
@@ -82,38 +73,9 @@ class Panel {
         //Przerzucić na osobną funkcję dla każego elementu strony
 
 
-
-
-        moveContainerBeam.onmousedown = helpers.dragMouseDown.bind(null, this, machinePanelContainer);
-        minimizePanelButton.addEventListener('click', (e) => {
-            // if(this.intervalID){
-            //     clearInterval(this.intervalID)
-            // }
-            machinePanelContainer.classList.add('minimized');
-            minimizedPanelContainer.appendChild(minimizedMachine);
-        });
-        closePanelButton.addEventListener('click', (e) => {
-            machines.unlockMachine({
-                name: this.machineName
-            }).then(res => {
-                if (res.status == 200) {
-                    message.showMessage('success', res.message)
-                } else {
-                    message.showMessage('error', res.message)
-                }
-            })
-            machinePanelContainer.remove();
-            clearInterval(this.intervalID)
-        })
-        minimizedMachine.addEventListener('click', (e) => {
-            machinePanelContainer.classList.remove('minimized');
-            minimizedMachine.remove();
-        })
         //Dołączanie
-        machinePanelContainer.appendChild(moveContainerBeam);
-        moveContainerBeam.appendChild(controls);
-        controls.appendChild(minimizePanelButton);
-        controls.appendChild(closePanelButton);
+        
+
         leftPanelContainer.appendChild(status)
         leftPanelContainer.appendChild(table);
 
@@ -167,6 +129,9 @@ class Panel {
         chart.time.config.data.datasets[0].data = finalData;
         chart.percentage.update();
         chart.time.update();
+    }
+    updateStatus() {
+        this.containers.statusContainer.innerText = this.currentStatus.toUpperCase();
     }
 
 }

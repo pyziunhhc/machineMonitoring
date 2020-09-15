@@ -330,9 +330,7 @@ class Operator {
                         panel.currentStatus = res.status;
                         panel.updateChartJS(res, panel.charts.chartJS.chart)
                         panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
-                    })
-                    .then(() => {
-                        //albo tu wyslanie danych
+                        panel.updateStatus()
                     })
             }, 1000)
             panel.intervalID = this.intervalID
