@@ -9,7 +9,7 @@ router.get('/', (req, res, next) => {
     if (login) {
         res.render('operator', {
             title: 'Tryb operatora | ITA Tools Sp. z o.o',
-            jsfiles: 'operator.js',
+            jsfiles: 'Operator/operator.js',
             cssfiles: 'operator',
             login: login
         })

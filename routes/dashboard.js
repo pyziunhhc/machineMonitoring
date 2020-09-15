@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
    if (cookie) {
       res.render('dashboard', {
          title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
-         jsfiles: 'dashboard.js',
+         jsfiles: 'Dashboard/dashboard.js',
          cssfiles: 'dashboard',
          login: req.cookies.login,
       })

@@ -1,19 +1,32 @@
-import Dygraph from '../Chart/dygraph.js';
 import ChartJS from '../Chart/chartJS.js';
 import Table from '../Table/table.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
+import machines from '../helpers/fetch/machines.js';
+import message from '../helpers/messages.js';
 
 class Panel {
-    constructor() {
-        this.chartJS = null;
-        this.tableObject = null;
-        this.chartJSContainer = null;
-        this.morningChangeContainer = null;
-        this.afternoonChangeContainer = null;
-        this.nightChangeContainer = null;
+    constructor(name) {
+        this.machineName = name;
         this.data = null;
         this.currentStatus = null;
         this.intervalID = null;
+
+        this.charts = {
+            chartJS: {
+                chart: null,
+                container: null
+            }
+
+        };
+        this.table = {
+            table: null,
+        };
+        this.containers = {
+            morningChangeContainer: null,
+            afternoonChangeContainer: null,
+            nightChangeContainer: null,
+        };
+
     }
     createMachinePanel(data, containerToAppend) {
         //Rozdzielic przyciski na osobne klasy
@@ -80,6 +93,15 @@ class Panel {
             minimizedPanelContainer.appendChild(minimizedMachine);
         });
         closePanelButton.addEventListener('click', (e) => {
+            machines.unlockMachine({
+                name: this.machineName
+            }).then(res => {
+                if (res.status == 200) {
+                    message.showMessage('success', res.message)
+                } else {
+                    message.showMessage('error', res.message)
+                }
+            })
             machinePanelContainer.remove();
             clearInterval(this.intervalID)
         })
@@ -105,29 +127,27 @@ class Panel {
         machinePanelContainer.appendChild(panelContainer);
         containerToAppend.appendChild(machinePanelContainer);
 
-        this.chartJSContainer = chartJSContainer;
-        this.morningChangeContainer = morningChangeContainer;
-        this.afternoonChangeContainer = afternoonChangeContainer;
-        this.nightChangeContainer = nightChangeContainer;
+        this.charts.chartJS.container = chartJSContainer;
+        this.containers.morningChangeContainer = morningChangeContainer;
+        this.containers.afternoonChangeContainer = afternoonChangeContainer;
+        this.containers.nightChangeContainer = nightChangeContainer;
     }
     createChartJS(data, name, type) {
-        const CHART = new ChartJS(data, name, type, this.chartJSContainer),
+        const CHART = new ChartJS(data, name, type, this.charts.chartJS.container),
             chart = CHART.create();
-        this.chartJS = chart;
+        this.charts.chartJS.chart = chart;
     }
     createChangesChartJS(data, name, type, change) {
         if (change == 'morning') {
-            const CHART = new ChartJS(data, name, type, this.morningChangeContainer),
+            const CHART = new ChartJS(data, name, type, this.containers.morningChangeContainer),
                 chart = CHART.create();
         } else if (change == 'afternoon') {
-            const CHART = new ChartJS(data, name, type, this.afternoonChangeContainer),
+            const CHART = new ChartJS(data, name, type, this.containers.afternoonChangeContainer),
                 chart = CHART.create();
         } else if (change == 'night') {
-            const CHART = new ChartJS(data, name, type, this.nightChangeContainer),
+            const CHART = new ChartJS(data, name, type, this.containers.nightChangeContainer),
                 chart = CHART.create();
         }
-
-        //this.chartJS[change] = chart;
     }
 
     createTable(data, name) {
@@ -135,10 +155,10 @@ class Panel {
         const parent = document.querySelector(`.statuses-panel__container.${name}`),
             oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
         TABLE.create(parent, oldTable);
-        this.tableObject = TABLE;
+        this.table.table = TABLE;
     }
     updateTable(data, name) {
-        this.tableObject.update(data, name);
+        this.table.table.update(data, name);
     }
     updateChartJS(data, chart) {
         //przeniesc do klasy chartjs

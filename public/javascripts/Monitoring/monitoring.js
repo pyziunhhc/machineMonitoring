@@ -2,8 +2,8 @@ import machines from '../helpers/fetch/machines.js'
 import Panel from './panel.js';
 window.onload = function () {
     const monitoringContainer = document.querySelector('.monitoring__container');
-    const MONITORING = new Monitoring();
-    MONITORING.createDOM(monitoringContainer);
+    const MONITORING = new Monitoring(monitoringContainer);
+    MONITORING.createDOM();
 }
 
 class Monitoring {
@@ -14,11 +14,9 @@ class Monitoring {
         this.data = null;
         this.currentStatus = null;
         this.intervalID = null;
-        this.container = null;
+        this.container = container;
     }
-    createDOM(monitoringContainer) {
-
-        this.container = monitoringContainer;
+    createDOM() {
         //Kontenery
         const containerForMachines = document.createElement('div'),
             productionErodingContainer = document.createElement('div'),
@@ -64,7 +62,7 @@ class Monitoring {
         containerForMachines.appendChild(drillSharpeningVHMContainer);
         containerForMachines.appendChild(vhmProductionContainer);
         containerForMachines.appendChild(bodyManufacturerContainer);
-        monitoringContainer.appendChild(containerForMachines);
+        this.container.appendChild(containerForMachines);
 
 
         machines.getMachines().then(data => {
@@ -188,12 +186,13 @@ class Monitoring {
                         from: new Date(new Date() - 86400000),
                         to: new Date()
                     };
-                    const panel = new Panel();
+                    const panel = new Panel(dataToSend.name, this.container);
                     machines.getStatuses(dataToSend).then(res => {
+                        console.log(res)
                         this.data = res;
                         this.currentStatus = res.status;
                         panel.currentStatus = res.status;
-                        panel.createMachinePanel(dataToSend, this.container);
+                        panel.createMachinePanel(dataToSend);
                         panel.createDygraph(res.dygraph, dataToSend.name);
                         panel.createTable(res.summary, dataToSend.name)
                         panel.createChartJS(res.chartJS, dataToSend.name, 'bar');
@@ -223,8 +222,8 @@ class Monitoring {
                     this.data = res;
                     panel.currentStatus = res.status;
                     panel.lastStatus = dataToSend.lastStatus;
-                    panel.updateDygraph(res, panel.dygraph)
-                    panel.updateChartJS(res, panel.chartJS)
+                    panel.updateDygraph(res, panel.charts.dygraph.chart)
+                    panel.updateChartJS(res, panel.charts.chartJS.chart)
                     panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
                     panel.updateStatus();
                 })

@@ -42,6 +42,10 @@ router.post('/', (req, res, next) => {
     break;
     case 'operator': {
         res.send({
+            work: {
+                name: 'Operator',
+                href: '/operator'
+            },
             settings: {
                 name: 'Ustawienia',
                 href: '/settings'
@@ -62,6 +66,9 @@ router.post('/settings', (req, res, next) => {
     switch (role) {
         case 'administrator': {
             res.send({
+                server: {
+                    name: 'Serwer'
+                },
                 users: {
                     name: 'Użytkownicy',
                     href: '/users'
@@ -73,6 +80,9 @@ router.post('/settings', (req, res, next) => {
                 myAccount: {
                     name: 'Moje konto',
                 },
+                lockedMachines: {
+                    name: 'Zablokowane maszyny',
+                }
             })
         }
         break;

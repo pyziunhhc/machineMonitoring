@@ -66,7 +66,7 @@ router.get('/', (req, res, next) => {
         const login = req.cookies.login;
         res.render('monitoring', {
             title: 'Monitoring | ITA Tools Sp. z o.o',
-            jsfiles: 'monitoring.js',
+            jsfiles: 'Monitoring/monitoring.js',
             cssfiles: 'monitoring',
             login: login
         })

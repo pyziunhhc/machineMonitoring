@@ -1,5 +1,6 @@
-import Panel from './panel.js'
-import machines from '../helpers/fetch/machines.js'
+import Panel from './panel.js';
+import machines from '../helpers/fetch/machines.js';
+import message from '../helpers/messages.js';
 window.onload = function () {
     const currentChangeContainer = document.querySelector('.operator__container'),
         morningContainer = document.querySelector('.morning__container'),
@@ -211,6 +212,7 @@ class Operator {
 
     }
     createStartPanel(dataToSend) {
+        const name = dataToSend.name;
         const startPanelWrapper = document.createElement('div'),
             startPanel = document.createElement('div'),
             title = document.createElement('h3'),
@@ -235,8 +237,8 @@ class Operator {
         container.appendChild(startPanelWrapper);
 
         agreeButton.addEventListener('click', () => {
-            this.choosenMachine = dataToSend.name;
-            const panel = new Panel();
+            this.choosenMachine = name;
+            const panel = new Panel(name);
             this.createPanel(dataToSend, panel, this.currentChangeContainer, startPanelWrapper);
         })
         cancelButton.addEventListener('click', () => {
@@ -245,33 +247,41 @@ class Operator {
 
 
     }
+    //Sprobowac ujednolicić klase operator -> panel. Funkcja saveStatuses powinna isc z panelu
     createPanel(dataToSend, panel, container, startPanelWrapper) {
+        const machineName = dataToSend.name;
         machines.getStatuses(dataToSend).then(res => {
                 this.data = res;
                 this.currentStatus = res.status;
                 panel.data = res;
                 panel.currentStatus = res.status;
-                panel.createMachinePanel(dataToSend, container);
-                panel.createTable(res.summary, dataToSend.name);
-                panel.createChartJS(res.chartJS, dataToSend.name, 'bar');
                 return panel;
             })
             .then(panel => {
-                this.updateStatuses(dataToSend.name, panel);
-                this.createChangePanel(dataToSend.name, panel)
-                startPanelWrapper.remove();
-            }).then(()=>{
+                const from = dataToSend.from;
                 const dataToSave = {
+                    name: dataToSend.name,
                     data: this.data.summary,
-                    date: dataToSend.from,
-                    lockedStats: false,
-                    lockedMachine: true,
+                    date: from,
+                    isLocked: false,
                 }
                 machines.saveStatusesForUser(dataToSave)
-                .then(res=>{
-                    console.log(res)
-                })
-                //wysłanie danych do bazy per user
+                    .then(res => {
+                        if (res.status == 500) {
+                            message.showMessage('error', res.message);
+                            startPanelWrapper.remove();
+                        } else {
+                            console.log(res)
+                            message.showMessage('success', res.message)
+                            panel.createMachinePanel(dataToSend, container);
+                            panel.createTable(this.data.summary, machineName);
+                            panel.createChartJS(this.data.chartJS, machineName, 'bar');
+                            this.updateStatuses(machineName, panel);
+                            this.createChangePanel(machineName, panel)
+                            startPanelWrapper.remove();
+                        }
+                    })
+
             })
     }
     createChangePanel(name, panel) {
@@ -316,14 +326,14 @@ class Operator {
                     lastStatus: this.currentStatus
                 };
                 machines.updateStatuses(dataToSend).then(res => {
-                    this.data = res;
-                    panel.currentStatus = res.status;
-                    panel.updateChartJS(res, panel.chartJS)
-                    panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
-                })
-                .then(()=>{
-                    //albo tu wyslanie danych
-                })
+                        this.data = res;
+                        panel.currentStatus = res.status;
+                        panel.updateChartJS(res, panel.charts.chartJS.chart)
+                        panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
+                    })
+                    .then(() => {
+                        //albo tu wyslanie danych
+                    })
             }, 1000)
             panel.intervalID = this.intervalID
         } catch (error) {

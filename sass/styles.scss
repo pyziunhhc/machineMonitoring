@@ -338,3 +338,13 @@ table {
     }
   }
 }
+
+.locked-machines__container {
+  display: flex;
+  position: absolute;
+  background: white;
+  width: 80%;
+  height: 80%;
+  left: 15%;
+  top: 5%;
+}

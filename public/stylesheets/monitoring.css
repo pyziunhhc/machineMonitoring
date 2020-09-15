@@ -923,6 +923,15 @@ table tbody tr td {
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
 
+.locked-machines__container {
+  display: flex;
+  position: absolute;
+  background: white;
+  width: 80%;
+  height: 80%;
+  left: 15%;
+  top: 5%; }
+
 .monitoring__container,
 .operator__container {
   width: 100%;

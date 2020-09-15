@@ -1,6 +1,7 @@
 import settings from '../helpers/fetch/appSettings.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
-import User from '../Users/users.js'
+import User from '../Users/users.js';
+import LockedMachines from '../Machines/lockedMachines.js';
 
 
 class Menu {
@@ -115,20 +116,45 @@ class Menu {
                         if (val.href) {
                             settingsAnchor.setAttribute('href', val.href);
                         } else {
-                            settingsAnchor.addEventListener('click', e => {
-                                fetch('/users/myAccount', {
-                                        method: 'POST',
-                                        credentials: 'include',
-                                        headers: {
-                                            'Accept': '*',
-                                            'Content-Type': 'application/json',
-                                        }
-                                    }).then(res => res.json())
-                                    .then(data => {
-                                        const user = new User();
-                                        user.editPanel(data, container)
+                            switch (val.name) {
+                                case 'Moje konto': {
+                                    settingsAnchor.addEventListener('click', e => {
+                                        fetch('/users/myAccount', {
+                                                method: 'POST',
+                                                credentials: 'include',
+                                                headers: {
+                                                    'Accept': '*',
+                                                    'Content-Type': 'application/json',
+                                                }
+                                            }).then(res => res.json())
+                                            .then(data => {
+                                                const user = new User();
+                                                user.editPanel(data, container)
+                                            })
                                     })
-                            })
+                                }
+                                break;
+                            case 'Zablokowane maszyny': {
+                                settingsAnchor.addEventListener('click', e => {
+                                    fetch('/api/stats/locked', {
+                                            method: 'POST',
+                                            credentials: 'include',
+                                            headers: {
+                                                'Accept': '*',
+                                                'Content-Type': 'application/json',
+                                            }
+                                        }).then(res => res.json())
+                                        .then(data => {
+                                            const lockedMachines = new LockedMachines(data, container);
+                                            lockedMachines.createDOM()
+
+                                            //Stwórz okno z zablokowanymi maszynami: Funkcje-odblokuj
+                                        })
+                                })
+                            }
+                            break;
+                            }
+
 
                         }
 

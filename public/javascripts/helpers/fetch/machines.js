@@ -56,7 +56,33 @@ function saveStatusesForUser(data) {
 
 function updateStatusesForUser(data) {
     return fetch('/api/stats/save', {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+}
+function listLockedMachines(data) {
+    return fetch('/api/stats/locked', {
             method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err))
+}
+function unlockMachine(data) {
+    return fetch('/api/stats/unlock', {
+            method: 'DELETE',
             body: JSON.stringify(data),
             credentials: 'include',
             headers: {
@@ -349,5 +375,7 @@ export default {
     summaryMachinesWork,
     whatMachinesDoingNowGraph,
     saveStatusesForUser,
-    updateStatusesForUser
+    updateStatusesForUser,
+    unlockMachine,
+    listLockedMachines
 }

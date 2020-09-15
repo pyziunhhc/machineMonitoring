@@ -4,17 +4,34 @@ import Table from '../Table/table.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
 
 class Panel {
-    constructor() {
-        this.chartJS = null;
-        this.tableObject = null;
-        this.dygraph = null;
+    constructor(name, container) {
+        this.machineName = name;
         this.data = null;
         this.currentStatus = null;
-        this.lastStatus = null;
-        this.statusContainer = null;
         this.intervalID = null;
+
+        this.charts = {
+            chartJS: {
+                chart: null,
+                container: null
+            },
+            dygraph: {
+                chart: null,
+                container: null
+            }
+
+        };
+        this.table = {
+            table: null,
+        };
+        this.containers = {
+            mainContainer: container,
+            morningChangeContainer: null,
+            afternoonChangeContainer: null,
+            nightChangeContainer: null,
+        };
     }
-    createMachinePanel(data, containerToAppend) {
+    createMachinePanel() {
         //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
             moveContainerBeam = document.createElement('div'),
@@ -25,17 +42,17 @@ class Panel {
             dygraphContainer = document.createElement('div'),
             chartJSContainer = document.createElement('div'),
             status = document.createElement('p'),
-            table = document.createElement('table');
-
-        const minimizePanelButton = document.createElement('button'),
+            table = document.createElement('table'),
+            minimizePanelButton = document.createElement('button'),
             closePanelButton = document.createElement('button'),
-            minimizedMachine = document.createElement('button');
+            minimizedMachine = document.createElement('button'),
+            minimizedPanelContainer = document.querySelector('.minimized-panels');
 
-        const minimizedPanelContainer = document.querySelector('.minimized-panels');
-
+        this.charts.chartJS.container = chartJSContainer;
+        this.charts.dygraph.container = dygraphContainer;
         //Tekst
-        minimizedMachine.innerText = data.name;
-        minimizedMachine.setAttribute('name', data.name)
+        minimizedMachine.innerText = this.machineName;
+        minimizedMachine.setAttribute('name', this.machineName)
         closePanelButton.innerText = 'X';
         status.innerText = this.currentStatus;
         this.statusContainer = status;
@@ -45,15 +62,15 @@ class Panel {
         minimizePanelButton.classList.add('minimize');
         controls.classList.add('controls');
         machinePanelContainer.classList.add('main-machine-panel__container');
-        machinePanelContainer.classList.add(data.name)
+        machinePanelContainer.classList.add(this.machineName)
         panelContainer.classList.add('panel__container')
         leftPanelContainer.classList.add('statuses-panel__container');
-        leftPanelContainer.classList.add(data.name);
+        leftPanelContainer.classList.add(this.machineName);
         middlePanelContainer.classList.add('charts-panel__container');
         dygraphContainer.classList.add('dygraph__container');
-        dygraphContainer.classList.add(data.name);
+        dygraphContainer.classList.add(this.machineName);
         chartJSContainer.classList.add('chartJS__container');
-        chartJSContainer.classList.add(data.name);
+        chartJSContainer.classList.add(this.machineName);
 
         //ID
 
@@ -91,27 +108,27 @@ class Panel {
         panelContainer.appendChild(leftPanelContainer);
         panelContainer.appendChild(middlePanelContainer);
         machinePanelContainer.appendChild(panelContainer);
-        containerToAppend.appendChild(machinePanelContainer);
+        this.containers.mainContainer.appendChild(machinePanelContainer);
     }
     createChartJS(data, name, type) {
-        const CHART = new ChartJS(data, name, type),
+        const CHART = new ChartJS(data, name, type, this.charts.chartJS.container),
             chart = CHART.create();
-        this.chartJS = chart;
+        this.charts.chartJS.chart = chart;
     }
     createDygraph(data, name) {
-        const GRAPH = new Dygraph(data, name),
+        const GRAPH = new Dygraph(data, name, this.charts.chartJS.container),
             graph = GRAPH.create();
-        this.dygraph = graph;
+        this.charts.dygraph.chart = graph;
     }
     createTable(data, name) {
         const TABLE = new Table(data, name);
         const parent = document.querySelector(`.statuses-panel__container.${name}`),
             oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
         TABLE.create(parent, oldTable);
-        this.tableObject = TABLE;
+        this.table.table = TABLE;
     }
     updateTable(data, name) {
-        this.tableObject.update(data, name);
+        this.table.table.update(data, name);
     }
     updateChartJS(data, chart) {
         //przeniesc do klasy chartjs
@@ -144,7 +161,7 @@ class Panel {
             console.log(e)
         }
     }
-    updateStatus(){
+    updateStatus() {
         this.statusContainer.innerText = this.currentStatus.toUpperCase();
     }
 }
