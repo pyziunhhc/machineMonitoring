@@ -2,6 +2,7 @@ import Dygraph from '../Chart/dygraph.js';
 import ChartJS from '../Chart/chartJS.js';
 import Table from '../Table/table.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
+import Movebelt from '../Movebelt/movebelt.js'
 
 class Panel {
     constructor(name, container) {
@@ -31,12 +32,12 @@ class Panel {
             nightChangeContainer: null,
             statusContainer: null
         };
+        this.moveBelt =  null;
     }
     createMachinePanel() {
         //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
-            moveContainerBeam = document.createElement('div'),
-            controls = document.createElement('div'),
+
             panelContainer = document.createElement('div'),
             leftPanelContainer = document.createElement('div'),
             middlePanelContainer = document.createElement('div'),
@@ -44,24 +45,19 @@ class Panel {
             chartJSContainer = document.createElement('div'),
             status = document.createElement('p'),
             table = document.createElement('table'),
-            minimizePanelButton = document.createElement('button'),
-            closePanelButton = document.createElement('button'),
-            minimizedMachine = document.createElement('button'),
             minimizedPanelContainer = document.querySelector('.minimized-panels');
 
+        const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer, this.machineName, 'monitoring');
+        this.moveBelt = moveBelt;
+        moveBelt.create();
+        /* NIE DZIAŁA USUWANIE INTERWAŁU Z FUNKCI SETINTERVAL -> NIE PRZESYŁA SIĘ ID Z MONITORING.JS DO PANEL.JS */
         this.charts.chartJS.container = chartJSContainer;
         this.charts.dygraph.container = dygraphContainer;
         //Tekst
-        minimizedMachine.innerText = this.machineName;
-        minimizedMachine.setAttribute('name', this.machineName)
-        closePanelButton.innerText = 'X';
         status.innerText = this.currentStatus;
         this.containers.statusContainer = status;
         //Klasy
-        moveContainerBeam.classList.add('move-belt');
-        closePanelButton.classList.add('close');
-        minimizePanelButton.classList.add('minimize');
-        controls.classList.add('controls');
+
         machinePanelContainer.classList.add('main-machine-panel__container');
         machinePanelContainer.classList.add(this.machineName)
         panelContainer.classList.add('panel__container')
@@ -76,32 +72,9 @@ class Panel {
         //ID
 
         //Eventy
-        //Przerzucić na osobną funkcję dla każego elementu strony
 
-
-
-
-        moveContainerBeam.onmousedown = helpers.dragMouseDown.bind(null, this, machinePanelContainer);
-        minimizePanelButton.addEventListener('click', (e) => {
-            // if(this.intervalID){
-            //     clearInterval(this.intervalID)
-            // }
-            machinePanelContainer.classList.add('minimized');
-            minimizedPanelContainer.appendChild(minimizedMachine);
-        });
-        closePanelButton.addEventListener('click', (e) => {
-            machinePanelContainer.remove();
-            clearInterval(this.intervalID)
-        })
-        minimizedMachine.addEventListener('click', (e) => {
-            machinePanelContainer.classList.remove('minimized');
-            minimizedMachine.remove();
-        })
         //Dołączanie
-        machinePanelContainer.appendChild(moveContainerBeam);
-        moveContainerBeam.appendChild(controls);
-        controls.appendChild(minimizePanelButton);
-        controls.appendChild(closePanelButton);
+
         leftPanelContainer.appendChild(status)
         leftPanelContainer.appendChild(table);
         middlePanelContainer.appendChild(dygraphContainer);
@@ -163,7 +136,11 @@ class Panel {
         }
     }
     updateStatus() {
-        this.statusContainer.innerText = this.currentStatus.toUpperCase();
+        //ZŁY SPOSÓB, WYMYŚL INNY
+        if(!this.moveBelt.intervalID){
+            this.moveBelt.intervalID = this.intervalID;
+        }
+        this.containers.statusContainer.innerText = this.currentStatus.toUpperCase();
     }
 }
 

@@ -9,17 +9,28 @@ window.onload = function () {
     const operator = new Operator(currentChangeContainer, morningContainer, afternoonContainer, nightContainer);
     operator.createDOM();
 }
-
+/**TODO
+ * Sprobowac ujednolicić klase operator -> panel. Funkcja saveStatuses powinna isc z panelu
+ * Zmiana zmiany po zmianie zmiany :D
+ * Po wylogowaniu ma zakończyć liczenie statystyk
+ */
 
 class Operator {
-
     constructor(currentChangeContainer, morningContainer, afternoonContainer, nightContainer) {
+        //poparwić  pola klasy
         this.chartJS = null;
+
         this.table = null;
+
         this.dygraph = null;
+
+        this.userData = null;
         this.data = null;
+
         this.currentStatus = null;
+
         this.intervalID = null;
+
         this.currentChangeContainer = currentChangeContainer;
         this.morningChangeContainer = morningContainer;
         this.afternoonChangeContainer = afternoonContainer;
@@ -199,10 +210,6 @@ class Operator {
                         to: new Date()
                     };
                     this.createStartPanel(dataToSend)
-
-
-
-
                 }
 
             }
@@ -247,42 +254,169 @@ class Operator {
 
 
     }
-    //Sprobowac ujednolicić klase operator -> panel. Funkcja saveStatuses powinna isc z panelu
     createPanel(dataToSend, panel, container, startPanelWrapper) {
         const machineName = dataToSend.name;
-        machines.getStatuses(dataToSend).then(res => {
-                this.data = res;
-                this.currentStatus = res.status;
-                panel.data = res;
-                panel.currentStatus = res.status;
-                return panel;
-            })
-            .then(panel => {
-                const from = dataToSend.from;
-                const dataToSave = {
-                    name: dataToSend.name,
-                    data: this.data.summary,
-                    date: from,
-                    isLocked: false,
-                }
-                machines.saveStatusesForUser(dataToSave)
-                    .then(res => {
-                        if (res.status == 500) {
-                            message.showMessage('error', res.message);
-                            startPanelWrapper.remove();
-                        } else {
-                            console.log(res)
-                            message.showMessage('success', res.message)
-                            panel.createMachinePanel(dataToSend, container);
-                            panel.createTable(this.data.summary, machineName);
-                            panel.createChartJS(this.data.chartJS, machineName, 'bar');
-                            this.updateStatuses(machineName, panel);
-                            this.createChangePanel(machineName, panel)
-                            startPanelWrapper.remove();
-                        }
+        const data = {
+            name: machineName
+        }
+        machines.checkMachineIsLocked(data)
+            .then(res => {
+                if (res.status == 200) {
+                    machines.getAllStatuses(dataToSend).then(res => {
+                        this.data = res;
+                        this.currentStatus = res.status;
+                        panel.data = res;
+                        panel.currentStatus = res.status;
+                        panel.createMachinePanel(dataToSend, container);
+                        panel.createTable(this.data.summary, machineName);
+                        panel.createChartJS(this.data.chartJS, machineName, 'bar');
+                        this.updateAllStatuses(machineName, panel);
+                        this.createChangePanel(machineName, panel);
+                        startPanelWrapper.remove();
+
+                        return;
                     })
+                    if (res.new) {
+                        console.log('Pierwszy raz')
+                        message.showMessage('success', res.message)
+                        const data = {
+                            name: machineName,
+                            from: new Date(),
+                            to: new Date()
+                        };
+                        machines.getSummaryStatuses(data)
+                            .then(res => {
+                                const data = {
+                                    name: machineName,
+                                    start: new Date(),
+                                    end: null,
+                                    data: res.data
+                                }
+                                machines.saveStatusesForUser(data)
+                                    .then(res => {
+                                        if (res.status == 200) {
+                                            message.showMessage('success', res.message)
+                                        } else {
+                                            message.showMessage('error', res.message)
+                                        }
+                                    })
+                                    return data;
+                            })
+                            .then((data) => {
+                                panel.statsIntervalID = setInterval(() => {
+                                    const update = {
+                                        name: machineName,
+                                        from: data.start,
+                                        to: new Date()
+                                    };
+                                    machines.getSummaryStatuses(update)
+                                        .then(res => {
+                                            const data = {
+                                                name: machineName,
+                                                data: res.data
+                                            }
+                                            machines.updateStatusesForUser(data)
+                                        })
+                                }, 1000)
+                            })
+
+
+
+                    } else {
+                        console.log('Ponownie')
+                        message.showMessage('success', res.message)
+                        machines.checkUserStats({
+                                name: machineName
+                            })
+                            .then(stats => {
+                                if (stats.exist) {
+                                    const data = {
+                                        name: machineName,
+                                        from: new Date(stats.start),
+                                        to: new Date()
+                                    }
+                                    machines.getSummaryStatuses(data)
+                                        .then(res => {
+                                            const data = {
+                                                name: machineName,
+                                                data: res.data
+                                            }
+                                            machines.updateStatusesForUser(data)
+                                                .then(res => {
+                                                    if (res.status == 200) {
+                                                        message.showMessage('success', res.message)
+                                                    } else {
+                                                        message.showMessage('error', res.message)
+                                                    }
+                                                })
+                                                .then(() => {
+                                                    panel.statsIntervalID = setInterval(() => {
+                                                        const update = {
+                                                            name: machineName,
+                                                            from: new Date(stats.start), //blad, zle bierze date
+                                                            to: new Date()
+                                                        }
+                                                        machines.getSummaryStatuses(update)
+                                                            .then(res => {
+                                                                const data = {
+                                                                    name: machineName,
+                                                                    data: res.data
+                                                                }
+                                                                machines.updateStatusesForUser(data)
+                                                            })
+                                                    }, 1000);
+                                                })
+                                        })
+                                } else {
+                                    const data = {
+                                        name: machineName,
+                                        from: new Date(),
+                                        to: new Date()
+                                    };
+                                    machines.getSummaryStatuses(data)
+                                        .then(res => {
+                                            const data = {
+                                                name: machineName,
+                                                start: new Date(),
+                                                end: null,
+                                                data: res.data
+                                            }
+                                            machines.saveStatusesForUser(data)
+                                                .then(res => {
+                                                    if (res.status == 200) {
+                                                        message.showMessage('success', res.message)
+                                                    } else {
+                                                        message.showMessage('error', res.message)
+                                                    }
+                                                })
+                                        })
+                                        .then(() => {
+                                            panel.statsIntervalID = setInterval(() => {
+                                                const update = {
+                                                    name: machineName,
+                                                    from: new Date(data.from),
+                                                    to: new Date()
+                                                }
+                                                machines.getSummaryStatuses(update)
+                                                    .then(res => {
+                                                        const data = {
+                                                            name: machineName,
+                                                            data: res.data
+                                                        }
+                                                        machines.updateStatusesForUser(data)
+                                                    })
+                                            }, 1000);
+                                        })
+                                }
+                            })
+                    }
+                } else {
+                    message.showMessage('error', res.message);
+                    startPanelWrapper.remove();
+                }
 
             })
+
     }
     createChangePanel(name, panel) {
         const now = new Date();
@@ -301,21 +435,21 @@ class Operator {
                 from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23),
                 to: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 59, 59, 59)
             };
-        machines.getStatuses(morningChangeData).then(res => {
+        machines.getAllStatuses(morningChangeData).then(res => {
             panel.createChangesChartJS(res.chartJS, name, 'bar', 'morning');
             return panel;
         })
-        machines.getStatuses(afternoonChangeData).then(res => {
+        machines.getAllStatuses(afternoonChangeData).then(res => {
             panel.createChangesChartJS(res.chartJS, name, 'bar', 'afternoon');
             return panel;
         })
-        machines.getStatuses(nightChangeData).then(res => {
+        machines.getAllStatuses(nightChangeData).then(res => {
             panel.createChangesChartJS(res.chartJS, name, 'bar', 'night');
             return panel;
         })
 
     }
-    updateStatuses(name, panel) {
+    updateAllStatuses(name, panel) {
         try {
             this.intervalID = setInterval(() => {
                 const dataToSend = {
@@ -326,18 +460,45 @@ class Operator {
                     lastStatus: this.currentStatus
                 };
                 machines.updateStatuses(dataToSend).then(res => {
-                        this.data = res;
-                        panel.currentStatus = res.status;
-                        panel.updateChartJS(res, panel.charts.chartJS.chart)
-                        panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
-                        panel.updateStatus()
-                    })
+                    this.data = res;
+                    panel.currentStatus = res.status;
+                    panel.updateChartJS(res, panel.charts.chartJS.chart)
+                    panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
+                    panel.updateStatus()
+                })
+                if (!panel.intervalID) {
+                    panel.intervalID = this.intervalID;
+                }
             }, 1000)
-            panel.intervalID = this.intervalID
         } catch (error) {
             console.log(error)
         }
 
+    }
+    updateSummaryStatuses(name) {
+        try {
+            this.intervalID = setInterval(() => {
+                const dataToSend = {
+                    name: name,
+                    from: new Date(),
+                    to: new Date(),
+                    oldData: this.data,
+                    lastStatus: this.currentStatus
+                };
+                machines.updateStatuses(dataToSend).then(res => {
+                    this.data = res;
+                    panel.currentStatus = res.status;
+                    panel.updateChartJS(res, panel.charts.chartJS.chart)
+                    panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
+                    panel.updateStatus()
+                })
+                if (!panel.intervalID) {
+                    panel.intervalID = this.intervalID;
+                }
+            }, 1000)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 }

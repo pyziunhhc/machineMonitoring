@@ -23,6 +23,10 @@ router.post('/', (req, res, next) => {
                     name: 'Raporty',
                     href: '/reports'
                 },
+                statistics: {
+                    name: 'Statystyki',
+                    href: '/stats'
+                },
                 settings: {
                     name: 'Ustawienia',
                     href: '/settings'
@@ -31,8 +35,6 @@ router.post('/', (req, res, next) => {
                     name: 'Wyloguj',
                     href: '/logout'
                 }
-
-
             })
         }
         break;
@@ -49,6 +51,10 @@ router.post('/', (req, res, next) => {
             settings: {
                 name: 'Ustawienia',
                 href: '/settings'
+            },
+            myWork: {
+                name: 'Moje statystyki',
+                href: '/stats'
             },
             logout: {
                 name: 'Wyloguj',
@@ -94,10 +100,6 @@ router.post('/settings', (req, res, next) => {
         res.send({
             myAccount: {
                 name: 'Moje konto',
-            },
-            myWork: {
-                name: 'Praca',
-                href: '/work'
             }
         })
     }

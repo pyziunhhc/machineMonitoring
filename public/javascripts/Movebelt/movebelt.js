@@ -3,13 +3,16 @@ import machines from '../helpers/fetch/machines.js';
 import message from '../helpers/messages.js';
 
 class Movebelt {
-    constructor(machineName = null, panelContainer, minimizedPanelContainer, title) {
+    constructor(machineName = null, panelContainer, minimizedPanelContainer, title, place, intervalID = null, statsIntervalID) {
         this.title = title;
         this.machineName = machineName;
         this.panelContainer = panelContainer;
         this.minimizedPanelContainer = minimizedPanelContainer;
+        this.place = place;
+        this.intervalID = intervalID;
+        this.statsIntervalID = statsIntervalID
     }
-    create(intervalID) {
+    create() {
         const moveContainerBeam = document.createElement('div'),
             title = document.createElement('h3'),
             controls = document.createElement('div'),
@@ -33,20 +36,27 @@ class Movebelt {
             this.minimizedPanelContainer.appendChild(minimizedPanel);
         });
         closePanelButton.addEventListener('click', (e) => {
-            if (this.machineName) {
+            if (this.place === 'operator') {
                 machines.unlockMachine({
                     name: this.machineName
                 }).then(res => {
+                    console.log(res)
                     if (res.status == 200) {
                         message.showMessage('success', res.message)
+                        machines.lockStatusesForUser({
+                            name: this.machineName
+                        })
                     } else {
                         message.showMessage('error', res.message)
                     }
-                    clearInterval(intervalID)
+                    clearInterval(this.intervalID)
+                    clearInterval(this.statsIntervalID)
                 })
+            } else {
+                clearInterval(this.intervalID)
+                this.panelContainer.remove();
             }
             this.panelContainer.remove();
-
         })
         minimizedPanel.addEventListener('click', (e) => {
             this.panelContainer.classList.remove('minimized');

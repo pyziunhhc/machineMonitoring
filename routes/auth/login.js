@@ -13,12 +13,6 @@ router.get('/', (req, res, next) => {
   const login = req.cookies.login;
   if (cookie) {
     res.redirect('/dashboard')
-    // res.render('dashboard', {
-    //   title: "Dashboad | ITA Tools Sp z o.o",
-    //   jsfiles: 'dashboard.js',
-    //   cssfiles: 'auth',
-    //   login: login
-    // });
   } else {
     res.render('login', {
       title: "Logowanie | ITA Tools Sp z o.o",
@@ -54,11 +48,6 @@ router.post('/', (req, res, next) => {
           const token = jwt.sign(payload, 'testSecretChangeIt', {
             expiresIn: '1h'
           });
-          // res.cookie('token', token, {
-          //   httpOnly: true,
-          //   sameSite: true,
-          //   //maxAge: 10000000000
-          // })
           res.cookie('login', login, 'role', user.role, {
             httpOnly: true,
             sameSite: true,

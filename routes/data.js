@@ -4,8 +4,16 @@ const jsonToExcel = require('@papb/json-excel');
 const {
     summaryMachineStatistics,
     statusesForDygraph,
-    statusesForChartJS
+    statusesForChartJS,
+    updateSummaryMachineStatistics,
+    updateStatusesForDygraph,
+    updateStatusesForChartJS
 } = require('../helpers/processStatuses/process');
+const {
+    summaryMachineStatisticsTS,
+    statusesForDygraphTS,
+    statusesForChartJSTS,
+} = require('../helpers/processStatuses/processTS');
 const {
     parseMillisecondsIntoReadableTime
 } = require('../helpers/helpers');
@@ -47,6 +55,22 @@ const machineTypes = [{
     },
     {
         name: 'WEV2_2066-4038',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV3_2066-4101',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV4_2066-4102',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV5_2066-4118',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV6_2066-4117',
         type: 'Produkcja-Erodowanie'
     },
     {
@@ -119,32 +143,39 @@ router.post('/get/reports/daily', (req, res, next) => {
 
 router.post('/get/summary', (req, res, next) => {
 
-    const machines = req.body.machines,
+    const NAME = req.body.name,
         FROM = req.body.from,
         TO = req.body.to,
         data = [];
-
-    machines.map((val, index) => {
-        const NAME = val.name;
-        fetchData.getStatuses(NAME, FROM, TO).then(data => {
-            const SUMMARY = summaryMachineStatistics(data);
-
-            return {
-                data: SUMMARY,
-                name: NAME
-            };
-        }).then(val => {
-            data.push({
-                data: val.data,
-                name: val.name
-            })
-            if (data.length == machines.length) {
-                res.send({
-                    data: data
-                })
-            }
+    fetchData.getStatuses(NAME, FROM, TO).then(data => {
+        const SUMMARY = summaryMachineStatistics(data);
+        return {
+            data: SUMMARY,
+            name: NAME
+        };
+    }).then(val => {
+        res.send({
+            data: val.data
         })
     })
+})
+router.post('/update/summary', (req, res, next) => {
+
+    try {
+        const NAME = req.body.name,
+            FROM = req.body.from,
+            TO = req.body.to,
+            LAST_STATUS = `${req.body.lastStatus}`;
+        let oldData = req.body.oldData;
+        fetchData.getSummaryStatuses(NAME, FROM, TO).then(newData => {
+            const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData.summary, workingCurrentStatus, LAST_STATUS);
+
+        }).catch(error => {
+            console.log(error)
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
 })
 router.post('/get/dygraph', (req, res, next) => {
 
@@ -186,7 +217,7 @@ router.post('/get/chartJS', (req, res, next) => {
         const NAME = val.name;
         fetchData.getStatuses(NAME, FROM, TO).then(data => {
             const summaryMachineStatistics = statusesForChartJS(data);
-
+            statusesForChartJSTS(data);
             return {
                 data: summaryMachineStatistics,
                 name: NAME
@@ -205,7 +236,31 @@ router.post('/get/chartJS', (req, res, next) => {
         })
     })
 })
+router.post('/get/all', (req, res, next) => {
+    const NAME = req.body.name,
+        FROM = req.body.from,
+        TO = req.body.to;
+    fetchData.getStatuses(NAME, FROM, TO).then(data => {
 
+        const dataForDygraph = statusesForDygraph(data);
+        const summary = summaryMachineStatistics(data, FROM, TO);
+        const dataForChartJS = statusesForChartJS(summary);
+        const workingCurrentStatus = `${data[data.length - 1].value}`;
+        let currentStatus = null;
+        if (workingCurrentStatus == 'null') {
+            currentStatus = 'WYŁĄCZONA'
+        } else {
+            currentStatus = summary[workingCurrentStatus.toLowerCase()].displayName.toUpperCase()
+        }
+        res.send({
+            dygraph: dataForDygraph,
+            chartJS: dataForChartJS,
+            summary: summary,
+            status: currentStatus
+        })
+    })
+
+})
 router.post('/get/machines', (req, res, next) => {
     let machinesArray = [];
     return fetchData.getGroups().then(groups => {
@@ -231,5 +286,37 @@ router.post('/get/machines', (req, res, next) => {
 
     })
 })
+router.post('/update/all', (req, res, next) => {
+    try {
+        const NAME = req.body.name,
+            FROM = req.body.from,
+            TO = req.body.to,
+            LAST_STATUS = `${req.body.lastStatus}`;
+        let oldData = req.body.oldData;
+        fetchData.getStatuses(NAME, FROM, TO).then(newData => {
+            const workingCurrentStatus = `${newData[0].value}`;
+            const dataForDygraph = updateStatusesForDygraph(newData, oldData.dygraph, workingCurrentStatus, LAST_STATUS);
+            const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData.summary, workingCurrentStatus, LAST_STATUS);
+            const dataForChartJS = updateStatusesForChartJS(summaryMachineStatistics);
+            let currentStatus = null;
+            if (workingCurrentStatus == 'null') {
+                currentStatus = 'WYŁĄCZONA'
+            } else {
+                currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase();
+            }
+            res.send({
+                dygraph: dataForDygraph,
+                chartJS: dataForChartJS,
+                summary: summaryMachineStatistics,
+                status: currentStatus
+            })
+            //DODAĆ FUNKCJONALNOŚĆ GDZIE BĘDZIE ODEJMOWANY CZAS (SUMA CZASÓW SIĘ NIE ZGADZA)
+        }).catch(error => {
+            console.log(error)
+        })
+    } catch (error) {
+        throw new Error(error)
+    }
 
+})
 module.exports = router;

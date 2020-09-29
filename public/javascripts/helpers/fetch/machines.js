@@ -13,8 +13,8 @@ function getMachines() {
         .then(res => res.json())
 }
 
-function getStatuses(data) {
-    return fetch('/monitoring/data/get', {
+function getAllStatuses(data) {
+    return fetch('data/get/all', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -27,7 +27,76 @@ function getStatuses(data) {
 }
 
 function updateStatuses(data) {
-    return fetch('/monitoring/data/update', {
+    return fetch('data/update/all', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(err => {
+            throw new Error(err)
+        })
+}
+
+function getSummaryStatuses(data) {
+    return fetch('data/get/summary', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function updateSummaryStatuses(data) {
+    return fetch('data/update/summary', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function checkMachineIsLocked(data) {
+    return fetch('stats/check', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+        .catch(error => error)
+}
+
+function checkUserStats(data) {
+    return fetch('stats/checkStats', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function saveStatusesForUser(data) {
+    return fetch('/stats/save', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -40,8 +109,8 @@ function updateStatuses(data) {
         .catch(err => console.log(err))
 }
 
-function saveStatusesForUser(data) {
-    return fetch('/api/stats/save', {
+function lockStatusesForUser(data) {
+    return fetch('/stats/lock', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -55,7 +124,7 @@ function saveStatusesForUser(data) {
 }
 
 function updateStatusesForUser(data) {
-    return fetch('/api/stats/save', {
+    return fetch('/stats/update', {
             method: 'PUT',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -67,8 +136,9 @@ function updateStatusesForUser(data) {
         .then(res => res.json())
         .catch(err => console.log(err))
 }
+
 function listLockedMachines(data) {
-    return fetch('/api/stats/locked', {
+    return fetch('/stats/locked', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -80,8 +150,9 @@ function listLockedMachines(data) {
         .then(res => res.json())
         .catch(err => console.log(err))
 }
+
 function unlockMachine(data) {
-    return fetch('/api/stats/unlock', {
+    return fetch('/stats/unlock', {
             method: 'DELETE',
             body: JSON.stringify(data),
             credentials: 'include',
@@ -93,6 +164,7 @@ function unlockMachine(data) {
         .then(res => res.json())
         .catch(err => console.log(err))
 }
+
 function whatMachinesDoingNow() {
     const time = {
             from: new Date(),
@@ -367,9 +439,23 @@ function updateWhatMachinesDoingNowGraph(graph) {
         })
 }
 
+function showUserStats(data) {
+    return fetch('stats/show/user', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
 export default {
     getMachines,
-    getStatuses,
+    getAllStatuses,
+    updateSummaryStatuses,
+    getSummaryStatuses,
     updateStatuses,
     whatMachinesDoingNow,
     summaryMachinesWork,
@@ -377,5 +463,9 @@ export default {
     saveStatusesForUser,
     updateStatusesForUser,
     unlockMachine,
-    listLockedMachines
+    listLockedMachines,
+    checkMachineIsLocked,
+    lockStatusesForUser,
+    checkUserStats,
+    showUserStats
 }

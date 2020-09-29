@@ -1,0 +1,49 @@
+@import "styles";
+.main__container {
+  .main__section {
+    .container {
+      .stats__container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        .stats {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+          .machine-stats__container {
+            display: flex;
+            flex-direction: column;
+            padding: 2%;
+            .information {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              h2 {
+                font-weight: bold;
+                font-size: 1.5em;
+              }
+
+            }
+          }
+        }
+        .configuration__container {
+          padding: 1%;
+          border-bottom: 1px solid black;
+          .choose-machine {
+            background: green;
+            color: white;
+            padding: 1%;
+          }
+          label{
+            margin:1%;
+            input{
+              margin: 1%;
+            }
+          }
+        }
+      }
+    }
+  }
+}

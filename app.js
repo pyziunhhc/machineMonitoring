@@ -45,18 +45,18 @@ const corsOption = {
 app.use(cors(corsOption))
 app.use(logger('dev'));
 //app.use(express.json());
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(cookieParser());
-// app.use(bodyParser.json({
-//   limit: '100mb',
-//   extended: true,
-//   parameterLimit: 1000000
-// }))
-// app.use(bodyParser.urlencoded({
-//   limit: '100mb',
-//   extended: true,
-//   parameterLimit: 1000000
-// }))
+app.use(express.json({//problem z payloadem był przez użycie bodyParser.json
+  limit: 52428800,
+  extended: true,
+  parameterLimit: 52428800
+}))
+app.use(express.urlencoded({
+  limit: 52428800,
+  extended: true,
+  parameterLimit: 52428800
+}))
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -73,7 +73,7 @@ app.use('/users', usersRouter);
 app.use('/api/checkCookie', checkCookie);
 app.use('/monitoring', machineRouter);
 app.use('/operator', operatorRouter);
-app.use('/api/stats', statsRouter);
+app.use('/stats', statsRouter);
 //app.use('/api/tasks', tasksRouter);
 
 

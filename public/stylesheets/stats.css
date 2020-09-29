@@ -960,106 +960,37 @@ table tbody tr td {
         color: white;
         font-size: 1em; }
 
-.main__container {
-  height: 100%; }
-  .main__container .auth__wrapper {
-    width: 100%;
-    height: 100%;
+.main__container .main__section .container .stats__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%; }
+  .main__container .main__section .container .stats__container .stats {
     display: flex;
     align-items: center;
-    justify-content: center; }
-    .main__container .auth__wrapper .auth__container {
-      width: 80%;
-      height: 80%;
+    justify-content: center;
+    flex-wrap: wrap; }
+    .main__container .main__section .container .stats__container .stats .machine-stats__container {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-      .main__container .auth__wrapper .auth__container h1 {
-        color: #fff;
-        font-size: 3em;
-        font-weight: bolder;
-        margin-top: 10%;
-        margin-bottom: 5%; }
-      .main__container .auth__wrapper .auth__container .logo--img {
-        width: 15%;
-        margin-bottom: 5%; }
-      .main__container .auth__wrapper .auth__container .auth__fields {
+      padding: 2%; }
+      .main__container .main__section .container .stats__container .stats .machine-stats__container .information {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        height: 100%;
-        position: relative; }
-        .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          height: 70%;
-          align-items: center;
-          justify-content: center; }
-          .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs label {
-            color: white;
-            padding: 1.5%;
-            margin-bottom: 3%;
-            position: relative;
-            width: 80%;
-            font-size: 1em;
-            border-bottom: 1px solid white; }
-          .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs .auth__input {
-            width: 85%;
-            border: none;
-            background: none;
-            color: white;
-            font-size: 1em;
-            box-sizing: border-box;
-            position: absolute;
-            left: 60px; }
-            .main__container .auth__wrapper .auth__container .auth__fields .auth__inputs .auth__input:focus {
-              outline: none; }
-        .main__container .auth__wrapper .auth__container .auth__fields .auth--button {
-          width: 50%;
-          height: 5vh;
-          background: none;
-          color: white;
-          border: none;
-          border-radius: 50px;
-          background: linear-gradient(90deg, #117ec9 0%, #04c1bc 50%, #00b0ff 100%);
-          background-size: 400% 400%;
-          box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-          .main__container .auth__wrapper .auth__container .auth__fields .auth--button:focus {
-            outline: none; }
-          .main__container .auth__wrapper .auth__container .auth__fields .auth--button:hover {
-            cursor: pointer;
-            -webkit-animation: buttonAnimation 5s ease infinite;
-                    animation: buttonAnimation 5s ease infinite; }
+        justify-content: center; }
+        .main__container .main__section .container .stats__container .stats .machine-stats__container .information h2 {
+          font-weight: bold;
+          font-size: 1.5em; }
+  .main__container .main__section .container .stats__container .configuration__container {
+    padding: 1%;
+    border-bottom: 1px solid black; }
+    .main__container .main__section .container .stats__container .configuration__container .choose-machine {
+      background: green;
+      color: white;
+      padding: 1%; }
+    .main__container .main__section .container .stats__container .configuration__container label {
+      margin: 1%; }
+      .main__container .main__section .container .stats__container .configuration__container label input {
+        margin: 1%; }
 
-@media screen and (min-width: 768px) {
-  .main__container .auth__wrapper .auth__container {
-    width: 60%;
-    max-width: 1023.9px;
-    height: 80%; } }
-
-@media screen and (min-width: 1024px) {
-  .main__container .auth__wrapper .auth__container {
-    width: 50%;
-    max-width: 1365.9px;
-    height: 80%; } }
-
-@media screen and (min-width: 1366px) {
-  .main__container .auth__wrapper .auth__container {
-    width: 50%;
-    max-width: 1679.9px;
-    height: 80%; } }
-
-@media screen and (min-width: 1680px) {
-  .main__container .auth__wrapper .auth__container {
-    width: 30%;
-    height: 80%; } }
-
-@media screen and (min-width: 2000px) {
-  .main__container .auth__wrapper .auth__container {
-    width: 25%;
-    height: 80%; } }
-
-/*# sourceMappingURL=auth.css.map */
+/*# sourceMappingURL=stats.css.map */

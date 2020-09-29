@@ -495,7 +495,6 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
 }
 const updateStatusesForDygraph = (newData, oldData, currentStatus, lastStatus) => {
     try {
-        console.log(currentStatus, lastStatus)
         if (currentStatus != lastStatus) {
             const DATA = newData;
             let machineStatsForDygraph = oldData;

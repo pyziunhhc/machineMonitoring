@@ -48,6 +48,22 @@ const machineTypes = [{
         type: 'Produkcja-Erodowanie'
     },
     {
+        name: 'WEV3_2066-4101',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV4_2066-4102',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV5_2066-4118',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
+        name: 'WEV6_2066-4117',
+        type: 'Produkcja-Erodowanie'
+    },
+    {
         name: 'DMG_NTX-1000',
         type: 'Produkcja-Korpusy'
     },

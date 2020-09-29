@@ -1,9 +1,9 @@
 {
   "name": "monitoring",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www & npm gulp",
+    "start": "nodemon ./bin/www",
     "gulp": "cd server/sass && gulp watch styles"
   },
   "dependencies": {

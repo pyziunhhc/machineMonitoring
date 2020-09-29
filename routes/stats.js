@@ -2,127 +2,140 @@ const express = require('express'),
     router = express.Router();
 const Stats = require('../models/Stats');
 const LockedMachines = require('../models/LockedMachines');
-const e = require('express');
-
-
-
-router.post('/save', (req, res, next) => {
+router.get('/', (req, res, next) => {
+    const login = req.cookies.login;
+    if (login) {
+        res.render('stats', {
+            title: 'Statystyki | ITA Tools Sp. z o.o',
+            jsfiles: 'Stats/stats.js',
+            cssfiles: 'stats',
+            login: login
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+router.post('/check', (req, res, next) => {
     const login = req.cookies.login,
         name = req.body.name;
 
     LockedMachines.findOne({
-        name
+        name,
     }, (err, document) => {
+
         if (document) {
             if (document.user == login) {
                 res.status(200).send({
                     status: 200,
+                    new: false,
                     message: [`Witaj ponownie ${login}`]
                 })
             } else if (document.user != login) {
-
                 res.status(500).send({
                     status: 500,
-                    message: [`Maszyna ${document.name} zablokowana przez użytkownika ${document.user}.\n Proszę wybrać inną`]
+                    message: [`Maszyna ${document.name} jest zablokowana \n przez użytkownika ${document.user}.\n\n Proszę wybrać inną.`]
                 })
             } else {
-                const stats = new Stats({
-                        user: login,
-                        name: req.body.name,
-                        data: req.body.data,
-                        date: req.body.date,
-                        isLocked: req.body.isLocked
-                    }),
-                    lockedMachine = new LockedMachines({
-                        user: login,
-                        date: new Date(),
-                        name: req.body.name
-                    })
-                lockedMachine.save(err => {
-                    if (err) {
-
-                    }
-                })
-                stats.save(err => {
-                    if (err) {
-                        if (err.code == 11000) {
-                            console.log(`Błąd podczas zapisu statystyk do bazy ${err}. Wpis istnieje w bazie`)
-                            res.status(500)
-                                .send({
-                                    status: 500,
-                                    message: ['Wpis istnieje w bazie']
-                                })
-                            return false;
-                        }
-
-                        res.status(500)
-                            .send({
-                                status: 500,
-                                message: ['Błąd zapisu w bazie']
-                            })
-                        return false;
-                    } else {
-                        console.log(`Zapisano poprawnie ${stats}`)
-                        res.status(200)
-                            .send({
-                                status: 200,
-                                id: stats._id
-                            })
-                        return true;
-                    }
-                })
-            }
-        } else {
-            const stats = new Stats({
-                    user: login,
-                    name: req.body.name,
-                    data: req.body.data,
-                    date: req.body.date,
-                    isLocked: req.body.isLocked
-                }),
-                lockedMachine = new LockedMachines({
+                const lockedMachine = new LockedMachines({
                     user: login,
                     date: new Date(),
                     name: req.body.name
                 })
-            lockedMachine.save(err => {
-                if (err) {
-                    console.log(`Błąd podczas blokowania maszyny! ${err}`)
-                }
-            })
-            stats.save(err => {
-                if (err) {
-                    if (err.code == 11000) {
-                        console.log(`Błąd podczas zapisu statystyk do bazy ${err}.\n Wpis istnieje w bazie`)
-                        res.status(500)
-                            .send({
-                                status: 500,
-                                message: ['Wpis istnieje w bazie']
-                            })
-                        return false;
-                    }
-                    console.log(`Błąd podczas zapisu statystyk do bazy ${err}`)
-                    res.status(500)
-                        .send({
-                            status: 500,
-                            message: ['Błąd zapisu w bazie']
-                        })
-                    return false;
-                } else {
-                    console.log(`Zapisano poprawnie ${stats}`)
-                    res.status(200)
-                        .send({
+                lockedMachine.save(err => {
+                    if (err) {
+
+                    } else {
+                        res.status(200).send({
                             status: 200,
+                            new: true,
                             message: [`Witaj ${login}`]
                         })
-                    return true;
+                    }
+                })
+            }
+        } else {
+            const lockedMachine = new LockedMachines({
+                user: login,
+                date: new Date(),
+                name: req.body.name
+            })
+            lockedMachine.save(err => {
+                if (err) {
+
+                } else {
+                    res.status(200).send({
+                        status: 200,
+                        new: true,
+                        message: [`Witaj ${login}`]
+                    })
                 }
             })
         }
+    })
+})
+router.post('/checkStats', (req, res, next) => {
+    const user = req.cookies.login,
+        name = req.body.name;
+    Stats.findOne({
+        machine: name,
+        user: user,
+        lockedStats: false
+    }, (err, document) => {
+        if (document) {
+            res.send({
+                exist: true,
+                start: document.start
+            })
+        } else {
+            res.send({
+                exist: false
+            })
+        }
+    })
+})
+router.post('/save', (req, res, next) => {
+    const user = req.cookies.login,
+        name = req.body.name;
+    Stats.findOne({
+        machine: name,
+        user: user,
+        lockedStats: false
+    }, (err, document) => {
+        const stats = new Stats({
+            user: user,
+            machine: name,
+            data: req.body.data,
+            start: req.body.start,
+            end: null,
+            lockedStats: false
+        });
+        stats.save(error => {
+            if (error) {
+
+            } else {
+                res.status(200).send({
+                    status: 200,
+                    message: [`Zapisano statystyki dla ${user} \n na maszynie ${name}`]
+                })
+            }
+        })
 
     })
-
-})
+});
+router.post('/lock', (req, res, next) => {
+    const user = req.cookies.login,
+        name = req.body.name;
+    Stats.findOneAndUpdate({
+        machine: name,
+        user: user,
+        lockedStats: false
+    }, {
+        lockedStats: true,
+        end: new Date()
+    }, (err, document) => {
+        if (document) {}
+    })
+});
 router.post('/locked', (req, res, next) => {
     LockedMachines.find((err, document) => {
         if (err) {
@@ -142,44 +155,44 @@ router.post('/locked', (req, res, next) => {
 
         }
     })
-})
+});
 router.put('/update', (req, res, next) => {
-    if (!req.body.locked) {
-        Stats.findOneAndUpdate({
-            _id: req.body.id
-        }, {
-            data: req.body.data
-        })
-    } else {
-        Stats.findOneAndUpdate({
-            _id: req.body.id
-        }, {
-            data: req.body.data,
-            lockedMachines: req.body.lockedMachines,
-            lockedStats: req.body.lockedStats
-        })
-    }
+    const user = req.cookies.login,
+        name = req.body.name;
+    Stats.findOneAndUpdate({
+        machine: name,
+        user: user,
+        lockedStats: false
+    }, {
+        data: req.body.data
+    }, (err, document) => {
+        if (document) {
+            res.status(200).send({
+                status: 200,
+                message: [`Pomyślnie zaktualizowano statystyki dla ${user} \n na maszynie ${name}`]
+            })
+        }
+    })
 
-})
+});
 router.delete('/unlock', (req, res, next) => {
     const user = req.cookies.login,
         name = req.body.name;
     LockedMachines.findOneAndDelete({
-        user,
         name
     }, (err, document) => {
         if (err) {
             console.log(`Błąd ${err}`)
         } else {
-            console.log(`Odblokowano maszynę ${name}`)
             res.status(200).send({
                 status: 200,
                 message: [`Odblokowano maszynę ${name}`]
             })
         }
     })
-})
-router.post('/find', (req, res, next) => {
+    next();
+});
+router.post('/show/all', (req, res, next) => {
     Stats.find((err, data) => {
         if (err) {
             res.send({
@@ -187,14 +200,45 @@ router.post('/find', (req, res, next) => {
                 error: err
             })
         } else {
-            res.send({
+            console.log(data)
+            if (data.length > 0) {
+                res.send({
+                    status: 200,
+                    res: data
+                })
+            } else {
+                res.status(200).send({
+                    status: 200,
+                    message: ['Brak statystyk do wyświetlenia za podany okres.']
+                })
+            }
+
+        }
+    })
+})
+router.post('/show/user', (req, res, next) => {
+    const user = req.cookies.login,
+        start = new Date(req.body.start),
+        end = new Date(req.body.end);
+    Stats.find({
+        user,
+        start: {
+            $gte: start
+        },
+    }, (err, document) => {
+        if (document.length) {
+            res.status(200).send({
                 status: 200,
-                res: data
+                data: document
+            })
+        } else {
+            res.status(500).send({
+                status: 500,
+                message: ['Brak statystyk do wyświetlenia za podany okres.']
             })
         }
     })
 })
-
 
 
 

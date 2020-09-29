@@ -8,7 +8,7 @@ class Panel {
         this.data = null;
         this.currentStatus = null;
         this.intervalID = null;
-
+        this.statsIntervalID = null;
         this.charts = {
             chartJS: {
                 chart: null,
@@ -25,7 +25,7 @@ class Panel {
             nightChangeContainer: null,
             statusContainer: null
         };
-
+        this.moveBelt = null;
     }
     createMachinePanel(data, containerToAppend) {
         //Rozdzielic przyciski na osobne klasy
@@ -42,11 +42,11 @@ class Panel {
             table = document.createElement('table');
         const minimizedPanelContainer = document.querySelector('.minimized-panels');
 
-        const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer)
-        moveBelt.create(this.intervalID)
+        const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer, this.machineName, 'operator')
+        this.moveBelt = moveBelt;
+        moveBelt.create()
         this.containers.statusContainer = status;
         //Tekst
-
         status.innerText = this.currentStatus;
 
         //Klasy
@@ -74,9 +74,9 @@ class Panel {
 
 
         //Dołączanie
-        
 
-        leftPanelContainer.appendChild(status)
+
+        leftPanelContainer.appendChild(status);
         leftPanelContainer.appendChild(table);
 
         middlePanelContainer.appendChild(chartJSContainer);
@@ -131,6 +131,12 @@ class Panel {
         chart.time.update();
     }
     updateStatus() {
+        if (!this.moveBelt.intervalID) {
+            this.moveBelt.intervalID = this.intervalID;
+        }
+        if(!this.moveBelt.statsIntervalID){
+            this.moveBelt.statsIntervalID = this.statsIntervalID;
+        }
         this.containers.statusContainer.innerText = this.currentStatus.toUpperCase();
     }
 

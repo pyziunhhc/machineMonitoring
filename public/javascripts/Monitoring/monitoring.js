@@ -165,7 +165,7 @@ class Monitoring {
             to: new Date()
         };
         setInterval(() => {
-            machines.getStatuses(dataToSend).then(res => {
+            machines.getAllStatuses(dataToSend).then(res => {
                 //status.classList.add(res.status.toLowerCase())
                 status.innerText = res.status;
             })
@@ -187,8 +187,7 @@ class Monitoring {
                         to: new Date()
                     };
                     const panel = new Panel(dataToSend.name, this.container);
-                    machines.getStatuses(dataToSend).then(res => {
-                        console.log(res)
+                    machines.getAllStatuses(dataToSend).then(res => {
                         this.data = res;
                         this.currentStatus = res.status;
                         panel.currentStatus = res.status;
@@ -206,7 +205,6 @@ class Monitoring {
         } catch (error) {
             console.log(error)
         }
-
     }
     updateStatuses(name, panel) {
         try {
@@ -227,12 +225,16 @@ class Monitoring {
                     panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
                     panel.updateStatus();
                 })
-            }, 1000)
-            panel.intervalID = this.intervalID
+                if(!panel.intervalID){
+                    panel.intervalID = this.intervalID;
+                }
+            }, 1000);
+
+
+
         } catch (error) {
             console.log(error)
         }
-
     }
 }
 

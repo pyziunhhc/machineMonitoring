@@ -7,17 +7,21 @@ const userStatsSchema = new Schema({
         type: String,
         require: true
     },
+    machine: {
+        type: String,
+        require: true
+    },
     data: {
         type: Object,
         require: true
     },
-    date: {
+    start: {
         type: Date,
         require: true
     },
-    lockedMachine: {
-        type: Boolean,
-        require: true,
+    end: {
+        type: Date,
+        require: true
     },
     lockedStats: {
         type: Boolean,

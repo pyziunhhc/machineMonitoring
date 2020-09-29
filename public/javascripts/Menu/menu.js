@@ -77,10 +77,7 @@ class Menu {
     }
     showSettings(button) {
         const container = document.querySelector('.main__section');
-
-
         button.addEventListener('click', (e) => {
-            console.log(e)
             e.preventDefault();
             e.stopPropagation();
             const settingsContainer = document.createElement('div'),
@@ -136,7 +133,7 @@ class Menu {
                                 break;
                             case 'Zablokowane maszyny': {
                                 settingsAnchor.addEventListener('click', e => {
-                                    fetch('/api/stats/locked', {
+                                    fetch('/stats/locked', {
                                             method: 'POST',
                                             credentials: 'include',
                                             headers: {
@@ -147,8 +144,6 @@ class Menu {
                                         .then(data => {
                                             const lockedMachines = new LockedMachines(data, container);
                                             lockedMachines.createDOM()
-
-                                            //Stwórz okno z zablokowanymi maszynami: Funkcje-odblokuj
                                         })
                                 })
                             }
