@@ -145,30 +145,51 @@ router.post('/get/summary', (req, res, next) => {
 
     const NAME = req.body.name,
         FROM = req.body.from,
-        TO = req.body.to,
-        data = [];
+        TO = req.body.to;
     fetchData.getStatuses(NAME, FROM, TO).then(data => {
-        const SUMMARY = summaryMachineStatistics(data);
+        const summary = summaryMachineStatistics(data);
+        const workingCurrentStatus = `${data[data.length - 1].value}`;
+        let currentStatus = null;
+        if (workingCurrentStatus == 'null') {
+            currentStatus = 'WYŁĄCZONA'
+        } else {
+            currentStatus = summary[workingCurrentStatus.toLowerCase()].displayName.toUpperCase()
+        }
         return {
-            data: SUMMARY,
+            data: summary,
+            status: currentStatus,
             name: NAME
         };
     }).then(val => {
         res.send({
-            data: val.data
+            data: val.data,
+            status: val.status,
+            name: val.name
         })
     })
 })
 router.post('/update/summary', (req, res, next) => {
 
     try {
-        const NAME = req.body.name,
-            FROM = req.body.from,
-            TO = req.body.to,
-            LAST_STATUS = `${req.body.lastStatus}`;
-        let oldData = req.body.oldData;
-        fetchData.getSummaryStatuses(NAME, FROM, TO).then(newData => {
-            const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData.summary, workingCurrentStatus, LAST_STATUS);
+        const name = req.body.name,
+            from = req.body.from,
+            to = req.body.to,
+            workingLastStatus = `${req.body.lastStatus}`,
+            oldData = req.body.oldData;
+
+        fetchData.getSummaryStatuses(name, from, to).then(newData => {
+            const workingCurrentStatus = `${newData[0].value}`;
+            const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData, workingCurrentStatus, workingLastStatus);
+            let currentStatus = null;
+            if (workingCurrentStatus == 'null') {
+                currentStatus = 'WYŁĄCZONA'
+            } else {
+                currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase();
+            }
+            res.send({
+                update: summaryMachineStatistics,
+                status: currentStatus
+            })
 
         }).catch(error => {
             console.log(error)

@@ -190,7 +190,6 @@ router.delete('/unlock', (req, res, next) => {
             })
         }
     })
-    next();
 });
 router.post('/show/all', (req, res, next) => {
     Stats.find((err, data) => {
@@ -200,7 +199,6 @@ router.post('/show/all', (req, res, next) => {
                 error: err
             })
         } else {
-            console.log(data)
             if (data.length > 0) {
                 res.send({
                     status: 200,

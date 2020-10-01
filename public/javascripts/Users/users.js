@@ -1,6 +1,7 @@
 import users from '../helpers/fetch/user.js'
 import helpers from '../helpers/auxiliaryFunctions.js'
 import message from '../helpers/messages.js'
+import Movebelt from '../Movebelt/movebelt.js';
 class Users {
     constructor() {
         this.logins = ['Login'],
@@ -56,13 +57,14 @@ class Users {
 
     }
     createRegistrationContainer() {
-        const button = document.querySelector('.users__new--button');
+        const button = document.querySelector('.new');
+        const minimizedPanel = document.querySelector('.minimized-panels');
+
 
         button.addEventListener('click', (e) => {
             const container = document.querySelector('.users__container'),
                 registrationContainer = document.createElement('div'),
                 registrationWrapper = document.createElement('div'),
-                belt = document.createElement('div'),
                 loginInput = document.createElement('input'),
                 passwordInput = document.createElement('input'),
                 repasswordInput = document.createElement('input'),
@@ -73,8 +75,7 @@ class Users {
                 adminOption = document.createElement('option'),
                 analystOption = document.createElement('option'),
                 operatorOption = document.createElement('option'),
-                submitButton = document.createElement('button'),
-                closeButton = document.createElement('button');
+                submitButton = document.createElement('button');
 
             const loginLabel = document.createElement('label'),
                 passwordLabel = document.createElement('label'),
@@ -85,25 +86,17 @@ class Users {
                 roleLabel = document.createElement('label');
 
             const head = document.createElement('h1');
-
-            //Eventy
-            registrationContainer.addEventListener('mousedown', helpers.dragMouseDown.bind(null, this, registrationContainer));
-            // submitButton.addEventListener('click', this.register.bind(this, loginInput.value, passwordInput.value, repasswordInput.value, nameInput.value, surnameInput.value, emailInput.value, roleInput.value));
-
+            const moveBelt = new Movebelt(null, registrationContainer, minimizedPanel, 'Dodaj użytkownika');
+            moveBelt.create();
             submitButton.addEventListener('click', (e) => {
                 this.register(loginInput.value, passwordInput.value, repasswordInput.value, nameInput.value, surnameInput.value, emailInput.value, roleInput.value, registrationContainer);
             })
-            belt.addEventListener('click', (e) => {
-                registrationContainer.remove();
-            })
+
             //Klasy
-            belt.classList.add('belt')
             registrationContainer.classList.add('registration__container')
             registrationWrapper.classList.add('registration__wrapper');
             submitButton.classList.add('submit')
-            closeButton.classList.add('close')
             //Tekst
-            head.innerText = 'Dodaj\n użytkownika'
             submitButton.innerText = 'Dodaj';
             loginLabel.innerText = 'Login';
             passwordLabel.innerText = 'Hasło';
@@ -115,7 +108,6 @@ class Users {
             adminOption.innerText = 'Administrator';
             analystOption.innerText = 'Analityk';
             operatorOption.innerText = 'Operator';
-            closeButton.innerText = 'X';
 
             //Atrybuty
             loginInput.setAttribute('type', 'text')
@@ -130,8 +122,6 @@ class Users {
             roleInput.options.add(operatorOption, 3);
 
             //Łączenie
-            belt.appendChild(closeButton)
-            registrationContainer.appendChild(belt)
             registrationWrapper.appendChild(loginLabel)
             registrationWrapper.appendChild(loginInput);
             registrationWrapper.appendChild(passwordLabel)
@@ -241,24 +231,19 @@ class Users {
         }
     }
     editPanel(data, e) {
-        const panel = document.createElement('div'),
+        const panelContainer = document.createElement('div'),
             panelWrapper = document.createElement('div'),
             infoPanel = document.createElement('div'),
             actionPanel = document.createElement('div'),
-            heading = document.createElement('h3'),
-            belt = document.createElement('div'),
-            closeButton = document.createElement('button'),
             removeButton = document.createElement('button');
+        const minimizedPanel = document.querySelector('.minimized-panels');
 
+        const moveBelt = new Movebelt(null, panelContainer, minimizedPanel, 'Edycja użytkownika');
+        moveBelt.create()
         const container = e;
 
         //Tekst
-        heading.innerText = 'Edycja użytkownika'
-        closeButton.innerText = 'X';
-        removeButton.innerText = 'Usuń'
-        belt.appendChild(closeButton);
-        panel.appendChild(belt);
-        panel.appendChild(heading)
+        removeButton.innerText = 'Usuń';
         for (let [key, value] of Object.entries(data.user)) {
             switch (key) {
                 case 'login': {
@@ -309,18 +294,12 @@ class Users {
 
         }
         //Klasy
-        panel.classList.add('edit-panel__container');
+        panelContainer.classList.add('edit-panel__container');
         infoPanel.classList.add('edit-panel__information');
         actionPanel.classList.add('edit-panel__actions');
         panelWrapper.classList.add('edit-panel__wrapper');
-        belt.classList.add('belt');
-        closeButton.classList.add('close');
         removeButton.classList.add('remove');
         //Akcje
-        panel.addEventListener('mousedown', helpers.dragMouseDown.bind(null, this, panel));
-        closeButton.addEventListener('click', (e) => {
-            panel.remove();
-        })
         removeButton.addEventListener('click', (e) => {
             const user = {
                 login: data.user.login
@@ -329,12 +308,11 @@ class Users {
             container.remove();
         })
         //Łączenie
-        belt.appendChild(closeButton)
         actionPanel.appendChild(removeButton)
         panelWrapper.appendChild(infoPanel);
         panelWrapper.appendChild(actionPanel);
-        panel.appendChild(panelWrapper)
-        container.appendChild(panel)
+        panelContainer.appendChild(panelWrapper)
+        container.appendChild(panelContainer)
     }
     createChangePasswordContainer(login) {
         const changePasswordContainer = document.createElement('div'),

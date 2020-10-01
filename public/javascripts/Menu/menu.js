@@ -2,8 +2,7 @@ import settings from '../helpers/fetch/appSettings.js';
 import helpers from '../helpers/auxiliaryFunctions.js'
 import User from '../Users/users.js';
 import LockedMachines from '../Machines/lockedMachines.js';
-
-
+import Movebelt from '../Movebelt/movebelt.js';
 class Menu {
     createMenu() {
         const menu = document.querySelector('.header__navigation > ul');
@@ -81,28 +80,14 @@ class Menu {
             e.preventDefault();
             e.stopPropagation();
             const settingsContainer = document.createElement('div'),
-                belt = document.createElement('div'),
-                settingsList = document.createElement('ul'),
-                closeButton = document.createElement('button'),
-                minimizeButton = document.createElement('button'),
-                controls = document.createElement('div'),
-                header = document.createElement('h3');
+                settingsList = document.createElement('ul');
+            const minimizedPanel = document.querySelector('.minimized-panels');
+            const moveBelt = new Movebelt(null, settingsContainer, minimizedPanel, 'Ustawienia');
+            moveBelt.create();
 
-
-            //Tekst
-            header.innerText = 'Ustawienia'
-            closeButton.innerText = 'X'
-            minimizeButton.innerText = '_'
             //Klasy
             settingsContainer.classList.add('settings__container');
-            belt.classList.add('move-belt');
-            closeButton.classList.add('close');
-            controls.classList.add('controls')
             //Akcje
-            closeButton.addEventListener('click', (e) => {
-                settingsContainer.remove();
-            })
-            belt.onmousedown = helpers.dragMouseDown.bind(null, this, settingsContainer);
             settings.showSettings().then(data => {
                 Object.values(data)
                     .map(val => {
@@ -156,11 +141,6 @@ class Menu {
                         settingsElement.appendChild(settingsAnchor);
                         settingsList.appendChild(settingsElement);
                     })
-                belt.appendChild(header)
-                controls.appendChild(minimizeButton)
-                controls.appendChild(closeButton)
-                belt.appendChild(controls)
-                settingsContainer.appendChild(belt);
                 settingsContainer.appendChild(settingsList);
                 container.appendChild(settingsContainer);
 

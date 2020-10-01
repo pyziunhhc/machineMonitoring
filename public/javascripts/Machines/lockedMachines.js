@@ -13,7 +13,6 @@ class LockedMachines {
             const machinesContainerWrapper = document.createElement('div'),
                 machinesContainer = document.createElement('div');
             const minimizedPanel = document.querySelector('.minimized-panels');
-
             const movebelt = new Movebelt(null, machinesContainerWrapper, minimizedPanel, 'Zablokowane maszyny')
             movebelt.create()
             machinesContainerWrapper.classList.add('locked-machines__container--wrapper');
