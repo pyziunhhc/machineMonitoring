@@ -6,15 +6,13 @@ window.onload = function () {
     MONITORING.createDOM();
 }
 
-class Monitoring {
+class Monitoring extends Panel {
     constructor(container) {
-        this.chartJS = null;
-        this.table = null;
-        this.dygraph = null;
-        this.data = null;
-        this.currentStatus = null;
-        this.intervalID = null;
-        this.container = container;
+        super(container)
+        this._data = null;
+        this._currentStatus = null;
+        this._intervalID = null;
+        this._container = container;
     }
     createDOM() {
         //Kontenery
@@ -62,7 +60,7 @@ class Monitoring {
         containerForMachines.appendChild(drillSharpeningVHMContainer);
         containerForMachines.appendChild(vhmProductionContainer);
         containerForMachines.appendChild(bodyManufacturerContainer);
-        this.container.appendChild(containerForMachines);
+        this._container.appendChild(containerForMachines);
 
 
         machines.getMachines().then(data => {
@@ -181,23 +179,22 @@ class Monitoring {
             } else {
                 const isExist = document.querySelector(`.main-machine-panel__container`)
                 if (!isExist) {
-                    const dataToSend = {
+                    const data = {
                         name: e.target.dataset.name,
                         from: new Date(new Date() - 86400000),
                         to: new Date()
                     };
-                    const panel = new Panel(dataToSend.name, this.container);
-                    machines.getAllStatuses(dataToSend).then(res => {
-                        this.data = res;
-                        this.currentStatus = res.status;
-                        panel.currentStatus = res.status;
-                        panel.createMachinePanel(dataToSend);
-                        panel.createDygraph(res.dygraph, dataToSend.name);
-                        panel.createTable(res.summary, dataToSend.name)
-                        panel.createChartJS(res.chartJS, dataToSend.name, 'bar');
-                        return panel;
-                    }).then(panel => {
-                        this.updateStatuses(dataToSend.name, panel);
+                    this.machineName = data.name;
+                    machines.getAllStatuses(data).then(json => {
+                        this._data = json;
+                        this._currentStatus = json.status;
+                        this.createMachinePanel(data);
+                        this.createDygraph(json.dygraph, this.machineName);
+                        this.createTable(json.summary, this.machineName)
+                        this.createChartJS(json.chartJS, this.machineName, 'bar');
+
+                    }).then(() => {
+                        this.updateStatuses();
                     })
                 }
 
@@ -206,27 +203,27 @@ class Monitoring {
             console.log(error)
         }
     }
-    updateStatuses(name, panel) {
+    updateStatuses() {
         try {
             this.intervalID = setInterval(() => {
-                const dataToSend = {
-                    name: name,
+                const data = {
+                    name: this.machineName,
                     from: new Date(),
                     to: new Date(),
-                    oldData: this.data,
-                    lastStatus: this.currentStatus
+                    oldData: this._data,
+                    lastStatus: this._currentStatus
                 };
-                machines.updateStatuses(dataToSend).then(res => {
-                    this.data = res;
-                    panel.currentStatus = res.status;
-                    panel.lastStatus = dataToSend.lastStatus;
-                    panel.updateDygraph(res, panel.charts.dygraph.chart)
-                    panel.updateChartJS(res, panel.charts.chartJS.chart)
-                    panel.updateTable(res.summary, dataToSend.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
-                    panel.updateStatus();
+                machines.updateStatuses(data).then(json => {
+                    this._data = json;
+                    this._currentStatus = json.status;
+                    this.lastStatus = data.lastStatus;
+                    this.updateDygraph(json.dygraph);
+                    this.updateChartJS(json.chartJS);
+                    this.updateTable(json.summary, data.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
+                    this.updateStatus();
                 })
-                if(!panel.intervalID){
-                    panel.intervalID = this.intervalID;
+                if (!this.intervalID) {
+                    this.intervalID = this.intervalID;
                 }
             }, 1000);
 

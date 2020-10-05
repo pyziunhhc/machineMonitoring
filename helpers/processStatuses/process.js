@@ -1,10 +1,18 @@
-const summaryMachineStatistics = (data, from, to) => {
+const summaryMachineStatistics = (data, from) => {
     const DATA = data;
     let summaryMachineStatistics = {
         firstStatus: {
             name: '',
             data: {
-                time: 0
+                time: 0,
+                show: false
+            }
+        },
+        lastStatus: {
+            name: '',
+            data: {
+                time: 0,
+                show: false
             }
         },
         erodowanie: {
@@ -207,13 +215,14 @@ const summaryMachineStatistics = (data, from, to) => {
             status = `${data.value}`;
         if (index == 0) {
             if (start != new Date(from)) {
-                let start = new Date(from)
+                let start = new Date(from);
                 time = end - start;
             }
         }
         if (data.end == null) {
             time = new Date() - start;
             summaryMachineStatistics.sumOfTimes.data.time += time;
+            summaryMachineStatistics.lastStatus.name = data.value;
         } else {
             summaryMachineStatistics.sumOfTimes.data.time += time;
         }

@@ -102,18 +102,19 @@ router.post('/get/table/summaryMachinesWork', (req, res, next) => {
       fetch.getMachines(firstHallGroup).then(machines => {
          let len = machines.length;
          machines.map(machine => {
-            fetch.getStatuses(machine.name, from, to).then(statuses => {
-               machinesArray.push({
-                  name: machine.name,
-                  statuses: statuses
-               })
-               if (len == machinesArray.length) {
-                  const data = currentMachinesWork(machinesArray, from, to);
-                  res.send({
-                     currentWork: data
+            fetch.getStatuses(machine.name, from, to)
+               .then(statuses => {
+                  machinesArray.push({
+                     name: machine.name,
+                     statuses: statuses,
                   })
-               }
-            })
+                  if (len == machinesArray.length) {
+                     const data = currentMachinesWork(machinesArray, from, to);
+                     res.send({
+                        currentWork: data
+                     })
+                  }
+               })
          })
       })
    }).catch(e => {

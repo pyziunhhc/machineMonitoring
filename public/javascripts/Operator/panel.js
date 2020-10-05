@@ -3,32 +3,34 @@ import Table from '../Table/table.js';
 import Movebelt from '../Movebelt/movebelt.js';
 
 class Panel {
-    constructor(name) {
-        this.machineName = name;
+    constructor(morningContainer, afternoonContainer, nightContainer) {
+        this._machineName = null;
         this.data = null;
-        this.currentStatus = null;
-        this.intervalID = null;
-        this.statsIntervalID = null;
+        this._currentStatus = null;
+        this.intervals = {
+            statsID: null,
+            currentID: null,
+        };
         this.charts = {
             chartJS: {
                 chart: null,
+                object: null,
                 container: null
             }
 
         };
-        this.table = {
+        this.tables = {
             table: null,
         };
         this.containers = {
-            morningChangeContainer: null,
-            afternoonChangeContainer: null,
-            nightChangeContainer: null,
+            morningChangeContainer: morningContainer,
+            afternoonChangeContainer: afternoonContainer,
+            nightChangeContainer: nightContainer,
             statusContainer: null
         };
         this.moveBelt = null;
     }
     createMachinePanel(data, containerToAppend) {
-        //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
             panelContainer = document.createElement('div'),
             leftPanelContainer = document.createElement('div'),
@@ -42,12 +44,12 @@ class Panel {
             table = document.createElement('table');
         const minimizedPanelContainer = document.querySelector('.minimized-panels');
 
-        const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer, this.machineName, 'operator')
+        const moveBelt = new Movebelt(this._machineName, machinePanelContainer, minimizedPanelContainer,this._machineName, 'operator')
         this.moveBelt = moveBelt;
         moveBelt.create()
         this.containers.statusContainer = status;
         //Tekst
-        status.innerText = this.currentStatus;
+        status.innerText = this._currentStatus;
 
         //Klasy
 
@@ -96,19 +98,20 @@ class Panel {
     }
     createChartJS(data, name, type) {
         const CHART = new ChartJS(data, name, type, this.charts.chartJS.container),
-            chart = CHART.create();
+            chart = CHART.create('summary');
+        this.charts.chartJS.object = CHART;
         this.charts.chartJS.chart = chart;
     }
     createChangesChartJS(data, name, type, change) {
         if (change == 'morning') {
             const CHART = new ChartJS(data, name, type, this.containers.morningChangeContainer),
-                chart = CHART.create();
+                chart = CHART.create('summary');
         } else if (change == 'afternoon') {
             const CHART = new ChartJS(data, name, type, this.containers.afternoonChangeContainer),
-                chart = CHART.create();
+                chart = CHART.create('summary');
         } else if (change == 'night') {
             const CHART = new ChartJS(data, name, type, this.containers.nightChangeContainer),
-                chart = CHART.create();
+                chart = CHART.create('summary');
         }
     }
 
@@ -117,27 +120,23 @@ class Panel {
         const parent = document.querySelector(`.statuses-panel__container.${name}`),
             oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
         TABLE.create(parent, oldTable);
-        this.table.table = TABLE;
+        this.tables.table = TABLE;
     }
     updateTable(data, name) {
-        this.table.table.update(data, name);
+        this.tables.table.update(data, name);
     }
-    updateChartJS(data, chart) {
-        //przeniesc do klasy chartjs
-        let finalData = data.chartJS.time.map(val => new Date(val));
-        chart.percentage.config.data.datasets[0].data = data.chartJS.percentage;
-        chart.time.config.data.datasets[0].data = finalData;
-        chart.percentage.update();
-        chart.time.update();
+    updateChartJS(data) {
+        this.charts.chartJS.object.update(data, this.charts.chartJS.chart)
+
     }
     updateStatus() {
         if (!this.moveBelt.intervalID) {
-            this.moveBelt.intervalID = this.intervalID;
+            this.moveBelt.intervalID = this.intervals.currentID;
         }
-        if(!this.moveBelt.statsIntervalID){
-            this.moveBelt.statsIntervalID = this.statsIntervalID;
+        if (!this.moveBelt.statsIntervalID) {
+            this.moveBelt.statsIntervalID = this.intervals.statsID;
         }
-        this.containers.statusContainer.innerText = this.currentStatus.toUpperCase();
+        this.containers.statusContainer.innerText = this._currentStatus.toUpperCase();
     }
 
 }

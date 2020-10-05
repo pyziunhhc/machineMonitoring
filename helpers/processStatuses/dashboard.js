@@ -188,56 +188,56 @@ const whatMachineDoingGraph = (data) => {
                 processedStatuses[machine.statuses].value++;
             }
             break;
-            case 'SZLIFOWANIE': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'DISCONNECT': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case null: {
-                processedStatuses['DISCONNECT'].value++;
-            }
-            break;
-            case 'WARMUP': {
-                processedStatuses[machine.statuses].value++;
-            }
+        case 'SZLIFOWANIE': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'DISCONNECT': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case null: {
+            processedStatuses['DISCONNECT'].value++;
+        }
+        break;
+        case 'WARMUP': {
+            processedStatuses[machine.statuses].value++;
+        }
 
-            break;
-            case 'MANUAL': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'WYMIANA_SCIERNICY': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'STOP': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'SUSPEND': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'EMERGENCY': {
+        break;
+        case 'MANUAL': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'WYMIANA_SCIERNICY': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'STOP': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'SUSPEND': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'EMERGENCY': {
 
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'ROZGRZEWKA': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'ZATRZYMANIE': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
-            case 'PRACA': {
-                processedStatuses[machine.statuses].value++;
-            }
-            break;
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'ROZGRZEWKA': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'ZATRZYMANIE': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
+        case 'PRACA': {
+            processedStatuses[machine.statuses].value++;
+        }
+        break;
         }
     })
     let temp = Object.values(processedStatuses)
@@ -253,15 +253,11 @@ const whatMachineDoingGraph = (data) => {
 const currentMachinesWork = (data, from, to) => {
     let currentMachinesWork = data,
         dataToSend = [];
-
     currentMachinesWork.map((element, index) => {
-        if (index == 0) {
-
-        }
         let processedData = summaryMachineStatistics(element.statuses, from, to)
         dataToSend.push({
             name: element.name,
-            data: processedData
+            data: processedData,
         })
     });
     return dataToSend;

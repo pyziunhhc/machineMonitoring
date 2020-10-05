@@ -37,10 +37,10 @@ class Movebelt {
         });
         closePanelButton.addEventListener('click', (e) => {
             if (this.place === 'operator') {
+                console.log(this.machineName)
                 machines.unlockMachine({
                     name: this.machineName
                 }).then(res => {
-                    console.log(res)
                     if (res.status == 200) {
                         message.showMessage('success', res.message)
                         machines.lockStatusesForUser({

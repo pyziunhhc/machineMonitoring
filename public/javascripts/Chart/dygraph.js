@@ -111,14 +111,6 @@ class myDygraph {
 
         };
     }
-    updateChart() {
-
-    }
-    updateOptions(toUpdateTable = false, toUpdateChart = false, isZoomed = false) {
-        this.toUpdateTable = toUpdateTable;
-        this.toUpdateChart = toUpdateChart;
-        this.isZoomed = isZoomed;
-    }
     create() {
         const chart = document.createElement('div'),
             chartContainer = document.querySelector(`.dygraph__container.${this.name}`);
@@ -228,7 +220,7 @@ class myDygraph {
         return myChart;
     }
 
-    update(data){
+    update(data, chart) {
         const finalData = data.map((arrays, index) => {
             let finalData = [];
             arrays.map((val, index) => {
@@ -242,8 +234,16 @@ class myDygraph {
             return finalData;
 
         })
-        return finalData;
+        chart.updateOptions({
+            'file': finalData,
+        });
     }
+    updateOptions(toUpdateTable = false, toUpdateChart = false, isZoomed = false) {
+        this.toUpdateTable = toUpdateTable;
+        this.toUpdateChart = toUpdateChart;
+        this.isZoomed = isZoomed;
+    }
+
 }
 
 export default myDygraph;

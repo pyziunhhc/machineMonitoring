@@ -11,9 +11,10 @@ const mongoose = require('mongoose');
 
 /*LACZENIE Z BAZA*/
 mongoose.connect('mongodb://localhost:27017/monitoring', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then().catch(error => console.log(error))
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }).then()
+  .catch(error => console.log(error))
 mongoose.connection.on('connected', () => {
   console.log('Connected to database')
 })
@@ -44,10 +45,8 @@ const corsOption = {
 }
 app.use(cors(corsOption))
 app.use(logger('dev'));
-//app.use(express.json());
-//app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(express.json({//problem z payloadem był przez użycie bodyParser.json
+app.use(express.json({ //problem z payloadem był przez użycie bodyParser.json
   limit: 52428800,
   extended: true,
   parameterLimit: 52428800
@@ -74,7 +73,6 @@ app.use('/api/checkCookie', checkCookie);
 app.use('/monitoring', machineRouter);
 app.use('/operator', operatorRouter);
 app.use('/stats', statsRouter);
-//app.use('/api/tasks', tasksRouter);
 
 
 // catch 404 and forward to error handler

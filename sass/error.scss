@@ -1,0 +1,46 @@
+@import "reset";
+@import "variables";
+.container {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10em;
+  background: $mainBackgroundColor;
+  color: white;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    img {
+      width: 17%;
+    }
+    &:hover {
+      cursor: pointer;
+      &:after {
+        content: "";
+        animation: drawLine 2s ease 0;
+        border-bottom: 1px solid white;
+        position: absolute;
+        width: 50%;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+@keyframes drawLine {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 50%;
+  }
+}

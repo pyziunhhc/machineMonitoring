@@ -75,16 +75,23 @@ router.post('/check', (req, res, next) => {
 })
 router.post('/checkStats', (req, res, next) => {
     const user = req.cookies.login,
-        name = req.body.name;
-    Stats.findOne({
+        name = req.body.name,
+        start = req.body.from;
+    Stats.findOneAndUpdate({
         machine: name,
         user: user,
+        start: {
+            $gte: start//problem przy wyborze daty, wykminic inny sposob na odfiltrowanie czy istnieje wpis w bazie
+        }
+    }, {
         lockedStats: false
     }, (err, document) => {
         if (document) {
+            console.log(start, document.start)
             res.send({
                 exist: true,
-                start: document.start
+                start: document.start,
+                data: document.data
             })
         } else {
             res.send({
@@ -115,7 +122,7 @@ router.post('/save', (req, res, next) => {
             } else {
                 res.status(200).send({
                     status: 200,
-                    message: [`Zapisano statystyki dla ${user} \n na maszynie ${name}`]
+                    start: req.body.start
                 })
             }
         })
@@ -125,6 +132,7 @@ router.post('/save', (req, res, next) => {
 router.post('/lock', (req, res, next) => {
     const user = req.cookies.login,
         name = req.body.name;
+    console.log(user, name)
     Stats.findOneAndUpdate({
         machine: name,
         user: user,
@@ -158,18 +166,21 @@ router.post('/locked', (req, res, next) => {
 });
 router.put('/update', (req, res, next) => {
     const user = req.cookies.login,
-        name = req.body.name;
+        name = req.body.name,
+        start = req.body.start;
     Stats.findOneAndUpdate({
         machine: name,
         user: user,
-        lockedStats: false
+        start: {
+            $gte: start
+        },
     }, {
         data: req.body.data
     }, (err, document) => {
         if (document) {
             res.status(200).send({
                 status: 200,
-                message: [`Pomyślnie zaktualizowano statystyki dla ${user} \n na maszynie ${name}`]
+                //message: [`Pomyślnie zaktualizowano statystyki dla ${user} \n na maszynie ${name}`]
             })
         }
     })

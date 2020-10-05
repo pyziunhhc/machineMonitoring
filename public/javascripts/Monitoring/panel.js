@@ -1,28 +1,29 @@
 import Dygraph from '../Chart/dygraph.js';
 import ChartJS from '../Chart/chartJS.js';
 import Table from '../Table/table.js';
-import helpers from '../helpers/auxiliaryFunctions.js'
 import Movebelt from '../Movebelt/movebelt.js'
 
 class Panel {
-    constructor(name, container) {
-        this.machineName = name;
+    constructor(container, machineName = null, ) {
+        this.machineName = machineName;
         this.data = null;
-        this.currentStatus = null;
+        this._currentStatus = null;
         this.intervalID = null;
 
         this.charts = {
             chartJS: {
                 chart: null,
+                object: null,
                 container: null
             },
             dygraph: {
                 chart: null,
+                object: null,
                 container: null
             }
 
         };
-        this.table = {
+        this.tables = {
             table: null,
         };
         this.containers = {
@@ -32,12 +33,11 @@ class Panel {
             nightChangeContainer: null,
             statusContainer: null
         };
-        this.moveBelt =  null;
+        this.moveBelt = null;
     }
     createMachinePanel() {
         //Rozdzielic przyciski na osobne klasy
         const machinePanelContainer = document.createElement('div'),
-
             panelContainer = document.createElement('div'),
             leftPanelContainer = document.createElement('div'),
             middlePanelContainer = document.createElement('div'),
@@ -50,11 +50,11 @@ class Panel {
         const moveBelt = new Movebelt(this.machineName, machinePanelContainer, minimizedPanelContainer, this.machineName, 'monitoring');
         this.moveBelt = moveBelt;
         moveBelt.create();
-        /* NIE DZIAŁA USUWANIE INTERWAŁU Z FUNKCI SETINTERVAL -> NIE PRZESYŁA SIĘ ID Z MONITORING.JS DO PANEL.JS */
+
         this.charts.chartJS.container = chartJSContainer;
         this.charts.dygraph.container = dygraphContainer;
         //Tekst
-        status.innerText = this.currentStatus;
+        status.innerText = this._currentStatus;
         this.containers.statusContainer = status;
         //Klasy
 
@@ -86,12 +86,14 @@ class Panel {
     }
     createChartJS(data, name, type) {
         const CHART = new ChartJS(data, name, type, this.charts.chartJS.container),
-            chart = CHART.create();
+            chart = CHART.create('summary');
+        this.charts.chartJS.object = CHART;
         this.charts.chartJS.chart = chart;
     }
     createDygraph(data, name) {
         const GRAPH = new Dygraph(data, name, this.charts.chartJS.container),
             graph = GRAPH.create();
+        this.charts.dygraph.object = GRAPH;
         this.charts.dygraph.chart = graph;
     }
     createTable(data, name) {
@@ -99,48 +101,27 @@ class Panel {
         const parent = document.querySelector(`.statuses-panel__container.${name}`),
             oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
         TABLE.create(parent, oldTable);
-        this.table.table = TABLE;
+        this.tables.table = TABLE;
     }
     updateTable(data, name) {
-        this.table.table.update(data, name);
+        this.tables.table.update(data, name);
     }
-    updateChartJS(data, chart) {
-        //przeniesc do klasy chartjs
-        let finalData = data.chartJS.time.map(val => new Date(val));
-        chart.percentage.config.data.datasets[0].data = data.chartJS.percentage;
-        chart.time.config.data.datasets[0].data = finalData;
-        chart.percentage.update();
-        chart.time.update();
+    updateChartJS(data) {
+        this.charts.chartJS.object.update(data, this.charts.chartJS.chart)
     }
-    updateDygraph(data, chart) {
+    updateDygraph(data) {
         //przeniesc do klasy dygraph
         try {
-            const finalData = data.dygraph.map((arrays, index) => {
-                let finalData = [];
-                arrays.map((val, index) => {
-                    if (index == 0) {
-                        finalData.push(new Date(val));
-                    } else {
-                        finalData.push(val)
-                    }
-                    return finalData;
-                })
-                return finalData;
-
-            })
-            chart.updateOptions({
-                'file': finalData,
-            });
+            this.charts.dygraph.object.update(data, this.charts.dygraph.chart)
         } catch (e) {
             console.log(e)
         }
     }
     updateStatus() {
-        //ZŁY SPOSÓB, WYMYŚL INNY
-        if(!this.moveBelt.intervalID){
+        if (!this.moveBelt.intervalID) {
             this.moveBelt.intervalID = this.intervalID;
         }
-        this.containers.statusContainer.innerText = this.currentStatus.toUpperCase();
+        this.containers.statusContainer.innerText = this._currentStatus.toUpperCase();
     }
 }
 
