@@ -130,11 +130,11 @@ class Panel {
 
     }
     updateStatus() {
-        if (!this.moveBelt.intervalID) {
-            this.moveBelt.intervalID = this.intervals.currentID;
+        if (!this.moveBelt._intervalID) {
+            this.moveBelt._intervalID = this.intervals.currentID;
         }
-        if (!this.moveBelt.statsIntervalID) {
-            this.moveBelt.statsIntervalID = this.intervals.statsID;
+        if (!this.moveBelt._statsIntervalID) {
+            this.moveBelt._statsIntervalID = this.intervals.statsID;
         }
         this.containers.statusContainer.innerText = this._currentStatus.toUpperCase();
     }

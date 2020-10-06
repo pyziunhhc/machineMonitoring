@@ -118,7 +118,7 @@ function saveStatusesForUser(data) {
 }
 
 function lockStatusesForUser(data) {
-    return fetch('/stats/lock', {
+    return fetch('/stats/lockStats', {
             method: 'POST',
             body: JSON.stringify(data),
             credentials: 'include',

@@ -201,110 +201,100 @@ const summaryMachineStatistics = (data, from) => {
         sumOfTimes: {
             displayName: 'Suma',
             data: {
-                time: 0
+                time: 0,
+                show: false
             }
         },
 
     };
+
     DATA.map((data, index) => {
         let start = new Date(data.start),
             end = new Date(data.end),
             time = end - start,
-            feedValue = 0,
-            potentiometrValue = 0,
             status = `${data.value}`;
+
         if (index == 0) {
             if (start != new Date(from)) {
-                let start = new Date(from);
-                time = end - start;
+                let newStart = new Date(from);
+                if (data.end == null) {
+                    time = new Date() - newStart;
+                    summaryMachineStatistics.sumOfTimes.data.time += time;
+                } else {
+                    time = end - newStart;
+                    summaryMachineStatistics.sumOfTimes.data.time += time;
+                }
+            } else {
+                summaryMachineStatistics.sumOfTimes.data.time += time;
+            }
+        } else {
+            if (data.end == null) {
+                time = new Date() - start;
+                console.log('Początek', time, data)
+                summaryMachineStatistics.sumOfTimes.data.time += time;
+                summaryMachineStatistics.lastStatus.name = data.value;
+            } else {
+                summaryMachineStatistics.sumOfTimes.data.time += time;
             }
         }
-        if (data.end == null) {
-            time = new Date() - start;
-            summaryMachineStatistics.sumOfTimes.data.time += time;
-            summaryMachineStatistics.lastStatus.name = data.value;
-        } else {
-            summaryMachineStatistics.sumOfTimes.data.time += time;
-        }
+
 
 
         switch (status) {
-            case 'ERODOWANIE': {
+            case 'ERODOWANIE':
                 summaryMachineStatistics.erodowanie.data.time += time;
-                summaryMachineStatistics.erodowanie.data.averageFeedCounter++;
-            }
-            break;
-        case 'SZLIFOWANIE': {
-            summaryMachineStatistics.szlifowanie.data.time += time;
-            summaryMachineStatistics.szlifowanie.data.averageFeedCounter++;
-        }
 
-        break;
-        case 'DISCONNECT': {
-            summaryMachineStatistics.disconnect.data.time += time;
-            summaryMachineStatistics.disconnect.data.feedValue = feedValue;
-        }
+                break;
+            case 'SZLIFOWANIE':
+                summaryMachineStatistics.szlifowanie.data.time += time;
 
-        break;
+                break;
+            case 'DISCONNECT':
+                summaryMachineStatistics.disconnect.data.time += time;
 
-        case 'null': {
-            summaryMachineStatistics.disconnect.data.time += time;
-            summaryMachineStatistics.disconnect.data.feedValue = feedValue;
-        }
+                break;
+            case 'null':
+                summaryMachineStatistics.disconnect.data.time += time;
 
-        break;
-        case 'WARMUP': {
-            summaryMachineStatistics.warmup.data.time += time;
-            summaryMachineStatistics.warmup.data.feedValue = feedValue;
-        }
+                break;
+            case 'WARMUP':
+                summaryMachineStatistics.warmup.data.time += time;
 
-        break;
-        case 'MANUAL': {
-            summaryMachineStatistics.manual.data.time += time;
-            summaryMachineStatistics.manual.data.feedValue = feedValue;
-        }
-        break;
-        case 'WYMIANA': {
-            summaryMachineStatistics.wymianaSciernicy.data.time += time;
-            summaryMachineStatistics.wymianaSciernicy.data.feedValue = feedValue;
-        }
-        break;
-        case 'STOP': {
-            summaryMachineStatistics.stop.data.time += time;
-            summaryMachineStatistics.stop.data.feedValue = feedValue;
-        }
-        break;
-        case 'SUSPEND': {
 
-            summaryMachineStatistics.suspend.data.time += time;
-            summaryMachineStatistics.suspend.data.feedValue += feedValue;
-            break;
-        }
+                break;
+            case 'MANUAL':
+                summaryMachineStatistics.manual.data.time += time;
 
-        case 'EMERGENCY': {
+                break;
+            case 'WYMIANA':
+                summaryMachineStatistics.wymianaSciernicy.data.time += time;
 
-            summaryMachineStatistics.emergency.data.time += time;
-            summaryMachineStatistics.emergency.data.feedValue = feedValue;
-        }
-        break;
-        case 'ROZGRZEWKA': {
+                break;
+            case 'STOP':
+                summaryMachineStatistics.stop.data.time += time;
 
-            summaryMachineStatistics.rozgrzewka.data.time += time;
-            summaryMachineStatistics.rozgrzewka.data.feedValue = feedValue;
-        }
-        break;
-        case 'ZATRZYMANIE': {
+                break;
+            case 'SUSPEND':
+                summaryMachineStatistics.suspend.data.time += time;
+                break;
 
-            summaryMachineStatistics.zatrzymanie.data.time += time;
-            summaryMachineStatistics.zatrzymanie.data.feedValue = feedValue;
-        }
-        break;
-        case 'PRACA': {
-            summaryMachineStatistics.praca.data.time += time;
-            summaryMachineStatistics.praca.data.potentiometrValue = potentiometrValue;
-            summaryMachineStatistics.praca.data.averageFeedCounter++;
-        }
-        break;
+
+            case 'EMERGENCY':
+                summaryMachineStatistics.emergency.data.time += time;
+
+                break;
+            case 'ROZGRZEWKA':
+                summaryMachineStatistics.rozgrzewka.data.time += time;
+
+                break;
+            case 'ZATRZYMANIE':
+                summaryMachineStatistics.zatrzymanie.data.time += time;
+
+                break;
+            case 'PRACA':
+                summaryMachineStatistics.praca.data.time += time;
+
+                break;
         }
     });
 

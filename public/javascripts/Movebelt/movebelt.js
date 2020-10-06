@@ -3,14 +3,14 @@ import machines from '../helpers/fetch/machines.js';
 import message from '../helpers/messages.js';
 
 class Movebelt {
-    constructor(machineName = null, panelContainer, minimizedPanelContainer, title, place, intervalID = null, statsIntervalID) {
-        this.title = title;
-        this.machineName = machineName;
-        this.panelContainer = panelContainer;
-        this.minimizedPanelContainer = minimizedPanelContainer;
-        this.place = place;
-        this.intervalID = intervalID;
-        this.statsIntervalID = statsIntervalID
+    constructor(machineName = null, panelContainer, minimizedPanelContainer, title, place, intervalID = null, statsIntervalID = null) {
+        this._title = title;
+        this._machineName = machineName;
+        this._panelContainer = panelContainer;
+        this._minimizedPanelContainer = minimizedPanelContainer;
+        this._place = place;
+        this._intervalID = intervalID;
+        this._statsIntervalID = statsIntervalID;
     }
     create() {
         const moveContainerBeam = document.createElement('div'),
@@ -21,45 +21,23 @@ class Movebelt {
             minimizePanelButton = document.createElement('button');
 
         closePanelButton.innerText = 'X';
-        minimizedPanel.innerText = this.title;
-        title.innerText = this.title;
-        minimizedPanel.setAttribute('name', this.machineName)
+        minimizedPanel.innerText = this._title;
+        title.innerText = this._title;
+        minimizedPanel.setAttribute('name', this._machineName)
 
         moveContainerBeam.classList.add('move-belt');
         closePanelButton.classList.add('close');
         minimizePanelButton.classList.add('minimize');
         controls.classList.add('controls');
 
-        moveContainerBeam.onmousedown = helpers.dragMouseDown.bind(null, this, this.panelContainer);
+        moveContainerBeam.onmousedown = helpers.dragMouseDown.bind(null, this, this._panelContainer);
         minimizePanelButton.addEventListener('click', (e) => {
-            this.panelContainer.classList.add('minimized');
-            this.minimizedPanelContainer.appendChild(minimizedPanel);
+            this._panelContainer.classList.add('minimized');
+            this._minimizedPanelContainer.appendChild(minimizedPanel);
         });
-        closePanelButton.addEventListener('click', (e) => {
-            if (this.place === 'operator') {
-                console.log(this.machineName)
-                machines.unlockMachine({
-                    name: this.machineName
-                }).then(res => {
-                    if (res.status == 200) {
-                        message.showMessage('success', res.message)
-                        machines.lockStatusesForUser({
-                            name: this.machineName
-                        })
-                    } else {
-                        message.showMessage('error', res.message)
-                    }
-                    clearInterval(this.intervalID)
-                    clearInterval(this.statsIntervalID)
-                })
-            } else {
-                clearInterval(this.intervalID)
-                this.panelContainer.remove();
-            }
-            this.panelContainer.remove();
-        })
+        closePanelButton.addEventListener('click', this.close.bind(this))
         minimizedPanel.addEventListener('click', (e) => {
-            this.panelContainer.classList.remove('minimized');
+            this._panelContainer.classList.remove('minimized');
             minimizedPanel.remove();
         })
         moveContainerBeam.appendChild(title)
@@ -67,7 +45,30 @@ class Movebelt {
         controls.appendChild(minimizePanelButton);
         controls.appendChild(closePanelButton);
 
-        this.panelContainer.appendChild(moveContainerBeam);
+        this._panelContainer.appendChild(moveContainerBeam);
+    }
+    close(){
+        console.log(this)
+        if (this._place === 'operator') {
+            console.log('operator')
+            machines.unlockMachine({
+                name: this._machineName
+            }).then(res => {
+                if (res.status == 200) {
+                    machines.lockStatusesForUser({
+                        name: this._machineName
+                    })
+                } else {
+
+                }
+                clearInterval(this._intervalID)
+                clearInterval(this._statsIntervalID)
+            })
+        } else {
+            clearInterval(this._intervalID)
+            this._panelContainer.remove();
+        }
+        this._panelContainer.remove();
     }
 }
 

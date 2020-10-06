@@ -81,7 +81,7 @@ router.post('/checkStats', (req, res, next) => {
         machine: name,
         user: user,
         start: {
-            $gte: start//problem przy wyborze daty, wykminic inny sposob na odfiltrowanie czy istnieje wpis w bazie
+            $gte: new Date(start)
         }
     }, {
         lockedStats: false
@@ -129,7 +129,7 @@ router.post('/save', (req, res, next) => {
 
     })
 });
-router.post('/lock', (req, res, next) => {
+router.post('/lockStats', (req, res, next) => {
     const user = req.cookies.login,
         name = req.body.name;
     console.log(user, name)
@@ -141,7 +141,11 @@ router.post('/lock', (req, res, next) => {
         lockedStats: true,
         end: new Date()
     }, (err, document) => {
-        if (document) {}
+        if (document) {
+            res.send({
+                status: 200
+            })
+        }
     })
 });
 router.post('/locked', (req, res, next) => {
@@ -218,7 +222,7 @@ router.post('/show/all', (req, res, next) => {
             } else {
                 res.status(200).send({
                     status: 200,
-                    message: ['Brak statystyk do wyświetlenia za podany okres.']
+                    message: ['W podanym okresie nie ma statystyk do wyświetlenia']
                 })
             }
 

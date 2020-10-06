@@ -264,7 +264,7 @@ class Operator extends Panel {
                             this.createTable(this._data.summary, machineName);
                             this.createChartJS(this._data.chartJS, machineName, 'bar');
                             this.updateAllStatuses(machineName);
-                            this.createChangePanel(machineName);
+                            //this.createChangePanel(machineName);
                             startPanelWrapper.remove();
                             return;
                         })
@@ -274,23 +274,22 @@ class Operator extends Panel {
                                     name: this._machineName,
                                     from: new Date()
                                 }
-                                console.log('Nowy wpis', locked)
                                 machines.checkUserStats(toCheck)
                                     .then(res => {
 
                                         if (res.exist) {
-                                            console.log('Statystyka istnieje, aktualizuj', res)
+
                                             this.updateSummaryStatuses({
                                                 start: res.start,
                                                 data: res.data,
                                             });
                                         } else {
-                                            console.log('Statystyka nie istnieje, zapisz', res)
                                             const data = {
                                                 name: this._machineName,
                                                 from: new Date(),
                                                 to: new Date(),
                                             }
+
                                             this.saveUserStats(data);
                                             this.updateSummaryStatuses({
                                                 start: data.from
@@ -299,7 +298,6 @@ class Operator extends Panel {
                                     })
 
                             } else {
-                                console.log('Istnieje wpis', locked)
                                 const toCheck = {
                                     name: this._machineName,
                                     from: new Date()
@@ -307,13 +305,13 @@ class Operator extends Panel {
                                 machines.checkUserStats(toCheck)
                                     .then(res => {
                                         if (res.exist) {
-                                            console.log('Statystyka istnieje, aktualizuj', res)
+
                                             this.updateSummaryStatuses({
                                                 start: res.start,
                                                 data: res.data
                                             });
                                         } else {
-                                            console.log('Statystyka nie istnieje, zapisz', res)
+
                                             const data = {
                                                 name: this._machineName,
                                                 from: new Date(),
@@ -327,9 +325,6 @@ class Operator extends Panel {
                                     })
                             }
                         })
-                    // .then(() => {
-                    //     this.updateSummaryStatuses(this._machineName)
-                    // })
 
                 } else {
                     message.showMessage('error', res.message);
@@ -394,6 +389,7 @@ class Operator extends Panel {
     updateSummaryStatuses(data) {
         try {
             this.intervals.statsID = setInterval(() => {
+
                 if (Object.keys(data).length > 1 && !this._userData) {
                     this._userData = data.data;
                 }
@@ -406,7 +402,7 @@ class Operator extends Panel {
                 };
 
                 if (this._userData) {
-                    console.log('Aktualizuj userakurła')
+
                     machines.updateSummaryStatuses(dataToSend)
                         .then(json => {
                             this._userData = json.update;
@@ -433,20 +429,17 @@ class Operator extends Panel {
                     start: data.from,
                 }
                 this._userData = json.data;
+
                 machines.saveStatusesForUser(toSave)
-                    .then(res => {
-                        this._userData = json.data;
-                    })
+                    .then(res => {})
             })
     }
     updateUserStats(data) {
-
         const toSave = {
             name: this._machineName,
             data: data.data,
             start: data.start,
         }
-        console.log('Aktualizancja')
         machines.updateStatusesForUser(toSave)
     }
 
