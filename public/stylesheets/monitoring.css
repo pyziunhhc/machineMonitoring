@@ -756,8 +756,9 @@ body {
             font-size: 1.2em; }
 
 .settings__container {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   position: absolute;
   width: 50%;
   height: 50vh;
@@ -771,6 +772,13 @@ body {
     .settings__container ul li a:hover {
       cursor: pointer;
       font-weight: bold; }
+  .settings__container .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0; }
+    .settings__container .container input {
+      width: 50%; }
 
 .move-belt {
   height: 5%;
@@ -1051,30 +1059,62 @@ table tbody tr td {
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center; }
+      .monitoring__container .main-machine-panel__container .panel__container .changes__container,
+      .operator__container .main-machine-panel__container .panel__container .changes__container {
+        display: flex;
+        width: 100%;
         justify-content: center;
-        margin-top: 12%; }
+        border-top: 1px solid black; }
+        .monitoring__container .main-machine-panel__container .panel__container .changes__container .morning__container,
+        .monitoring__container .main-machine-panel__container .panel__container .changes__container .afternoon__container,
+        .monitoring__container .main-machine-panel__container .panel__container .changes__container .night__container,
+        .operator__container .main-machine-panel__container .panel__container .changes__container .morning__container,
+        .operator__container .main-machine-panel__container .panel__container .changes__container .afternoon__container,
+        .operator__container .main-machine-panel__container .panel__container .changes__container .night__container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex: 1;
+          padding: 1%; }
+          .monitoring__container .main-machine-panel__container .panel__container .changes__container .morning__container h3,
+          .monitoring__container .main-machine-panel__container .panel__container .changes__container .afternoon__container h3,
+          .monitoring__container .main-machine-panel__container .panel__container .changes__container .night__container h3,
+          .operator__container .main-machine-panel__container .panel__container .changes__container .morning__container h3,
+          .operator__container .main-machine-panel__container .panel__container .changes__container .afternoon__container h3,
+          .operator__container .main-machine-panel__container .panel__container .changes__container .night__container h3 {
+            font-weight: bold;
+            font-size: 2em; }
 
 @media screen and (min-width: 1366px) {
   .main__container {
     height: 100%; }
     .main__container .main__section {
       height: 90%; }
-      .main__container .main__section .monitoring__container .monitoring__machines, .main__container .main__section .operator__container .monitoring__machines {
+      .main__container .main__section .monitoring__container .monitoring__machines,
+      .main__container .main__section .operator__container .monitoring__machines {
         flex-direction: row; }
-        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group h3, .main__container .main__section .operator__container .monitoring__machines .monitoring__group h3 {
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group h3,
+        .main__container .main__section .operator__container .monitoring__machines .monitoring__group h3 {
           font-size: 2em;
           text-align: center; }
-        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element, .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element {
+        .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element,
+        .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element {
           width: 90%; }
-          .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element p, .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element p {
+          .main__container .main__section .monitoring__container .monitoring__machines .monitoring__group .monitoring__element p,
+          .main__container .main__section .operator__container .monitoring__machines .monitoring__group .monitoring__element p {
             text-align: center;
             margin: 2% 0% 2% 0%;
             font-size: 1.5em; }
-      .main__container .main__section .monitoring__container .main-machine-panel__container, .main__container .main__section .operator__container .main-machine-panel__container {
-        width: 80%; }
-        .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container, .main__container .main__section .operator__container .main-machine-panel__container .panel__container {
+      .main__container .main__section .monitoring__container .main-machine-panel__container,
+      .main__container .main__section .operator__container .main-machine-panel__container {
+        width: 80%;
+        top: 0; }
+        .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container,
+        .main__container .main__section .operator__container .main-machine-panel__container .panel__container {
           flex-direction: row; }
-          .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container, .main__container .main__section .operator__container .main-machine-panel__container .panel__container .chartJS__container {
+          .main__container .main__section .monitoring__container .main-machine-panel__container .panel__container .chartJS__container,
+          .main__container .main__section .operator__container .main-machine-panel__container .panel__container .chartJS__container {
             flex-direction: row; } }
 
 /*# sourceMappingURL=monitoring.css.map */

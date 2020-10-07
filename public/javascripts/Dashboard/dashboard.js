@@ -72,61 +72,63 @@ class Dashboard {
                     }
                 }
                 summaryContainer.replaceChild(tableContainer, summaryTable)
-            });
+            }).then(() => {
+                machines.summaryMachinesWork(summary)
+                    .then(json => {
+                        const data = json.currentWork,
+                            tableArray = [];
+                        const parent = document.querySelector('.summary-container__table--current');
+                        data.map((element, index) => {
+                            const TABLE = new Table(element.data, element.name);
+                            const container = document.createElement('div'),
+                                title = document.createElement('h3');
+                            title.innerText = element.name;
 
-        machines.summaryMachinesWork(summary)
-            .then(json => {
-                const data = json.currentWork,
-                    tableArray = [];
-                const parent = document.querySelector('.summary-container__table--current');
-                data.map((element, index) => {
-                    const TABLE = new Table(element.data, element.name);
-                    const container = document.createElement('div'),
-                        title = document.createElement('h3');
-                    title.innerText = element.name;
-
-                    container.classList.add('statuses-panel__container');
-                    container.classList.add(element.name)
-                    container.appendChild(title);
-                    parent.appendChild(container);
-                    tableArray.push({
-                        TABLE,
-                        container
-                    });
-                    if (data.length - 1 == index) {
+                            container.classList.add('statuses-panel__container');
+                            container.classList.add(element.name)
+                            container.appendChild(title);
+                            parent.appendChild(container);
+                            tableArray.push({
+                                TABLE,
+                                container
+                            });
+                            if (data.length - 1 == index) {
+                                return tableArray;
+                            }
+                        })
                         return tableArray;
-                    }
-                })
-                return tableArray;
-            })
-            .then((tableArray) => {
-                tableArray.forEach(element => {
-                    element.TABLE.create(element.container)
-                })
-                return tableArray;
-            })
-            .then((tableArray) => {
-                setInterval(() => {
-                    tableArray.forEach(element => {
-                        const dataToSend = {
-                            name: element.TABLE._name,
-                            from: new Date(),
-                            to: new Date(),
-                            oldData: element.TABLE._data,
-                            lastStatus: element.TABLE._data.lastStatus.name
-                        };
-                        machines.updateSummaryStatuses(dataToSend)
-                            .then(json => {
-                                element.TABLE._data = json.update;
-                                element.TABLE.update(element.TABLE._data);
-                            }).catch(error => {
-                                console.log(error)
-                            })
                     })
-                }, 1000)
+                    .then((tableArray) => {
+                        tableArray.forEach(element => {
+                            element.TABLE.create(element.container)
+                        })
+                        return tableArray;
+                    })
+                    .then((tableArray) => {
+                        setInterval(() => {
+                            tableArray.forEach(element => {
+                                const dataToSend = {
+                                    name: element.TABLE._name,
+                                    from: new Date(),
+                                    to: new Date(),
+                                    oldData: element.TABLE._data,
+                                    lastStatus: element.TABLE._data.lastStatus.name
+                                };
+                                machines.updateSummaryStatuses(dataToSend)
+                                    .then(json => {
+                                        element.TABLE._data = json.update;
+                                        element.TABLE.update(element.TABLE._data);
+                                    }).catch(error => {
+                                        console.log(error)
+                                    })
+                            })
+                        }, 1000)
 
 
+                    })
             })
+
+
     }
     createChart() {
         const time = {

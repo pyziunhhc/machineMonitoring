@@ -1,4 +1,4 @@
-import Panel from './panel.js';
+import Panel from '../Panel/panel.js';
 import machines from '../helpers/fetch/machines.js';
 import message from '../helpers/messages.js';
 window.onload = function () {
@@ -18,18 +18,19 @@ window.onload = function () {
 class Operator extends Panel {
     constructor(currentChangeContainer, morningContainer, afternoonContainer, nightContainer) {
         //poparwić  pola klasy
-        super(morningContainer, afternoonContainer, nightContainer)
+        super(currentChangeContainer, morningContainer, afternoonContainer, nightContainer, null, 'operator')
         this._userData = null;
         this._data = null;
         this._currentStatus = null;
         this.intervals = {
-            statsID: null,
-            currentID: null,
+            _statsID: null,
+            _currentID: null,
         };
         this._containers = {
             currentChangeContainer: currentChangeContainer,
         };
         this._choosenMachine = null;
+        this._statsID = null;
     }
 
     createDOM() {
@@ -260,67 +261,51 @@ class Operator extends Panel {
                         .then(json => {
                             this._data = json;
                             this._currentStatus = json.status;
-                            this.createMachinePanel(dataToSend, container);
+                            this.createCurrentChangePanel();
                             this.createTable(this._data.summary, machineName);
                             this.createChartJS(this._data.chartJS, machineName, 'bar');
                             this.updateAllStatuses(machineName);
-                            //this.createChangePanel(machineName);
+                            this.createChangesPanel(machineName);
                             startPanelWrapper.remove();
                             return;
                         })
                         .then(() => {
                             if (locked.new) {
-                                const toCheck = {
+                                const data = {
                                     name: this._machineName,
-                                    from: new Date()
+                                    from: new Date(),
+                                    to: new Date(),
                                 }
-                                machines.checkUserStats(toCheck)
-                                    .then(res => {
-
-                                        if (res.exist) {
-
+                                machines.checkUserStats({
+                                        name: this._machineName
+                                    })
+                                    .then(json => {
+                                        if (json.exist) {
                                             this.updateSummaryStatuses({
-                                                start: res.start,
-                                                data: res.data,
+                                                data: json.data
                                             });
                                         } else {
-                                            const data = {
-                                                name: this._machineName,
-                                                from: new Date(),
-                                                to: new Date(),
-                                            }
-
                                             this.saveUserStats(data);
-                                            this.updateSummaryStatuses({
-                                                start: data.from
-                                            });
+                                            this.updateSummaryStatuses();
                                         }
                                     })
-
                             } else {
-                                const toCheck = {
+                                const data = {
                                     name: this._machineName,
-                                    from: new Date()
+                                    from: new Date(),
+                                    to: new Date(),
                                 }
-                                machines.checkUserStats(toCheck)
-                                    .then(res => {
-                                        if (res.exist) {
-
+                                machines.checkUserStats({
+                                        name: this._machineName
+                                    })
+                                    .then(json => {
+                                        if (json.exist) {
                                             this.updateSummaryStatuses({
-                                                start: res.start,
-                                                data: res.data
+                                                data: json.data
                                             });
                                         } else {
-
-                                            const data = {
-                                                name: this._machineName,
-                                                from: new Date(),
-                                                to: new Date(),
-                                            }
                                             this.saveUserStats(data);
-                                            this.updateSummaryStatuses({
-                                                start: data.from
-                                            });
+                                            this.updateSummaryStatuses();
                                         }
                                     })
                             }
@@ -334,37 +319,10 @@ class Operator extends Panel {
             })
 
     }
-    createChangePanel(name) {
-        const now = new Date();
-        const morningChangeData = {
-                name: name,
-                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 7),
-                to: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 14, 59, 59, 59)
-            },
-            afternoonChangeData = {
-                name: name,
-                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 15),
-                to: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 22, 59, 59, 59)
-            },
-            nightChangeData = {
-                name: name,
-                from: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23),
-                to: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 59, 59, 59)
-            };
-        machines.getAllStatuses(morningChangeData).then(json => {
-            this.createChangesChartJS(json.chartJS, name, 'bar', 'morning');
-        })
-        machines.getAllStatuses(afternoonChangeData).then(json => {
-            this.createChangesChartJS(json.chartJS, name, 'bar', 'afternoon');
-        })
-        machines.getAllStatuses(nightChangeData).then(json => {
-            this.createChangesChartJS(json.chartJS, name, 'bar', 'night');
-        })
 
-    }
     updateAllStatuses(name) {
         try {
-            this.intervals.currentID = setInterval(() => {
+            this.intervals._currentID = setInterval(() => {
                 const dataToSend = {
                     name: name,
                     from: new Date(),
@@ -388,28 +346,32 @@ class Operator extends Panel {
     }
     updateSummaryStatuses(data) {
         try {
-            this.intervals.statsID = setInterval(() => {
-
-                if (Object.keys(data).length > 1 && !this._userData) {
-                    this._userData = data.data;
-                }
-                const dataToSend = {
-                    name: this._machineName,
-                    from: new Date(),
-                    to: new Date(),
-                    oldData: this._userData,
-                    lastStatus: this._currentStatus
-                };
+            this.intervals._statsID = setInterval(() => {
+                // if (Object.keys(data).length > 1 && !this._userData) {
+                //     this._userData = data.data;
+                // }
+                // const dataToSend = {
+                //     name: this._machineName,
+                //     from: new Date(),
+                //     to: new Date(),
+                //     oldData: this._userData,
+                //     lastStatus: this._currentStatus
+                // };
 
                 if (this._userData) {
-
+                    const dataToSend = {
+                        name: this._machineName,
+                        from: new Date(),
+                        to: new Date(),
+                        oldData: this._userData,
+                        lastStatus: this._currentStatus
+                    };
                     machines.updateSummaryStatuses(dataToSend)
                         .then(json => {
                             this._userData = json.update;
                             this._currentStatus = json.status;
                             this.updateUserStats({
                                 name: this._machineName,
-                                start: data.start,
                                 data: json.update
                             })
                         })
@@ -429,7 +391,6 @@ class Operator extends Panel {
                     start: data.from,
                 }
                 this._userData = json.data;
-
                 machines.saveStatusesForUser(toSave)
                     .then(res => {})
             })
@@ -441,6 +402,11 @@ class Operator extends Panel {
             start: data.start,
         }
         machines.updateStatusesForUser(toSave)
+            .then(res => {
+                if (!this._statsID) {
+                    this._statsID = res.statsID;
+                }
+            })
     }
 
 }

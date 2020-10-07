@@ -48,9 +48,7 @@ class Movebelt {
         this._panelContainer.appendChild(moveContainerBeam);
     }
     close(){
-        console.log(this)
         if (this._place === 'operator') {
-            console.log('operator')
             machines.unlockMachine({
                 name: this._machineName
             }).then(res => {

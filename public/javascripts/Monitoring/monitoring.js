@@ -1,5 +1,5 @@
 import machines from '../helpers/fetch/machines.js'
-import Panel from './panel.js';
+import Panel from '../Panel/panel.js';
 window.onload = function () {
     const monitoringContainer = document.querySelector('.monitoring__container');
     const MONITORING = new Monitoring(monitoringContainer);
@@ -8,10 +8,13 @@ window.onload = function () {
 
 class Monitoring extends Panel {
     constructor(container) {
-        super(container)
+        super(container, null, null, null, null, 'monitoring')
         this._data = null;
         this._currentStatus = null;
-        this._intervalID = null;
+        this.intervals = {
+            _statsID: null,
+            _currentID: null,
+        };
         this._container = container;
     }
     createDOM() {
@@ -184,14 +187,15 @@ class Monitoring extends Panel {
                         from: new Date(new Date() - 86400000),
                         to: new Date()
                     };
-                    this.machineName = data.name;
+                    this._machineName = data.name;
                     machines.getAllStatuses(data).then(json => {
                         this._data = json;
                         this._currentStatus = json.status;
-                        this.createMachinePanel(data);
-                        this.createDygraph(json.dygraph, this.machineName);
-                        this.createTable(json.summary, this.machineName)
-                        this.createChartJS(json.chartJS, this.machineName, 'bar');
+                        this.createCurrentChangePanel();
+                        this.createChangesPanel(this._machineName);
+                        this.createDygraph(json.dygraph, this._machineName);
+                        this.createTable(json.summary, this._machineName)
+                        this.createChartJS(json.chartJS, this._machineName, 'bar');
 
                     }).then(() => {
                         this.updateStatuses();
@@ -205,9 +209,9 @@ class Monitoring extends Panel {
     }
     updateStatuses() {
         try {
-            this.intervalID = setInterval(() => {
+            this.intervals._currentID = setInterval(() => {
                 const data = {
-                    name: this.machineName,
+                    name: this._machineName,
                     from: new Date(),
                     to: new Date(),
                     oldData: this._data,
@@ -222,9 +226,6 @@ class Monitoring extends Panel {
                     this.updateTable(json.summary, data.name); //podmienia dane w tabelach jesli sa otwarte conajmniej dwa okna. Bierze dane z ostatnio otwartego
                     this.updateStatus();
                 })
-                if (!this.intervalID) {
-                    this.intervalID = this.intervalID;
-                }
             }, 1000);
 
 

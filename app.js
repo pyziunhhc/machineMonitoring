@@ -2,7 +2,6 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
@@ -25,7 +24,6 @@ const usersRouter = require('./routes/users');
 const dashboardRouter = require('./routes/dashboard');
 const checkCookie = require('./routes/middleware/checkCookie');
 const machineRouter = require('./routes/monitoring');
-const tasksRouter = require('./routes/tasks');
 const settingsRouter = require('./routes/settings');
 const reportsRouter = require('./routes/reports');
 const dataRouter = require('./routes/data');
@@ -66,7 +64,7 @@ app.use('/data', dataRouter)
 app.use('/dashboard', dashboardRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
-app.use('/api/menu', settingsRouter);
+app.use('/api', settingsRouter);
 app.use('/reports', reportsRouter);
 app.use('/users', usersRouter);
 app.use('/api/checkCookie', checkCookie);

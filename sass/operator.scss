@@ -3,16 +3,38 @@
 .main__container
   .main__section
   .operator__container
-  .main-machine-panel__container
+  .main-machine-panel__container {
+  width: 100%;
+  top: -11%;;
+  left: 0;
+  z-index: 999999999999;
   .panel__container {
-  flex-direction: column;
-  .statuses-panel__container {
+    flex-direction: column;
+    .statuses-panel__container {
       margin-bottom: 0;
+    }
   }
 }
-.changes__container{
-  display:flex;
+
+.changes__container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
   border-top: 1px solid black;
+  .morning__container,
+  .afternoon__container,
+  .night__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 1%;
+    h3 {
+      font-weight: bold;
+      font-size: 2em;
+    }
+  }
 }
 .accept__container--wrapper {
   position: absolute;

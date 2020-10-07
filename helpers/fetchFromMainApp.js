@@ -1,11 +1,36 @@
 const fetch = require('node-fetch');
-const auth = require('../bin/password.json');
-const API_VERSION = 1;
+const Server = require('../models/Server');
+let IP = 0,
+    PORT = 0,
+    API_VERSION = 0,
+    USER = null,
+    PASSWORD = null;
+
+(async function setCredentials() {
+    await Server.find((err, document) => {
+        if (document.length) {
+            IP = document[0].ip;
+            PORT = document[0].port;
+            API_VERSION = document[0].apiVersion;
+            USER = document[0].login;
+            PASSWORD = document[0].password;
+        } else {
+            setCredentials();
+        }
+    })
+})();
+
+
+
+
+
+
 const fetchData = (url) => {
-    return fetch(`http://192.168.2.98:3000/api/v${API_VERSION}/${url}`, {
+
+    return fetch(`http://${IP}:${PORT}/api/v${API_VERSION}/${url}`, {
             method: 'GET',
             headers: {
-                'Authorization': `Basic ${Buffer.from(`${auth[0].user}:${auth[0].password}`).toString('base64')}`
+                'Authorization': `Basic ${Buffer.from(`${USER}:${PASSWORD}`).toString('base64')}`
             }
         }).then(res => res.json())
         .catch(e => console.log(e));

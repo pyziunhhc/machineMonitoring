@@ -2,8 +2,6 @@ import message from './helpers/messages.js'
 
 window.onload = function () {
     const sendButton = document.querySelector('#send');
-
-
     sendButton.addEventListener('click', authUser.bind(this))
     password.addEventListener('keypress', authUser.bind(this))
 }
@@ -12,7 +10,7 @@ const isEmpty = (e, credentials) => {
     if (e.type == "keypress") {
         if (e.keyCode == '13') {
             if (!credentials.login || !credentials.password) {
-                alert('login i hasło nie mogą być puste')
+                message.showMessage('error', ['Login i hasło nie mogą być puste'])
                 return false;
             } else {
                 return true;
@@ -20,7 +18,7 @@ const isEmpty = (e, credentials) => {
         }
     } else {
         if (!credentials.login || !credentials.password) {
-            alert('login i hasło nie mogą być puste')
+            message.showMessage('error', ['Login i hasło nie mogą być puste'])
             return false;
         } else {
             return true;
@@ -34,7 +32,7 @@ const authUser = (e) => {
     const loginField = document.querySelector('#login'),
         passwordField = document.querySelector('#password');
     const credentials = {
-        login: loginField.value,
+        login: loginField.value.toLowerCase(),
         password: passwordField.value
     }
     const credentialsIsEmpty = isEmpty(e, credentials);

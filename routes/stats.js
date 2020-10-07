@@ -2,6 +2,9 @@ const express = require('express'),
     router = express.Router();
 const Stats = require('../models/Stats');
 const LockedMachines = require('../models/LockedMachines');
+const {
+    Response
+} = require('node-fetch');
 router.get('/', (req, res, next) => {
     const login = req.cookies.login;
     if (login) {
@@ -39,7 +42,8 @@ router.post('/check', (req, res, next) => {
                 const lockedMachine = new LockedMachines({
                     user: login,
                     date: new Date(),
-                    name: req.body.name
+                    name: req.body.name,
+                    statsID: null,
                 })
                 lockedMachine.save(err => {
                     if (err) {
@@ -76,21 +80,17 @@ router.post('/check', (req, res, next) => {
 router.post('/checkStats', (req, res, next) => {
     const user = req.cookies.login,
         name = req.body.name,
-        start = req.body.from;
+        statsID = req.cookies.statsID;
     Stats.findOneAndUpdate({
         machine: name,
         user: user,
-        start: {
-            $gte: new Date(start)
-        }
+        _id: statsID
     }, {
         lockedStats: false
     }, (err, document) => {
         if (document) {
-            console.log(start, document.start)
             res.send({
                 exist: true,
-                start: document.start,
                 data: document.data
             })
         } else {
@@ -116,13 +116,17 @@ router.post('/save', (req, res, next) => {
             end: null,
             lockedStats: false
         });
-        stats.save(error => {
+        stats.save((error, document) => {
             if (error) {
 
             } else {
+                res.cookie('statsID', document._id, {
+                    httpOnly: true,
+                    sameSite: true,
+                })
                 res.status(200).send({
                     status: 200,
-                    start: req.body.start
+                    start: req.body.start,
                 })
             }
         })
@@ -148,7 +152,7 @@ router.post('/lockStats', (req, res, next) => {
         }
     })
 });
-router.post('/locked', (req, res, next) => {
+router.get('/locked', (req, res, next) => {
     LockedMachines.find((err, document) => {
         if (err) {
 
@@ -171,19 +175,18 @@ router.post('/locked', (req, res, next) => {
 router.put('/update', (req, res, next) => {
     const user = req.cookies.login,
         name = req.body.name,
-        start = req.body.start;
+        statsID = req.cookies.statsID;
     Stats.findOneAndUpdate({
         machine: name,
         user: user,
-        start: {
-            $gte: start
-        },
+        _id: statsID,
     }, {
         data: req.body.data
     }, (err, document) => {
         if (document) {
             res.status(200).send({
                 status: 200,
+                statsID: document._id
                 //message: [`Pomyślnie zaktualizowano statystyki dla ${user} \n na maszynie ${name}`]
             })
         }

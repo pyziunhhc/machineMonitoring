@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
-router.post('/', (req, res, next) => {
+const Server = require('../models/Server');
+router.post('/menu', (req, res, next) => {
     const role = req.cookies.role;
 
     switch (role) {
@@ -106,6 +106,62 @@ router.post('/settings', (req, res, next) => {
     }
 
 })
+router.get('/server', (req, res, next) => {
+    Server.find((err, document) => {
+        if (document.length) {
+            res.send({
+                status: 200,
+                config: document
+            })
+        } else {
+            res.send({
+                status: 500,
+                message: ['Brak danych nt. serwera']
+            })
+        }
+    })
+})
+router.post('/server/save', (req, res, next) => {
+    const {
+        ip,
+        port,
+        apiVersion,
+        login,
+        password,
+        testMode
+    } = req.body;
+    Server.find((err, document) => {
+        if (!document.length) {
+            const server = new Server({
+                ip,
+                port,
+                apiVersion,
+                login,
+                password,
+                testMode
+            })
+            server.save(error => {
+                if (!error) {
+                    res.send({
+                        status: 200,
+                        message: ['Pomyślnie zapisano ustawienia serwera']
+                    })
+                }
+            })
+        } else {
+            Server.findOneAndUpdate({}, {
+                ip,
+                port,
+                apiVersion,
+                login,
+                password,
+                testMode
+            }, (err, document) => {
 
+            })
+        }
+    })
+
+})
 
 module.exports = router;

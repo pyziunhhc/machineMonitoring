@@ -85,6 +85,7 @@ function checkMachineIsLocked(data) {
         })
 }
 
+
 function checkUserStats(data) {
     return fetch('stats/checkStats', {
             method: 'POST',
@@ -262,5 +263,5 @@ export default {
     checkMachineIsLocked,
     lockStatusesForUser,
     checkUserStats,
-    showUserStats
+    showUserStats,
 }

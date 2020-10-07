@@ -230,7 +230,6 @@ const summaryMachineStatistics = (data, from) => {
         } else {
             if (data.end == null) {
                 time = new Date() - start;
-                console.log('Początek', time, data)
                 summaryMachineStatistics.sumOfTimes.data.time += time;
                 summaryMachineStatistics.lastStatus.name = data.value;
             } else {

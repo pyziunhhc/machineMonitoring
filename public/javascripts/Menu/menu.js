@@ -1,8 +1,9 @@
 import settings from '../helpers/fetch/appSettings.js';
-import helpers from '../helpers/auxiliaryFunctions.js'
 import User from '../Users/users.js';
 import LockedMachines from '../Machines/lockedMachines.js';
 import Movebelt from '../Movebelt/movebelt.js';
+import Server from '../Settings/settings.js'
+import messages from '../helpers/messages.js';
 class Menu {
     createMenu() {
         const menu = document.querySelector('.header__navigation > ul');
@@ -99,7 +100,7 @@ class Menu {
                             settingsAnchor.setAttribute('href', val.href);
                         } else {
                             switch (val.name) {
-                                case 'Moje konto': {
+                                case 'Moje konto':
                                     settingsAnchor.addEventListener('click', e => {
                                         fetch('/users/myAccount', {
                                                 method: 'POST',
@@ -114,25 +115,50 @@ class Menu {
                                                 user.editPanel(data, container)
                                             })
                                     })
-                                }
-                                break;
-                            case 'Zablokowane maszyny': {
-                                settingsAnchor.addEventListener('click', e => {
-                                    fetch('/stats/locked', {
-                                            method: 'POST',
-                                            credentials: 'include',
-                                            headers: {
-                                                'Accept': '*',
-                                                'Content-Type': 'application/json',
-                                            }
-                                        }).then(res => res.json())
-                                        .then(data => {
-                                            const lockedMachines = new LockedMachines(data, container);
-                                            lockedMachines.createDOM()
-                                        })
-                                })
-                            }
-                            break;
+
+                                    break;
+                                case 'Zablokowane maszyny':
+                                    settingsAnchor.addEventListener('click', e => {
+                                        //przeniesc fetche do osobnej funkcji
+                                        fetch('/stats/locked', {
+                                                method: 'GET',
+                                                credentials: 'include',
+                                                headers: {
+                                                    'Accept': '*',
+                                                    'Content-Type': 'application/json',
+                                                }
+                                            })
+                                            .then(res => res.json())
+                                            .then(data => {
+                                                const lockedMachines = new LockedMachines(data, container);
+                                                lockedMachines.createDOM()
+                                            })
+                                    })
+                                    break;
+                                case 'Serwer':
+                                    settingsAnchor.addEventListener('click', e => {
+                                        fetch('/api/server', {
+                                                method: 'GET',
+                                                credentials: 'include',
+                                                headers: {
+                                                    'Accept': '*',
+                                                    'Content-Type': 'application/json',
+                                                }
+                                            })
+                                            .then(res => res.json())
+                                            .then(json => {
+                                                console.log(json)
+                                                if (json.status == 200) {
+                                                    const server = new Server(container, json.config);
+                                                    server.createDOM();
+                                                } else {
+                                                    const server = new Server(container);
+                                                    server.createDOM()
+                                                }
+
+                                            })
+                                    })
+                                    break;
                             }
 
 

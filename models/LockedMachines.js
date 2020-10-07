@@ -14,6 +14,9 @@ const lockedMachinesSchema = new Schema({
     name: {
         type: String,
         require: true
+    },
+    statsID: {
+        type: String,
     }
 
 })

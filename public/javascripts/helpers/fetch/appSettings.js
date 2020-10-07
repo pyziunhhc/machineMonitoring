@@ -1,5 +1,6 @@
 function showSettings() {
-    return fetch('/api/menu/settings', {
+    //fetch przeniesc do osobnej fukcji
+    return fetch('/api/settings', {
             method: 'POST',
             credentials: 'include',
             headers: {
