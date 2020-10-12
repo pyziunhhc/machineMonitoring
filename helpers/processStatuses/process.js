@@ -25,7 +25,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
 
         },
@@ -39,7 +40,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         praca: {
@@ -52,7 +54,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         disconnect: {
@@ -65,7 +68,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         manual: {
@@ -78,7 +82,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         warmup: {
@@ -91,7 +96,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         stop: {
@@ -104,7 +110,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         suspend: {
@@ -117,7 +124,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         emergency: {
@@ -130,7 +138,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         rozgrzewka: {
@@ -143,7 +152,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         wymiana_sciernicy: {
@@ -156,7 +166,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         wymianaNarzedzia: {
@@ -169,7 +180,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         przejscie: {
@@ -182,7 +194,8 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         zatrzymanie: {
@@ -195,14 +208,15 @@ const summaryMachineStatistics = (data, from) => {
                 feed: 0,
                 averageFeed: 0,
                 potentiometr: 0,
-                percentage: 0
+                percentage: 0,
+                show: true
             }
         },
         sumOfTimes: {
             displayName: 'Suma',
             data: {
                 time: 0,
-                show: false
+                show: true
             }
         },
 
@@ -213,26 +227,46 @@ const summaryMachineStatistics = (data, from) => {
             end = new Date(data.end),
             time = end - start,
             status = `${data.value}`;
-
+            if(isNaN(time)){
+                console.log(data, index, start, end)
+            }
         if (index == 0) {
             if (start != new Date(from)) {
                 let newStart = new Date(from);
                 if (data.end == null) {
                     time = new Date() - newStart;
+                    if(isNaN(time)){
+                        console.log(data, index, newStart, from)
+                    }
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 } else {
                     time = end - newStart;
+                    if(isNaN(time)){
+                        console.log(data, index, newStart, from)
+                    }
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 }
             } else {
+                if(isNaN(time)){
+                    console.log(data, index, end, start)
+                }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
+
+
+
         } else {
             if (data.end == null) {
                 time = new Date() - start;
+                if(isNaN(time)){
+                    console.log(data, index, start)
+                }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
                 summaryMachineStatistics.lastStatus.name = data.value;
             } else {
+                if(isNaN(time)){
+                    console.log(data, index, start,end)
+                }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
         }
@@ -258,8 +292,6 @@ const summaryMachineStatistics = (data, from) => {
                 break;
             case 'WARMUP':
                 summaryMachineStatistics.warmup.data.time += time;
-
-
                 break;
             case 'MANUAL':
                 summaryMachineStatistics.manual.data.time += time;
@@ -292,11 +324,9 @@ const summaryMachineStatistics = (data, from) => {
                 break;
             case 'PRACA':
                 summaryMachineStatistics.praca.data.time += time;
-
                 break;
         }
     });
-
     return summaryMachineStatistics;
 }
 const statusesForDygraph = (data) => {
@@ -478,6 +508,7 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
             if (currentStatus == 'null') {
                 sumMachineStats.disconnect.data.time += 1000;
             } else {
+
                 sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
@@ -585,16 +616,12 @@ const updateStatusesForChartJS = (data) => {
                 avaibleLabels.push(`${val.displayName}`);
                 statusesColors.push(val.color)
             }
-
             return val;
         })
         .map((val, index) => {
-
-            //data[val.name].data.percentage = parseFloat(data[val.name].data.time * 100 / data.sumOfTimes.data.time).toFixed(2);
             if (val.name) {
                 percentageValuesForChartJS.push((parseFloat(val.data.time) * 100 / data.sumOfTimes.data.time).toFixed(2));
             }
-
             return val;
         })
         .map(val => {

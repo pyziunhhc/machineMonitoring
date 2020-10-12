@@ -4,17 +4,26 @@ block content
     .container
         .report__container
             .daily__report
-                h3='Raport dzienny'
-                .all-machines
-                    h3='Wszystkie maszyny'
-                .select-machines
-                    h3='Wybierz maszyny'
+                h1='Raport dzienny'
+                .reports
+                    .all-machines
+                        h2='Wszystkie maszyny'
+                        button(class="daily-all-machines" type="submit" value="Generuj") Generuj
+                    .select-machines
+                        h2='Wybierz maszyny'
+                        .machines
+                        button(class="daily-selected-machines" type="submit" value="Generuj") Generuj
         .report__container
             .month__report
-                h3='Raport miesięczny'
-                .all-machines
-                    h3='Wszystkie maszyny'
-                .select-machines
-                    h3='Wybierz maszyny'
-
-    script(src=`javascripts/Reports/${jsfiles}` type='module')
+                h1='Raport miesięczny'
+                .reports
+                    .all-machines
+                        h2='Wszystkie maszyny'
+                        select(class="month-report-machines")
+                        button(class="month-all-machines" type="submit" value="Generuj") Generuj
+                    .select-machines
+                        h2='Wybierz maszyny'
+                        .machines
+                        h2='Wybierz miesiąc'
+                        select(class="month-report-machines")
+                        button(class="month-selected-machines" type="submit" value="Generuj") Generuj

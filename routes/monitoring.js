@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fetchData = require('../helpers/fetchFromMainApp');
 const {
-    checkCookie
-} = require('../helpers/checkCookie')
+    authUser
+} = require('../helpers/authUser')
 const process = require('../helpers/processStatuses/process')
 const {
     default: fetch
@@ -76,20 +76,22 @@ const machineTypes = [{
 
 
 router.get('/', (req, res, next) => {
-    const cookie = checkCookie(req.cookies);
+    const cookie = authUser(req.cookies);
+    console.log(req.cookies)
+    cookie.then(auth => {
 
-    if (cookie) {
-        const login = req.cookies.login;
-        res.render('monitoring', {
-            title: 'Monitoring | ITA Tools Sp. z o.o',
-            jsfiles: 'Monitoring/monitoring.js',
-            cssfiles: 'monitoring',
-            login: login
+            if (auth) {
+                res.render('monitoring', {
+                    title: 'Monitoring | ITA Tools Sp. z o.o',
+                    jsfiles: 'Monitoring/monitoring.js',
+                    cssfiles: 'monitoring',
+                    login: req.cookies.login
+                })
+            }
         })
-    } else {
-        res.redirect('/login')
-    }
-
+        .catch(error => {
+            res.redirect('/login')
+        });
 })
 
 router.post('/', (req, res, next) => {

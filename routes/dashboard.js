@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const fetch = require('../helpers/fetchFromMainApp');
 const {
-   checkCookie
-} = require('../helpers/checkCookie')
+   authUser
+} = require('../helpers/authUser')
 const {
    whatMachineDoingGraph,
    whatMachineDoingTable,
@@ -11,18 +11,20 @@ const {
 } = require('../helpers/processStatuses/dashboard');
 
 router.get('/', (req, res, next) => {
-   const cookie = checkCookie(req.cookies);
-   if (cookie) {
-      res.render('dashboard', {
-         title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
-         jsfiles: 'Dashboard/dashboard.js',
-         cssfiles: 'dashboard',
-         login: req.cookies.login,
+   const cookie = authUser(req.cookies);
+   cookie.then(auth => {
+         if (auth) {
+            res.render('dashboard', {
+               title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
+               jsfiles: 'Dashboard/dashboard.js',
+               cssfiles: 'dashboard',
+               login: req.cookies.login,
+            })
+         }
       })
-   } else {
-      res.redirect('/login')
-   }
-
+      .catch(error => {
+         res.redirect('/login')
+      });
 })
 
 router.post('/get/table/whatMachinesDoingNow', (req, res, next) => { //Zmienićna /get/table/currentStatuses

@@ -5,6 +5,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const {
+  removeLoggedUsers
+} = require('./helpers/background/removeLoggedUsers')
 
 
 
@@ -88,5 +91,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error')
 });
+removeLoggedUsers()
 
 module.exports = app;

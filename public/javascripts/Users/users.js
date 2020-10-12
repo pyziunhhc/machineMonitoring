@@ -1,5 +1,4 @@
 import users from '../helpers/fetch/user.js'
-import helpers from '../helpers/auxiliaryFunctions.js'
 import message from '../helpers/messages.js'
 import Movebelt from '../Movebelt/movebelt.js';
 class Users {

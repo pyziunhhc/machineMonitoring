@@ -1,0 +1,62 @@
+@import "styles";
+
+.main__container {
+  .main__section {
+    .container {
+      .report__container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        .month__report,
+        .daily__report {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          h1 {
+            font-size: 2em;
+            font-weight: bold;
+          }
+          h2 {
+            font-size: 1.5em;
+          }
+          .reports {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            div {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+            }
+            .all-machines,
+            .select-machines {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              select {
+                width: 50%;
+                height: 4vh;
+              }
+              button {
+                background-color: green;
+                border: none;
+                outline: none;
+                margin-top: 2%;
+                padding: 2%;
+                color: white;
+                font-size: 1.5em;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

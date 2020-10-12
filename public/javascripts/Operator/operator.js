@@ -280,6 +280,7 @@ class Operator extends Panel {
                                         name: this._machineName
                                     })
                                     .then(json => {
+                                        console.log(json)
                                         if (json.exist) {
                                             this.updateSummaryStatuses({
                                                 data: json.data
@@ -347,17 +348,9 @@ class Operator extends Panel {
     updateSummaryStatuses(data) {
         try {
             this.intervals._statsID = setInterval(() => {
-                // if (Object.keys(data).length > 1 && !this._userData) {
-                //     this._userData = data.data;
-                // }
-                // const dataToSend = {
-                //     name: this._machineName,
-                //     from: new Date(),
-                //     to: new Date(),
-                //     oldData: this._userData,
-                //     lastStatus: this._currentStatus
-                // };
-
+                if (!this._userData) {
+                    this._userData = data;
+                }
                 if (this._userData) {
                     const dataToSend = {
                         name: this._machineName,

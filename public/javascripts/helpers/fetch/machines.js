@@ -247,6 +247,32 @@ function showUserStats(data) {
         })
         .then(res => res.json())
 }
+
+function showAllStats(data) {
+    return fetch('/stats/show/all', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => res.json())
+}
+
+function createXLSX(data) {
+   return fetch('/data/get/reports/summary', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: 'include',
+            headers: {
+                'Accept': '*',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(json => json.json())
+}
 export default {
     getMachines,
     getAllStatuses,
@@ -264,4 +290,6 @@ export default {
     lockStatusesForUser,
     checkUserStats,
     showUserStats,
+    showAllStats,
+    createXLSX
 }

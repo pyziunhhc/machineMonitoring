@@ -26,7 +26,6 @@ let IP = 0,
 
 
 const fetchData = (url) => {
-
     return fetch(`http://${IP}:${PORT}/api/v${API_VERSION}/${url}`, {
             method: 'GET',
             headers: {

@@ -79,56 +79,83 @@ const machineTypes = [{
 
 ]
 
-router.post('/get/reports/daily', (req, res, next) => {
+router.post('/get/reports/summary', (req, res, next) => {
     try {
         const machines = req.body.machines,
             FROM = req.body.from,
             TO = req.body.to,
             data = [];
+        console.log(req.body)
         let destinationPath = `C:\\Users\\${process.env.USERNAME}\\Downloads\\Statystyki ${new Date(FROM).toLocaleDateString()} - ${new Date(TO).toLocaleDateString()}.xlsx`;
-        machines.map((val, index) => {
-            const NAME = val.name;
-            fetchData.getStatuses(NAME, FROM, TO).then(data => {
-                const SUMMARY = summaryMachineStatistics(data);
+        machines.forEach((machine, index) => {
+            const NAME = machine.name;
+            fetchData.getStatuses(NAME, FROM, TO)
+                .then(data => {
+                    const SUMMARY = summaryMachineStatistics(data, FROM);
+                    return {
+                        data: SUMMARY,
+                        name: NAME
+                    };
+                }).then(val => {
+                    data.push({
+                        data: val.data,
+                        name: val.name
+                    })
+                    if (data.length == machines.length) {
+                        const headers = ['Status', 'Czas', '%'];
+                        let object = [];
+                        const sortedData = data.sort((a, b) => {
+                            if (a.name > b.name) {
+                                return 1
+                            } else {
+                                return -1;
+                            }
+                        })
+                        sortedData.forEach((val, index) => {
+                            let statuses = [headers],
+                                name = val.name;
+                            let sumOfTimes = val.data.sumOfTimes.data.time;
+                            Object.values(val.data)
+                                .filter(val => {
+                                    return val.data.time > 0;
+                                })
+                                .filter(val => {
+                                    return val.data.show;
+                                })
+                                .filter(val => {
+                                    val.data.percentage = ((val.data.time * 100) / sumOfTimes).toFixed(2);
+                                    return val;
+                                })
+                                .filter(val => {
+                                    statuses.push([val.displayName, parseMillisecondsIntoReadableTime(val.data.time), `${val.data.percentage}`])
+                                })
+                            if (index != data.length) {
+                                //statuses.push(headers)
+                                object.push({
+                                    sheetName: name,
+                                    data: statuses,
+                                    formatAsTable: true,
+                                    //autoFitCellSizes: true,
+                                })
+                            }
 
-                return {
-                    data: SUMMARY,
-                    name: NAME
-                };
-            }).then(val => {
-                data.push({
-                    data: val.data,
-                    name: val.name
-                })
-                if (data.length == machines.length) {
-                    const headers = ['Status', 'Czas', '%'];
-                    let object = [];
-                    data.map((val, index) => {
-                        let statuses = [headers];
-                        name = val.name;
-                        Object.values(val.data)
-                            .filter(val => {
-                                statuses.push([val.displayName, parseMillisecondsIntoReadableTime(val.data.time), `${val.data.percentage}`])
+                        })
+                        async function createExcel(resolve, reject) {
+                            return await jsonToExcel(object, destinationPath, {
+                                overwrite: true,
                             })
-                        statuses.push(headers)
-                        object.push({
-                            sheetName: name,
-                            data: statuses,
-                            formatAsTable: true
-                        })
-                    })
-                    async function createExcel(resolve, reject) {
-                        return await jsonToExcel(object, destinationPath, {
-                            overwrite: true,
-                        })
+                        }
+                        createExcel()
+                            .then(() => {
+                                res.send({
+                                    status: 200,
+                                    message: ['Plik został wygenerowany'],
+                                    data: data
+                                })
+                            });
+
                     }
-                    createExcel();
-                    res.send({
-                        status: 200,
-                        message: ['Plik został wygenerowany']
-                    })
-                }
-            })
+                })
         })
     } catch (e) {
         console.log(e)
@@ -168,37 +195,43 @@ router.post('/get/summary', (req, res, next) => {
         })
 })
 router.post('/update/summary', (req, res, next) => {
-    try {
-        const name = req.body.name,
-            from = req.body.from,
-            to = req.body.to,
-            workingLastStatus = `${req.body.lastStatus}`,
-            oldData = req.body.oldData;
-        fetchData.getStatuses(name, from, to)
-            .then(newData => {
-                const workingCurrentStatus = `${newData[0].value}`;
-                const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData, workingCurrentStatus, workingLastStatus);
-                let currentStatus = null;
-                if (workingCurrentStatus == 'null') {
-                    currentStatus = 'WYŁĄCZONA'
-                } else {
-                    currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase();
-                }
-                res.send({
-                    update: summaryMachineStatistics,
-                    status: currentStatus
-                })
-
-            }).catch(error => {
-                console.log(error)
-                throw new Error(error)
-            })
-    } catch (error) {
-        console.log(error)
-        res.send({
-            error: error
+    // try {
+    const name = req.body.name,
+        from = req.body.from,
+        to = req.body.to,
+        workingLastStatus = `${req.body.lastStatus}`,
+        oldData = req.body.oldData;
+    fetchData.getStatuses(name, from, to)
+        .then(newData => {
+            const workingCurrentStatus = `${newData[0].value}`;
+            const summaryMachineStatistics = updateSummaryMachineStatistics(newData, oldData, workingCurrentStatus, workingLastStatus);
+            let currentStatus = null;
+            if (workingCurrentStatus == 'null') {
+                currentStatus = 'WYŁĄCZONA'
+            } else {
+                currentStatus = summaryMachineStatistics[workingCurrentStatus.toLowerCase()].displayName.toUpperCase();
+            }
+            return {
+                summaryMachineStatistics,
+                currentStatus
+            }
         })
-    }
+        .then(data => {
+            res.send({
+                update: data.summaryMachineStatistics,
+                status: data.currentStatus
+            })
+        })
+        .catch(error => {
+            console.log(error)
+            throw new Error(error)
+        })
+    // } catch (error) {
+    //     console.log(error)
+    //     res.send({
+    //         error: error
+    //     })
+    // }
 })
 router.post('/get/dygraph', (req, res, next) => {
 

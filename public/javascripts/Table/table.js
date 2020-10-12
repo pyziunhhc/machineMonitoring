@@ -101,7 +101,7 @@ class Table {
                 oldTable = document.querySelector(`.statuses-panel__container.${this._name} > table.${this._name}`);
             Object.values(data)
                 .filter(val => {
-                    return val.data.time > 0 || val.data.show
+                    return val.data.time > 0;
                 })
                 .map(val => {
                     statusesName.push(val.displayName);

@@ -25,7 +25,7 @@ router.post('/menu', (req, res, next) => {
                 },
                 statistics: {
                     name: 'Statystyki',
-                    href: '/stats'
+                    href: '/stats/all'
                 },
                 settings: {
                     name: 'Ustawienia',
@@ -54,7 +54,7 @@ router.post('/menu', (req, res, next) => {
             },
             myWork: {
                 name: 'Moje statystyki',
-                href: '/stats'
+                href: '/stats/user'
             },
             logout: {
                 name: 'Wyloguj',
@@ -80,8 +80,8 @@ router.post('/settings', (req, res, next) => {
                     href: '/users'
                 },
                 email: {
-                    name: 'Raporty',
-                    href: '/reports/setting'
+                    name: 'Raporty mailowe',
+                    href: '/reports/mail'
                 },
                 myAccount: {
                     name: 'Moje konto',

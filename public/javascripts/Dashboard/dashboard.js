@@ -105,24 +105,24 @@ class Dashboard {
                         return tableArray;
                     })
                     .then((tableArray) => {
-                        setInterval(() => {
-                            tableArray.forEach(element => {
-                                const dataToSend = {
-                                    name: element.TABLE._name,
-                                    from: new Date(),
-                                    to: new Date(),
-                                    oldData: element.TABLE._data,
-                                    lastStatus: element.TABLE._data.lastStatus.name
-                                };
-                                machines.updateSummaryStatuses(dataToSend)
-                                    .then(json => {
-                                        element.TABLE._data = json.update;
-                                        element.TABLE.update(element.TABLE._data);
-                                    }).catch(error => {
-                                        console.log(error)
-                                    })
-                            })
-                        }, 1000)
+                        // setInterval(() => {
+                        //     tableArray.forEach(element => {
+                        //         const dataToSend = {
+                        //             name: element.TABLE._name,
+                        //             from: new Date(),
+                        //             to: new Date(),
+                        //             oldData: element.TABLE._data,
+                        //             lastStatus: element.TABLE._data.lastStatus.name
+                        //         };
+                        //         machines.updateSummaryStatuses(dataToSend)
+                        //             .then(json => {
+                        //                 element.TABLE._data = json.update;
+                        //                 element.TABLE.update(element.TABLE._data);
+                        //             }).catch(error => {
+                        //                 console.log(error)
+                        //             })
+                        //     })
+                        // }, 1000)
 
 
                     })

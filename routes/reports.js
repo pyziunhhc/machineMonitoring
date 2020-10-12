@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const {
-    checkCookie
-} = require('../helpers/checkCookie');
+    authUser
+} = require('../helpers/authUser');
 // const processData = require('../helpers/processStatuses/report');
 // const fetchData = require('../helpers/fetchData');
 const machineTypes = [{
@@ -55,25 +55,36 @@ const machineTypes = [{
 
 ]
 router.get('/', (req, res, next) => {
+    const cookie = authUser(req.cookies);
+    cookie.then(auth => {
+            if (auth) {
+                res.render('reports', {
+                    title: 'Raporty | ITA Tools Sp. z o.o',
+                    jsfiles: '/Reports/controller.js',
+                    cssfiles: 'reports',
+                    login: req.cookies.login
+                })
+            }
+        })
+        .catch(error => {
+            res.redirect('/login')
+        });
+})
+router.get('/mail', (req, res, next) => {
     const cookie = checkCookie(req.cookies)
     if (cookie) {
-        const login = req.cookies.login;
-        res.render('reports', {
-            title: 'Raporty | ITA Tools Sp. z o.o',
-            jsfiles: 'controller.js',
+        res.render('mail', {
+            title: 'Raporty mailowe | ITA Tools Sp. z o.o',
+            jsfiles: 'settings.js',
             login: login
         })
     } else {
         res.redirect('/login')
-        // res.render('login', {
-        //     title: 'Logowanie | ITA Tools Sp. z o.o',
-        //     jsfiles: 'controller.js'
-        // })
     }
+
 })
-router.get('/setting', (req, res, next) => {
-
-
+router.post('/create/all', (req, res, next) => {
+    console.log(req.body)
 
 })
 

@@ -1,21 +1,28 @@
 const express = require('express'),
     router = express.Router();
-
+const {
+    authUser
+} = require('../helpers/authUser')
 
 
 
 router.get('/', (req, res, next) => {
-    const login = req.cookies.login;
-    if (login) {
-        res.render('operator', {
-            title: 'Tryb operatora | ITA Tools Sp. z o.o',
-            jsfiles: 'Operator/operator.js',
-            cssfiles: 'operator',
-            login: login
+    const cookie = authUser(req.cookies);
+    cookie.then(auth => {
+            if (auth) {
+                res.render('operator', {
+                    title: 'Tryb operatora | ITA Tools Sp. z o.o',
+                    jsfiles: 'Operator/operator.js',
+                    cssfiles: 'operator',
+                    login: req.cookies.login
+                })
+            }
         })
-    } else {
-        res.redirect('/login')
-    }
+        .catch(error => {
+            res.redirect('/login')
+        });
+
+
 })
 
 

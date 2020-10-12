@@ -972,38 +972,62 @@ table tbody tr td {
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
 
-.main__container .main__section .container .stats__container {
+.main__container .main__section .container .report__container {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%; }
-  .main__container .main__section .container .stats__container .stats {
+  align-items: center;
+  justify-content: flex-start; }
+  .main__container .main__section .container .report__container .month__report,
+  .main__container .main__section .container .report__container .daily__report {
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap; }
-    .main__container .main__section .container .stats__container .stats .machine-stats__container {
+    justify-content: center; }
+    .main__container .main__section .container .report__container .month__report h1,
+    .main__container .main__section .container .report__container .daily__report h1 {
+      font-size: 2em;
+      font-weight: bold; }
+    .main__container .main__section .container .report__container .month__report h2,
+    .main__container .main__section .container .report__container .daily__report h2 {
+      font-size: 1.5em; }
+    .main__container .main__section .container .report__container .month__report .reports,
+    .main__container .main__section .container .report__container .daily__report .reports {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      padding: 2%; }
-      .main__container .main__section .container .stats__container .stats .machine-stats__container .information {
+      align-items: center;
+      justify-content: center; }
+      .main__container .main__section .container .report__container .month__report .reports div,
+      .main__container .main__section .container .report__container .daily__report .reports div {
+        flex: 1;
+        display: flex;
+        flex-direction: column; }
+      .main__container .main__section .container .report__container .month__report .reports .all-machines,
+      .main__container .main__section .container .report__container .month__report .reports .select-machines,
+      .main__container .main__section .container .report__container .daily__report .reports .all-machines,
+      .main__container .main__section .container .report__container .daily__report .reports .select-machines {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center; }
-        .main__container .main__section .container .stats__container .stats .machine-stats__container .information h2 {
-          font-weight: bold;
+        .main__container .main__section .container .report__container .month__report .reports .all-machines select,
+        .main__container .main__section .container .report__container .month__report .reports .select-machines select,
+        .main__container .main__section .container .report__container .daily__report .reports .all-machines select,
+        .main__container .main__section .container .report__container .daily__report .reports .select-machines select {
+          width: 50%;
+          height: 4vh; }
+        .main__container .main__section .container .report__container .month__report .reports .all-machines button,
+        .main__container .main__section .container .report__container .month__report .reports .select-machines button,
+        .main__container .main__section .container .report__container .daily__report .reports .all-machines button,
+        .main__container .main__section .container .report__container .daily__report .reports .select-machines button {
+          background-color: green;
+          border: none;
+          outline: none;
+          margin-top: 2%;
+          padding: 2%;
+          color: white;
           font-size: 1.5em; }
-  .main__container .main__section .container .stats__container .configuration__container {
-    padding: 1%;
-    border-bottom: 1px solid black; }
-    .main__container .main__section .container .stats__container .configuration__container .show-stats {
-      background: green;
-      color: white;
-      padding: 1%;
-      margin-left: 2%; }
-    .main__container .main__section .container .stats__container .configuration__container label {
-      margin: 1%; }
-      .main__container .main__section .container .stats__container .configuration__container label input {
-        margin: 1%; }
 
-/*# sourceMappingURL=stats.css.map */
+/*# sourceMappingURL=reports.css.map */

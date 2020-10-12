@@ -7,18 +7,24 @@ const {
 const User = require('../models/User')
 const auth = require('./middleware/authenticate')
 const bcrypt = require('bcrypt');
+const {
+  authUser
+} = require('../helpers/authUser')
 router.get('/', (req, res, next) => {
-  const login = req.cookies.login;
-  if (login) {
-    res.render('users', {
-      title: 'Użytkownicy | ITA Tools Sp. z o.o',
-      jsfiles: 'controller.js',
-      cssfiles: 'users',
-      login: login
+  const cookie = authUser(req.cookies);
+  cookie.then(auth => {
+      if (auth) {
+        res.render('users', {
+          title: 'Użytkownicy | ITA Tools Sp. z o.o',
+          jsfiles: 'controller.js',
+          cssfiles: 'users',
+          login: req.cookies.login
+        })
+      }
     })
-  } else {
-    res.redirect('/login')
-  }
+    .catch(error => {
+      res.redirect('/login')
+    });
 
 
 
@@ -202,14 +208,14 @@ router.post('/register',
                       status: 500,
                       message: ['Adres email istnieje w bazie danych. Wprowadź inny.']
                     })
-                    return false;
+                  return false;
                 }
                 res.status(500)
                   .send({
                     status: 500,
                     message: ['Błąd rejestracji']
                   })
-                  return false;
+                return false;
               } else {
                 res.status(200)
                   .send({
@@ -217,7 +223,7 @@ router.post('/register',
                     message: ['Rejestracja przebiegła pomyślnie'],
                     user: newUser
                   })
-                  return true;
+                return true;
               }
             })
           }

@@ -2,15 +2,26 @@ const express = require('express'),
     router = express.Router();
 const Stats = require('../models/Stats');
 const LockedMachines = require('../models/LockedMachines');
-const {
-    Response
-} = require('node-fetch');
-router.get('/', (req, res, next) => {
+router.get('/all', (req, res, next) => {
     const login = req.cookies.login;
     if (login) {
-        res.render('stats', {
+        res.render('allStats', {
             title: 'Statystyki | ITA Tools Sp. z o.o',
-            jsfiles: 'Stats/stats.js',
+            jsfiles: 'Stats/All/stats.js',
+            cssfiles: 'stats',
+            login: login
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
+router.get('/user', (req, res, next) => {
+    const login = req.cookies.login;
+    if (login) {
+        res.render('userStats', {
+            title: 'Statystyki | ITA Tools Sp. z o.o',
+            jsfiles: 'Stats/User/stats.js',
             cssfiles: 'stats',
             login: login
         })
@@ -210,21 +221,34 @@ router.delete('/unlock', (req, res, next) => {
     })
 });
 router.post('/show/all', (req, res, next) => {
-    Stats.find((err, data) => {
+    const start = req.body.start,
+        end = req.body.end,
+        user = req.body.user;
+    console.log(req.body)
+    Stats.find({
+        start: {
+            $gte: new Date(start)
+        },
+        // end: {
+        //     $lte: new Date(end)
+        // },
+        user: user
+    }, (err, data) => {
+        console.log(data)
         if (err) {
             res.send({
                 status: 500,
                 error: err
             })
         } else {
-            if (data.length > 0) {
+            if (data.length) {
                 res.send({
                     status: 200,
-                    res: data
+                    data: data
                 })
             } else {
                 res.status(200).send({
-                    status: 200,
+                    status: 500,
                     message: ['W podanym okresie nie ma statystyk do wyświetlenia']
                 })
             }
@@ -242,6 +266,7 @@ router.post('/show/user', (req, res, next) => {
             $gte: start
         },
     }, (err, document) => {
+        console.log(document)
         if (document.length) {
             res.status(200).send({
                 status: 200,
@@ -250,7 +275,7 @@ router.post('/show/user', (req, res, next) => {
         } else {
             res.status(500).send({
                 status: 500,
-                message: ['Brak statystyk do wyświetlenia za podany okres.']
+                message: ['W podanym okresie nie ma statystyk do wyświetlenia']
             })
         }
     })

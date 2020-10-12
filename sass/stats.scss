@@ -31,10 +31,11 @@
         .configuration__container {
           padding: 1%;
           border-bottom: 1px solid black;
-          .choose-machine {
+          .show-stats {
             background: green;
             color: white;
             padding: 1%;
+            margin-left: 2%;
           }
           label{
             margin:1%;
