@@ -31,10 +31,6 @@ router.post('/menu', (req, res, next) => {
                     name: 'Ustawienia',
                     href: '/settings'
                 },
-                logout: {
-                    name: 'Wyloguj',
-                    href: '/logout'
-                }
             })
         }
         break;
@@ -55,13 +51,7 @@ router.post('/menu', (req, res, next) => {
             myWork: {
                 name: 'Moje statystyki',
                 href: '/stats/user'
-            },
-            logout: {
-                name: 'Wyloguj',
-                href: '/logout'
             }
-
-
         })
     }
     }

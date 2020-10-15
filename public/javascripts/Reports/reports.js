@@ -85,8 +85,8 @@ class Report {
                         month = i > 10 ? i : '0' + i,
                         from = months[i - 1].from > 10 ? months[i - 1].from : '0' + months[i - 1].from,
                         to = months[i - 1].to > 10 ? months[i - 1].to : '0' + months[i - 1].to;
-                    this._monthly._from = new Date(`${year}-${month}-${from}`);
-                    this._monthly._to = new Date(`${year}-${month}-${to}`);
+                    this._monthly._from = new Date(`${year}-${month}-${from}T00:00:00`);
+                    this._monthly._to = new Date(`${year}-${month}-${to}T23:59:59`);
                 }
                 select.appendChild(option)
             }
@@ -102,11 +102,18 @@ class Report {
         this._machinesContainer.forEach((container, index) => {
             machines.getMachines()
                 .then(json => {
-                    json.machines.forEach(machine => {
+                    const sortedMachines = json.machines.sort((a, b) => {
+                        if (a.name > b.name) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    })
+                    sortedMachines.forEach(machine => {
                         const input = document.createElement('input'),
                             label = document.createElement('label');
 
-                        index ? this._allMachines.push(machine) : null;
+                        index == 0 ? this._allMachines.push(machine) : null;
                         input.setAttribute('type', 'checkbox');
                         input.setAttribute('name', machine.name);
                         input.setAttribute('value', machine.name);
@@ -133,8 +140,8 @@ class Report {
             month = index > 10 ? index : '0' + index,
             from = e.target[index - 1].dataset.from > 10 ? e.target[index - 1].dataset.from : '0' + e.target[index - 1].dataset.from,
             to = e.target[index - 1].dataset.to > 10 ? e.target[index - 1].dataset.to : '0' + e.target[index - 1].dataset.to;
-        this._monthly._from = new Date(`${year}-${month}-${from}`);
-        this._monthly._to = new Date(`${year}-${month}-${to}`);
+        this._monthly._from = new Date(`${year}-${month}-${from}T00:00:00`);
+        this._monthly._to = new Date(`${year}-${month}-${to}T23:59:59`);
     }
     getMonthSummaryStatuses(type) {
         const from = new Date(this._monthly._from),
@@ -142,28 +149,33 @@ class Report {
         if (type == 'selected') {
             const selectedMachines = document.querySelectorAll('input.machine:checked');
             this._selectedMachines = [];
-            selectedMachines.forEach(machine => {
-                this._selectedMachines.push({
-                    name: machine.value
-                })
-            })
-            if (this._from.getTime() > new Date().getTime() || this._to.getTime() > new Date().getTime()) {
-                messages.showMessage('error', [`Nie możesz wybrać miesiąca nowszego niż bieżący.`])
+            if (selectedMachines.length == 0) {
+                messages.showMessage('error', ['Musisz wybrać przynajmniej jedną maszynę'])
             } else {
-                machines.createXLSX({
-                        machines: this._selectedMachines,
-                        from,
-                        to
+                selectedMachines.forEach(machine => {
+                    this._selectedMachines.push({
+                        name: machine.value
                     })
-                    .then(res => {
-                        if (res.status == 200) {
-                            messages.showMessage('success', res.message)
-                        }
-                    })
+                })
+                if (this._monthly._from.getTime() > new Date().getTime() || this._monthly._to.getTime() > new Date().getTime()) {
+                    messages.showMessage('error', [`Nie możesz wybrać miesiąca nowszego niż bieżący.`])
+                } else {
+                    machines.createXLSX({
+                            machines: this._selectedMachines,
+                            from,
+                            to
+                        })
+                        .then(res => {
+                            if (res.status == 200) {
+                                messages.showMessage('success', res.message)
+                            }
+                        })
+                }
+
             }
 
         } else {
-            if (this._from.getTime() > new Date().getTime() || this._to.getTime() > new Date().getTime()) {
+            if (this._monthly._from.getTime() > new Date().getTime() || this._monthly._to.getTime() > new Date().getTime()) {
                 messages.showMessage('error', [`Nie możesz wybrać miesiąca nowszego niż bieżący.`])
             } else {
                 machines.createXLSX({
@@ -193,22 +205,27 @@ class Report {
         if (type == 'selected') {
             const selectedMachines = document.querySelectorAll('input.machine:checked');
             this._selectedMachines = [];
-            selectedMachines.forEach(machine => {
-                this._selectedMachines.push({
-                    name: machine.value
+            if (selectedMachines.length == 0) {
+                messages.showMessage('error', ['Musisz wybrać przynajmniej jedną maszynę']);
+            } else {
+                selectedMachines.forEach(machine => {
+                    this._selectedMachines.push({
+                        name: machine.value
+                    })
                 })
-            })
 
-            machines.createXLSX({
-                    machines: this._selectedMachines,
-                    from,
-                    to
-                })
-                .then(res => {
-                    if (res.status == 200) {
-                        messages.showMessage('success', res.message);
-                    }
-                })
+                machines.createXLSX({
+                        machines: this._selectedMachines,
+                        from,
+                        to
+                    })
+                    .then(res => {
+                        if (res.status == 200) {
+                            messages.showMessage('success', res.message);
+                        }
+                    })
+            }
+
 
         } else {
             machines.createXLSX({
@@ -224,19 +241,53 @@ class Report {
 
         }
     }
-    // selectMachine(e) {
-    //     if (!this._selectedMachines.length) {
-    //         this._selectedMachines.push({
-    //             name: e.target.value
-    //         })
-    //     } else {
-    //         this._selectedMachines.map(machine =>{
+    getAnySummaryStatuses(type) {
+        const from = new Date(document.querySelector('input[name="from"]').value),
+            to = new Date(document.querySelector('input[name="to"]').value);
+        if (from.getTime() > to.getTime()) {
+            messages.showMessage('error', ['Data od nie może być większa niż data do!'])
+        } else if (from == 'Invalid Date' || to == 'Invalid Date') {
+            messages.showMessage('error', ['Musisz wybrać datę od-do!'])
+        } else {
+            if (type == 'selected') {
+                const selectedMachines = document.querySelectorAll('input.machine:checked');
+                this._selectedMachines = [];
+                if (selectedMachines.length == 0) {
+                    messages.showMessage('error', ['Musisz wybrać przynajmniej jedną maszynę']);
+                } else {
+                    selectedMachines.forEach(machine => {
+                        this._selectedMachines.push({
+                            name: machine.value
+                        })
+                    })
 
-    //         })
-    //     }
-    // }
+                    machines.createXLSX({
+                            machines: this._selectedMachines,
+                            from,
+                            to
+                        })
+                        .then(res => {
+                            if (res.status == 200) {
+                                messages.showMessage('success', res.message);
+                            }
+                        })
+                }
+            } else {
+                machines.createXLSX({
+                        machines: this._allMachines,
+                        from,
+                        to,
+                    })
+                    .then(res => {
+                        if (res.status == 200) {
+                            messages.showMessage('success', res.message)
+                        }
+                    })
 
+            }
+        }
 
+    }
 }
 
 export default Report;

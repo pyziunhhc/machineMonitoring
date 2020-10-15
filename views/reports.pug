@@ -8,6 +8,7 @@ block content
                 .reports
                     .all-machines
                         h2='Wszystkie maszyny'
+                        img(src="/images/machines/DM.png")
                         button(class="daily-all-machines" type="submit" value="Generuj") Generuj
                     .select-machines
                         h2='Wybierz maszyny'
@@ -19,11 +20,31 @@ block content
                 .reports
                     .all-machines
                         h2='Wszystkie maszyny'
-                        select(class="month-report-machines")
+                        img(src="/images/machines/DM.png")
+                        .select-month
+                            h3='Wybierz miesiąc'
+                            select(class="month-report-machines")
                         button(class="month-all-machines" type="submit" value="Generuj") Generuj
                     .select-machines
                         h2='Wybierz maszyny'
                         .machines
-                        h2='Wybierz miesiąc'
-                        select(class="month-report-machines")
+                        .select-month
+                            h3='Wybierz miesiąc'
+                            select(class="month-report-machines")
                         button(class="month-selected-machines" type="submit" value="Generuj") Generuj
+        .report__container
+            .any__report
+                h1='Dowolny raport'
+                label(for="from")='Data od'
+                    input(type='datetime-local' name="from")
+                label(for="to")='Data do'
+                    input(type='datetime-local' name="to")
+                .reports
+                    .all-machines
+                        h2='Wszystkie maszyny'
+                        img(src="/images/machines/DM.png")
+                        button(class="any-all-machines" type="submit" value="Generuj") Generuj
+                    .select-machines
+                        h2='Wybierz maszyny'
+                        .machines
+                        button(class="any-selected-machines" type="submit" value="Generuj") Generuj

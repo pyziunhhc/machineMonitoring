@@ -21,6 +21,8 @@ html
           h1=title
         .logged-user
           p=`Zalogowany: ${login}`
+          a(href="/logout")
+            img(src='/images/logout.png')
     .main__section
       aside.navigation__container
         button.button__hide-nav

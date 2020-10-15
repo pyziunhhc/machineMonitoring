@@ -3,12 +3,15 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
+const fs = require('fs')
 const {
-  removeLoggedUsers
+  removeLoggedUsers,
 } = require('./helpers/background/removeLoggedUsers')
-
+const {
+  sendEmails,
+} = require('./helpers/background/sendEmails')
 
 
 /*LACZENIE Z BAZA*/
@@ -45,7 +48,10 @@ const corsOption = {
   credentials: true
 }
 app.use(cors(corsOption))
-app.use(logger('dev'));
+app.use(morgan('dev'));
+app.use(morgan('combined', {
+  stream: fs.createWriteStream(path.join(`${__dirname}/logs`, `access${new Date().toLocaleDateString()}.log`), { flags: 'a' })
+}));
 app.use(cookieParser());
 app.use(express.json({ //problem z payloadem był przez użycie bodyParser.json
   limit: 52428800,
@@ -57,7 +63,6 @@ app.use(express.urlencoded({
   extended: true,
   parameterLimit: 52428800
 }))
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
@@ -92,5 +97,6 @@ app.use(function (err, req, res, next) {
   res.render('error')
 });
 removeLoggedUsers()
+sendEmails()
 
 module.exports = app;

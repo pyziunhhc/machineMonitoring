@@ -720,9 +720,16 @@ body {
         font-size: 0.7em; }
     .main__container .header__container .logged-user {
       display: flex;
+      flex: 0.5;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       font-size: 0.5em; }
+      .main__container .header__container .logged-user a {
+        margin-left: 2%; }
+        .main__container .header__container .logged-user a :hover {
+          transform: scale(0.9); }
+        .main__container .header__container .logged-user a img {
+          width: 80%; }
   .main__container .main__section {
     display: flex;
     position: relative;
@@ -741,19 +748,6 @@ body {
       margin-top: 1%;
       justify-content: center;
       background: rgba(255, 255, 255, 0.9); }
-      .main__container .main__section .container .report__container {
-        display: flex;
-        height: 30%;
-        flex: 1;
-        align-items: center;
-        justify-content: space-around;
-        background: white;
-        box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
-        .main__container .main__section .container .report__container .daily__report {
-          width: 90%;
-          height: 100%; }
-          .main__container .main__section .container .report__container .daily__report h3 {
-            font-size: 1.2em; }
 
 .settings__container {
   display: flex;
@@ -766,6 +760,8 @@ body {
   left: 25%;
   background: #d9d9d9d9;
   box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+  .settings__container.minimized {
+    display: none; }
   .settings__container ul li a {
     color: black;
     font-size: 1.5em; }
@@ -975,53 +971,94 @@ table tbody tr td {
 .main__container .main__section .container .report__container {
   width: 100%;
   height: 100%;
+  padding: 1%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; }
   .main__container .main__section .container .report__container .month__report,
-  .main__container .main__section .container .report__container .daily__report {
+  .main__container .main__section .container .report__container .daily__report,
+  .main__container .main__section .container .report__container .any__report {
     width: 100%;
+    min-height: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    background: white;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
     .main__container .main__section .container .report__container .month__report h1,
-    .main__container .main__section .container .report__container .daily__report h1 {
+    .main__container .main__section .container .report__container .daily__report h1,
+    .main__container .main__section .container .report__container .any__report h1 {
       font-size: 2em;
       font-weight: bold; }
     .main__container .main__section .container .report__container .month__report h2,
-    .main__container .main__section .container .report__container .daily__report h2 {
+    .main__container .main__section .container .report__container .daily__report h2,
+    .main__container .main__section .container .report__container .any__report h2 {
       font-size: 1.5em; }
+    .main__container .main__section .container .report__container .month__report h3,
+    .main__container .main__section .container .report__container .daily__report h3,
+    .main__container .main__section .container .report__container .any__report h3 {
+      font-size: 1.2em; }
+    .main__container .main__section .container .report__container .month__report label input[type="datetime-local"],
+    .main__container .main__section .container .report__container .daily__report label input[type="datetime-local"],
+    .main__container .main__section .container .report__container .any__report label input[type="datetime-local"] {
+      margin-left: 16%; }
     .main__container .main__section .container .report__container .month__report .reports,
-    .main__container .main__section .container .report__container .daily__report .reports {
+    .main__container .main__section .container .report__container .daily__report .reports,
+    .main__container .main__section .container .report__container .any__report .reports {
       width: 100%;
+      padding: 1%;
       display: flex;
       align-items: center;
       justify-content: center; }
       .main__container .main__section .container .report__container .month__report .reports div,
-      .main__container .main__section .container .report__container .daily__report .reports div {
+      .main__container .main__section .container .report__container .daily__report .reports div,
+      .main__container .main__section .container .report__container .any__report .reports div {
         flex: 1;
         display: flex;
         flex-direction: column; }
       .main__container .main__section .container .report__container .month__report .reports .all-machines,
       .main__container .main__section .container .report__container .month__report .reports .select-machines,
       .main__container .main__section .container .report__container .daily__report .reports .all-machines,
-      .main__container .main__section .container .report__container .daily__report .reports .select-machines {
+      .main__container .main__section .container .report__container .daily__report .reports .select-machines,
+      .main__container .main__section .container .report__container .any__report .reports .all-machines,
+      .main__container .main__section .container .report__container .any__report .reports .select-machines {
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center; }
-        .main__container .main__section .container .report__container .month__report .reports .all-machines select,
-        .main__container .main__section .container .report__container .month__report .reports .select-machines select,
-        .main__container .main__section .container .report__container .daily__report .reports .all-machines select,
-        .main__container .main__section .container .report__container .daily__report .reports .select-machines select {
-          width: 50%;
-          height: 4vh; }
+        justify-content: space-between; }
+        .main__container .main__section .container .report__container .month__report .reports .all-machines img,
+        .main__container .main__section .container .report__container .month__report .reports .select-machines img,
+        .main__container .main__section .container .report__container .daily__report .reports .all-machines img,
+        .main__container .main__section .container .report__container .daily__report .reports .select-machines img,
+        .main__container .main__section .container .report__container .any__report .reports .all-machines img,
+        .main__container .main__section .container .report__container .any__report .reports .select-machines img {
+          width: 80%; }
+        .main__container .main__section .container .report__container .month__report .reports .all-machines .select-month,
+        .main__container .main__section .container .report__container .month__report .reports .select-machines .select-month,
+        .main__container .main__section .container .report__container .daily__report .reports .all-machines .select-month,
+        .main__container .main__section .container .report__container .daily__report .reports .select-machines .select-month,
+        .main__container .main__section .container .report__container .any__report .reports .all-machines .select-month,
+        .main__container .main__section .container .report__container .any__report .reports .select-machines .select-month {
+          display: flex;
+          align-items: center;
+          margin: 5%; }
+          .main__container .main__section .container .report__container .month__report .reports .all-machines .select-month select,
+          .main__container .main__section .container .report__container .month__report .reports .select-machines .select-month select,
+          .main__container .main__section .container .report__container .daily__report .reports .all-machines .select-month select,
+          .main__container .main__section .container .report__container .daily__report .reports .select-machines .select-month select,
+          .main__container .main__section .container .report__container .any__report .reports .all-machines .select-month select,
+          .main__container .main__section .container .report__container .any__report .reports .select-machines .select-month select {
+            width: 100%;
+            height: 4vh; }
         .main__container .main__section .container .report__container .month__report .reports .all-machines button,
         .main__container .main__section .container .report__container .month__report .reports .select-machines button,
         .main__container .main__section .container .report__container .daily__report .reports .all-machines button,
-        .main__container .main__section .container .report__container .daily__report .reports .select-machines button {
+        .main__container .main__section .container .report__container .daily__report .reports .select-machines button,
+        .main__container .main__section .container .report__container .any__report .reports .all-machines button,
+        .main__container .main__section .container .report__container .any__report .reports .select-machines button {
           background-color: green;
           border: none;
           outline: none;

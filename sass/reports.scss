@@ -6,17 +6,22 @@
       .report__container {
         width: 100%;
         height: 100%;
+        padding: 1%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
         .month__report,
-        .daily__report {
+        .daily__report,
+        .any__report {
           width: 100%;
+          min-height: 60%;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          background: white;
+          box-shadow: $shadowBackground;
           h1 {
             font-size: 2em;
             font-weight: bold;
@@ -24,8 +29,17 @@
           h2 {
             font-size: 1.5em;
           }
+          h3 {
+            font-size: 1.2em;
+          }
+          label {
+            input[type="datetime-local"] {
+              margin-left: 16%;
+            }
+          }
           .reports {
             width: 100%;
+            padding: 1%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -36,14 +50,24 @@
             }
             .all-machines,
             .select-machines {
+              height: 100%;
               display: flex;
               flex-direction: column;
               align-items: center;
-              justify-content: center;
-              select {
-                width: 50%;
-                height: 4vh;
+              justify-content: space-between;
+              img {
+                width: 80%;
               }
+              .select-month {
+                display: flex;
+                align-items: center;
+                margin: 5%;
+                select {
+                  width: 100%;
+                  height: 4vh;
+                }
+              }
+
               button {
                 background-color: green;
                 border: none;

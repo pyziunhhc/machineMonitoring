@@ -1,4 +1,4 @@
-const summaryMachineStatistics = (data, from) => {
+const summaryMachineStatistics = (data, from, to) => {
     const DATA = data;
     let summaryMachineStatistics = {
         firstStatus: {
@@ -227,29 +227,21 @@ const summaryMachineStatistics = (data, from) => {
             end = new Date(data.end),
             time = end - start,
             status = `${data.value}`;
-            if(isNaN(time)){
-                console.log(data, index, start, end)
-            }
+        if (isNaN(time)) {}
         if (index == 0) {
             if (start != new Date(from)) {
                 let newStart = new Date(from);
                 if (data.end == null) {
                     time = new Date() - newStart;
-                    if(isNaN(time)){
-                        console.log(data, index, newStart, from)
-                    }
+                    if (isNaN(time)) {}
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 } else {
                     time = end - newStart;
-                    if(isNaN(time)){
-                        console.log(data, index, newStart, from)
-                    }
+                    if (isNaN(time)) {}
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 }
             } else {
-                if(isNaN(time)){
-                    console.log(data, index, end, start)
-                }
+                if (isNaN(time)) {}
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
 
@@ -258,21 +250,23 @@ const summaryMachineStatistics = (data, from) => {
         } else {
             if (data.end == null) {
                 time = new Date() - start;
-                if(isNaN(time)){
-                    console.log(data, index, start)
+                if (isNaN(time)) {
+
                 }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
                 summaryMachineStatistics.lastStatus.name = data.value;
+
+                if (end > new Date(to)) {
+                    time = new Date(to) - new Date(start)
+                    summaryMachineStatistics.sumOfTimes.data.time += time;
+                }
             } else {
-                if(isNaN(time)){
-                    console.log(data, index, start,end)
+                if (isNaN(time)) {
+
                 }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
         }
-
-
-
         switch (status) {
             case 'ERODOWANIE':
                 summaryMachineStatistics.erodowanie.data.time += time;

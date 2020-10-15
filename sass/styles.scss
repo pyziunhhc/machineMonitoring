@@ -68,9 +68,19 @@ body {
     }
     .logged-user {
       display: flex;
+      flex: 0.5;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       font-size: 0.5em;
+      a {
+        margin-left: 2%;
+        :hover {
+          transform: scale(0.9);
+        }
+        img {
+          width: 80%;
+        }
+      }
     }
   }
 
@@ -93,27 +103,27 @@ body {
       justify-content: center;
       background: rgba(255, 255, 255, 0.9);
 
-      .report__container {
-        display: flex;
-        height: 30%;
-        flex: 1;
-        align-items: center;
-        justify-content: space-around;
-        background: white;
-        box-shadow: $shadowBackground;
-        .daily__report {
-          width: 90%;
-          height: 100%;
-          h3 {
-            font-size: 1.2em;
-          }
-        }
-      }
+      // .report__container {
+      //   display: flex;
+      //   height: 30%;
+      //   flex: 1;
+      //   align-items: center;
+      //   justify-content: space-around;
+      //   background: white;
+      //   box-shadow: $shadowBackground;
+      //   .daily__report {
+      //     width: 90%;
+      //     height: 100%;
+      //     h3 {
+      //       font-size: 1.2em;
+      //     }
+      //   }
+      // }
     }
   }
 }
 .settings__container {
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
@@ -123,6 +133,9 @@ body {
   left: 25%;
   background: #d9d9d9d9;
   box-shadow: $shadowBackground;
+  &.minimized {
+    display: none;
+  }
   ul {
     li {
       a {
