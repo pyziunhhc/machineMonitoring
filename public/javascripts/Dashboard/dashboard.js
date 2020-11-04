@@ -1,4 +1,4 @@
-import machines from '../helpers/fetch/machines.js';
+import dashboard from '../helpers/fetch/dashboard.js';
 import Table from '../Table/table.js';
 import Chart from '../Chart/chartJS.js'
 window.onload = function () {
@@ -33,7 +33,7 @@ class Dashboard {
             class: 'none'
         }];
 
-        machines.whatMachinesDoingNow(now)
+        dashboard.whatMachinesDoingNow(now)
             .then(json => {
                 const summaryTable = document.querySelector('.summary__container--table > table'),
                     summaryContainer = document.querySelector('.summary__container--table'),
@@ -73,15 +73,15 @@ class Dashboard {
                 }
                 summaryContainer.replaceChild(tableContainer, summaryTable)
             }).then(() => {
-                machines.summaryMachinesWork(summary)
+                dashboard.summaryMachinesWork(summary)
                     .then(json => {
                         const data = json.currentWork,
                             tableArray = [];
                         const parent = document.querySelector('.summary-container__table--current');
                         data.map((element, index) => {
-                            const TABLE = new Table(element.data, element.name);
                             const container = document.createElement('div'),
                                 title = document.createElement('h3');
+                            const TABLE = new Table(element.data, element.name, container);
                             title.innerText = element.name;
 
                             container.classList.add('statuses-panel__container');
@@ -136,7 +136,7 @@ class Dashboard {
                 to: new Date()
             },
             summaryGraph = document.querySelector('.summary__container--graph');
-        machines.whatMachinesDoingNowGraph(time)
+        dashboard.whatMachinesDoingNowGraph(time)
             .then(data => {
                 const chart = new Chart(data, '', 'pie', summaryGraph);
                 this.charts.chartJS.chart = chart.create('current-work')

@@ -5,7 +5,19 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const fs = require('fs')
+const fs = require('fs');
+const compression = require('compression');
+const cors = require('cors');
+const app = express();
+const http = require('http')
+const server = http.createServer(app)
+const io = require('socket.io').listen(server)
+
+// io.on('connection', socket => {
+//   socket.on('addTask', message => {
+//     socket.broadcast.emit('notify-user')
+//   })
+// })
 const {
   removeLoggedUsers,
 } = require('./helpers/background/removeLoggedUsers')
@@ -28,18 +40,19 @@ const loginRouter = require('./routes/auth/login');
 const logoutRouter = require('./routes/auth/logout');
 const usersRouter = require('./routes/users');
 const dashboardRouter = require('./routes/dashboard');
-const checkCookie = require('./routes/middleware/checkCookie');
-const machineRouter = require('./routes/monitoring');
-const settingsRouter = require('./routes/settings');
+const monitoringRouter = require('./routes/monitoring');
+const machinesRouter = require('./routes/machines');
+const settingsRouter = require('./routes/menu');
 const reportsRouter = require('./routes/reports');
 const dataRouter = require('./routes/data');
-const operatorRouter = require('./routes/operator')
+const operatorRouter = require('./routes/operator');
 const statsRouter = require('./routes/stats');
-
+const tasksRouter = require('./routes/tasks');
+const notificationRouter = require('./routes/notification')
 
 /*LADOWANIE ZALEZNOSCI */
-const cors = require('cors');
-const app = express();
+
+
 const corsOption = {
   origin: (origin, callback) => {
 
@@ -47,10 +60,13 @@ const corsOption = {
   },
   credentials: true
 }
+app.use(compression())
 app.use(cors(corsOption))
 app.use(morgan('dev'));
 app.use(morgan('combined', {
-  stream: fs.createWriteStream(path.join(`${__dirname}/logs`, `access${new Date().toLocaleDateString()}.log`), { flags: 'a' })
+  stream: fs.createWriteStream(path.join(`${__dirname}/logs`, `access${new Date().toLocaleDateString()}.log`), {
+    flags: 'a'
+  })
 }));
 app.use(cookieParser());
 app.use(express.json({ //problem z payloadem był przez użycie bodyParser.json
@@ -75,10 +91,12 @@ app.use('/logout', logoutRouter);
 app.use('/api', settingsRouter);
 app.use('/reports', reportsRouter);
 app.use('/users', usersRouter);
-app.use('/api/checkCookie', checkCookie);
-app.use('/monitoring', machineRouter);
+app.use('/monitoring', monitoringRouter);
+app.use('/machines', machinesRouter);
 app.use('/operator', operatorRouter);
 app.use('/stats', statsRouter);
+app.use('/tasks', tasksRouter)
+app.use('/notification', notificationRouter)
 
 
 // catch 404 and forward to error handler
@@ -97,6 +115,9 @@ app.use(function (err, req, res, next) {
   res.render('error')
 });
 removeLoggedUsers()
-sendEmails()
+//sendEmails()
 
-module.exports = app;
+module.exports = {
+  app: app,
+  server: server,
+};

@@ -12,8 +12,11 @@ function showMessage(type, message) {
     } else {
         errorContainer.classList.add('success__container');
     }
+    const loading = document.querySelector('.loading')
+    if (loading) {
+        loading.remove();
 
-
+    }
     container.appendChild(errorContainer);
 
     setTimeout(() => {

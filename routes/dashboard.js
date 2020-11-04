@@ -1,31 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const fetch = require('../helpers/fetchFromMainApp');
 const {
-   authUser
-} = require('../helpers/authUser')
+   getStatuses,
+   getGroups,
+   getMachines
+} = require('../helpers/fetchFromMainApp');
 const {
    whatMachineDoingGraph,
    whatMachineDoingTable,
    currentMachinesWork
 } = require('../helpers/processStatuses/dashboard');
+const auth = require('./middleware/authenticate')
 
-router.get('/', (req, res, next) => {
-   const cookie = authUser(req.cookies);
-   cookie.then(auth => {
-         if (auth) {
-            res.render('dashboard', {
-               title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
-               jsfiles: 'Dashboard/dashboard.js',
-               cssfiles: 'dashboard',
-               login: req.cookies.login,
-            })
-         }
-      })
-      .catch(error => {
-         res.redirect('/login')
-      });
+router.get('/', auth, (req, res, next) => {
+   res.render('dashboard', {
+      title: 'Dashboard | Monitoring ITA Tools Sp. z o.o',
+      jsfiles: 'Dashboard/dashboard.js',
+      cssfiles: 'dashboard',
+      login: req.cookies.login,
+   })
 })
+
 
 router.post('/get/table/whatMachinesDoingNow', (req, res, next) => { //Zmienićna /get/table/currentStatuses
    const {
@@ -33,12 +28,12 @@ router.post('/get/table/whatMachinesDoingNow', (req, res, next) => { //Zmienićn
       to
    } = req.body;
    let machinesArray = [];
-   fetch.getGroups().then(groups => {
+   getGroups().then(groups => {
       const firstHallGroup = groups[0].name;
-      fetch.getMachines(firstHallGroup).then(machines => {
+      getMachines(firstHallGroup).then(machines => {
          let len = machines.length;
          machines.map(machine => {
-            fetch.getStatuses(machine.name, from, to).then(statuses => {
+            getStatuses(machine.name, from, to).then(statuses => {
                machinesArray.push({
                   name: machine.name,
                   statuses: statuses[0].value
@@ -68,12 +63,12 @@ router.post('/get/graph/whatMachinesDoingNow', (req, res, next) => { //Zmienić 
       to
    } = req.body;
    let machinesArray = [];
-   fetch.getGroups().then(groups => {
+   getGroups().then(groups => {
       const firstHallGroup = groups[0].name;
-      fetch.getMachines(firstHallGroup).then(machines => {
+      getMachines(firstHallGroup).then(machines => {
          let len = machines.length;
          machines.map(machine => {
-            fetch.getStatuses(machine.name, from, to).then(statuses => {
+            getStatuses(machine.name, from, to).then(statuses => {
 
                machinesArray.push({
                   name: machine.name,
@@ -99,12 +94,12 @@ router.post('/get/table/summaryMachinesWork', (req, res, next) => {
       to
    } = req.body;
    let machinesArray = [];
-   fetch.getGroups().then(groups => {
+   getGroups().then(groups => {
       const firstHallGroup = groups[0].name;
-      fetch.getMachines(firstHallGroup).then(machines => {
+      getMachines(firstHallGroup).then(machines => {
          let len = machines.length;
          machines.map(machine => {
-            fetch.getStatuses(machine.name, from, to)
+            getStatuses(machine.name, from, to)
                .then(statuses => {
                   machinesArray.push({
                      name: machine.name,

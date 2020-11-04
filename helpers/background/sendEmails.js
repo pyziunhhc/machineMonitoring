@@ -7,11 +7,11 @@ const {
 
 function sendEmails() {
     //sendDailyEmail()
-    sendMonthlyEmail()
+    //sendMonthlyEmail()
 }
 const {
     machineTypes
-} = require('../../config/machineTypes')
+} = require('../../config/machineTypes');
 const months = [{
     name: 'Styczeń',
     from: 1,
@@ -61,13 +61,14 @@ const months = [{
     from: 1,
     to: 31
 }, ]
+
 function sendMonthlyEmail() {
     const now = new Date(),
         year = now.getFullYear(),
         month = now.getMonth() + 1 >= 10 ? now.getMonth() + 1 : '0' + (now.getMonth() + 1),
         from = new Date(`${year}-${month-1}-${months[month].from}`),
         to = new Date(`${year}-${month-1}-${months[month].to}`);
-        console.log(from, to);
+    console.log(from, to);
     fetchData.getGroups()
         .then(groups => {
             const group = groups[0].name;
@@ -82,47 +83,48 @@ function sendMonthlyEmail() {
                                     name: machine.name,
                                     data: summary
                                 })
-                                if (machines.length - 1 == index) {
-                                    let final = [];
-                                    console.log(stats.length)
-                                    stats.sort((a, b) => a.name > b.name ? 1 : -1).forEach((data, index) => {
-                                        machineTypes.forEach((machineTypes, typeIndex) => {
-                                            if (data.name == machineTypes.name) {
+
+                                return stats
+
+                            }).then(stats => {
+                                let final = [];
+                                if (stats.length == machines.length) {
+                                    stats.forEach((stat, index) => {
+                                        machineTypes.forEach(data => {
+                                            if (data.name == stat.name) {
                                                 final.push({
-                                                    name: data.name,
-                                                    type: machineTypes.type,
-                                                    data: data.data
+                                                    name: stat.name,
+                                                    type: data.type,
+                                                    stats: stat.data
                                                 })
                                             }
-
-
                                         })
-                                        if (stats.length - 1 == index) {
-                                            Email.find((error, document) => {
-                                                if (error) {
+                                    })
+                                }
+                                return final;
+                            })
+                            .then(final => {
+                                if (final.length) {
+                                    const users = []
+                                    Email.find((error, document) => {
+                                        if (error) {
 
+                                        }
+                                        if (document) {
+
+                                            document.forEach(user => {
+                                                if (user.monthly) {
+                                                   // console.log(user, final)
                                                 }
-                                                if (document) {
-                                                    //console.log(document)
-                                                    document.forEach(user => {
-                                                        if (user.daily) {
-                                                            //console.log(user, final)
-                                                        }
-                                                    })
-                                                }
+
                                             })
                                         }
                                     })
                                 }
-
-
                             })
-                        // .then(data => {
-                        //     console.log(data.length)
-                        // })
-
 
                     })
+
                 })
         })
 }

@@ -1,0 +1,18 @@
+extends layout
+block content
+        .container
+            .settings.tasks__settings
+                button.new='+'
+            .main-tasks__container
+                .tasks__container.tasks--todo
+                    .tasks-title
+                        h1(class="todo")='Zadania do zrobienia'
+                    .tasks
+                .tasks__container.tasks--in-progress
+                    .tasks-title
+                        h1(class="in-progress")='Zadania w trakcie'
+                    .tasks
+                .tasks__container.tasks--done
+                    .tasks-title
+                        h1(class="done")='Zadania gotowe'
+                    .tasks

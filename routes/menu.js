@@ -15,9 +15,13 @@ router.post('/menu', (req, res, next) => {
                     name: 'Monitoring',
                     href: '/monitoring'
                 },
-                work: {
+                operator: {
                     name: 'Operator',
                     href: '/operator'
+                },
+                works:{
+                    name: 'Zadania',
+                    href: '/tasks'
                 },
                 reports: {
                     name: 'Raporty',
@@ -27,6 +31,7 @@ router.post('/menu', (req, res, next) => {
                     name: 'Statystyki',
                     href: '/stats/all'
                 },
+
                 settings: {
                     name: 'Ustawienia',
                     href: '/settings'
@@ -35,7 +40,32 @@ router.post('/menu', (req, res, next) => {
         }
         break;
     case 'analityk': {
-
+        res.send({
+            dashboard: {
+                name: 'Dashboard',
+                href: '/dashboard'
+            },
+            monitoring: {
+                name: 'Monitoring',
+                href: '/monitoring'
+            },
+            works:{
+                name: 'Zadania',
+                href: '/tasks'
+            },
+            reports: {
+                name: 'Raporty',
+                href: '/reports'
+            },
+            statistics: {
+                name: 'Statystyki',
+                href: '/stats/all'
+            },
+            settings: {
+                name: 'Ustawienia',
+                href: '/settings'
+            },
+        })
     }
     break;
     case 'operator': {
@@ -82,8 +112,16 @@ router.post('/settings', (req, res, next) => {
             })
         }
         break;
-    case 'Analityk': {
-
+    case 'analityk': {
+        res.send({
+            myAccount: {
+                name: 'Moje konto',
+            },
+            users: {
+                name: 'Użytkownicy',
+                href: '/users'
+            },
+        })
     }
     break;
     case 'operator': {

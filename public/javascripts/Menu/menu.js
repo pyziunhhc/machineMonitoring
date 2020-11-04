@@ -3,8 +3,14 @@ import User from '../Users/users.js';
 import LockedMachines from '../Machines/lockedMachines.js';
 import Movebelt from '../Movebelt/movebelt.js';
 import Server from '../Settings/settings.js'
-import messages from '../helpers/messages.js';
+import notifications from '../helpers/fetch/notification.js'
+// import {
+//     notification
+// } from '../helpers/fetch/notification.js'
 class Menu {
+    constructor() {
+        this._messages = []
+    }
     createMenu() {
         const menu = document.querySelector('.header__navigation > ul');
         return fetch('/api/menu', {
@@ -147,7 +153,6 @@ class Menu {
                                             })
                                             .then(res => res.json())
                                             .then(json => {
-                                                console.log(json)
                                                 if (json.status == 200) {
                                                     const server = new Server(container, json.config);
                                                     server.createDOM();
@@ -173,6 +178,92 @@ class Menu {
             })
         })
     }
+    getStartNotifications() {
+        notifications.getNotification()
+            .then(res => {
+                if (res.status == 200) {
+                    let notificationsArray = res.notifications;
+                    const counter = document.querySelector('.notification>.counter'),
+                        notificationsContainer = document.querySelector('.notification'),
+                        bell = document.querySelector('.notification > img');
+
+                    bell.classList.add('exist')
+                    counter.classList.add('exist')
+                    bell.addEventListener('dblclick', () => {
+                        const messagesWrapper = document.createElement('div'),
+                            messagesContainer = document.createElement('div'),
+                            messageList = document.createElement('ul');
+
+                        messagesWrapper.classList.add('messages__wrapper')
+                        messagesContainer.classList.add('messages__container')
+                        messagesWrapper.appendChild(messagesContainer);
+                        messagesContainer.appendChild(messageList);
+
+                        notificationsArray.forEach((notification) => {
+                            const messageElement = document.createElement('li'),
+                                removeButton = document.createElement('button');
+                            messageElement.innerText = notification.message;
+                            removeButton.innerText = 'X'
+                            messageElement.classList.add('message')
+                            removeButton.classList.add('remove')
+                            messageElement.appendChild(removeButton)
+                            messageList.appendChild(messageElement)
+
+                            removeButton.addEventListener('click', () => {
+                                notifications.updateNotification({
+                                    _id: notification._id,
+                                    read: true
+                                })
+                                // notificationsArray = notificationsArray.map(oldNotification => {
+                                //     if (notification._id != oldNotification) {
+                                //         return oldNotification
+                                //     }
+                                // })
+                                messageElement.remove()
+                            })
+
+                        })
+                        notificationsContainer.appendChild(messagesWrapper)
+                    })
+                    res.notifications.forEach((notification, index) => {
+                        counter.dataset.count++;
+                        counter.innerText = counter.dataset.count;
+                        if (index == res.notifications.length - 1) {
+                            const messageContainer = document.createElement('div'),
+                                message = document.createElement('p');
+                            messageContainer.classList.add('message-popup')
+                            message.innerText = `Masz ${index+1} wiadomości do odczytania.`
+                            messageContainer.appendChild(message)
+                            setTimeout(() => {
+                                bell.appendChild(messageContainer)
+                                setTimeout(() => {
+                                    messageContainer.remove()
+                                }, 5000)
+                            }, 3000)
+                        }
+                    })
+
+
+                }
+
+            })
+
+        // const socket = io();
+        // socket.on('notify-user', () => {
+        //     const counter = document.querySelector('.notification > .counter');
+        //     let count = parseInt(counter.dataset.count);
+        //     if (count > 0) {
+        //         count++;
+        //         counter.dataset.count = count;
+        //         counter.innerText = count;
+        //     } else {
+        //         counter.dataset.count = 1;
+        //         counter.innerText = 1
+        //     }
+        // })
+    }
 }
 const MENU = new Menu()
 MENU.createMenu();
+MENU.getStartNotifications()
+//MENU.handleMessage()

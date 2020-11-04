@@ -65,18 +65,21 @@ router.post('/', (req, res, next) => {
               })
               loggedUser.save((err, document) => {
                 if (document) {
-                  console.log('no Kurwa działaj')
                   const payload = {
                     login
                   }
                   const token = jwt.sign(payload, 'testSecretChangeIt', {
                     expiresIn: '1h'
                   });
-                  res.cookie('login', login, 'role', user.role, {
+                  res.cookie('login', login, {
                     httpOnly: true,
                     sameSite: true,
                   })
                   res.cookie('role', user.role, {
+                    httpOnly: true,
+                    sameSite: true,
+                  })
+                  res.cookie('token', token, {
                     httpOnly: true,
                     sameSite: true,
                   })

@@ -32,12 +32,32 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/list', (req, res, next) => {
-  User.find((err, users) => {
-    res.send({
-      status: 200,
-      users: users,
+  if (req.body) {
+    const nameRegex = new RegExp(req.body.user)
+    User.find({
+      login: {
+        $regex: nameRegex,
+      }
+    }, (error, document) => {
+      if (error) {
+
+      }
+      if (document) {
+        res.send({
+          status: 200,
+          users: document
+        })
+      }
     })
-  })
+  } else {
+    User.find((err, users) => {
+      res.send({
+        status: 200,
+        users: users,
+      })
+    })
+  }
+
 })
 router.post('/user', (req, res, next) => {
   const login = req.body.name;

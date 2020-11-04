@@ -36,9 +36,6 @@ function getCredentials() {
         })
     })
 }
-
-
-
 const fetchData = (url) => {
   return getCredentials()
         .then((response) => {

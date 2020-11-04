@@ -6,72 +6,100 @@ const {
 const User = require('../models/User');
 const Email = require('../models/Email');
 const {
-    check
-} = require('express-validator');
-const machineTypes = [{
-    machineName: 'WPD4_2065-6307',
-    type: 'Ostrzenie-Erodowanie'
-}, {
-    machineName: 'WPD3_2064-6839A',
-    type: 'Ostrzenie-Erodowanie'
-},
-{
-    machineName: 'WPD2_2064-6678',
-    type: 'Ostrzenie-Erodowanie'
-},
-{
-    machineName: 'WES1_2066-5215',
-    type: 'Ostrzenie-VHM'
-},
-{
-    machineName: 'WES2_2066-5264',
-    type: 'Ostrzenie-Wiertła VHM'
-},
-{
-    machineName: 'WES3_2066-5263FS',
-    type: 'Ostrzenie-Wiertła VHM'
-},
-{
-    machineName: 'WBA1_2067-0330',
-    type: 'Ostrzenie-VHM'
-},
-{
-    machineName: 'WBA2_2067-2244',
-    type: 'Produkcja-VHM'
-},
-{
-    machineName: 'WEV1_2066-4001',
-    type: 'Produkcja-Erodowanie'
-},
-{
-    machineName: 'WEV2_2066-4038',
-    type: 'Produkcja-Erodowanie'
-},
-{
-    machineName: 'DMG_NTX-1000',
-    type: 'Produkcja-Korpusy'
-},
-{
-    machineName: 'WP1_2065-6306',
-    type: 'Produkcja-VHM'
-},
+    getStatuses,
+    getMachines,
+    getGroups
+} = require('../helpers/fetchFromMainApp');
+const {
+    summaryMachineStatistics
+} = require('../helpers/processStatuses/process');
+const auth = require('../routes/middleware/authenticate');
+const {
+    parseMillisecondsIntoReadableTime
+} = require('../helpers/helpers');
+router.get('/', auth, (req, res, next) => {
+    res.render('reports', {
+        title: 'Raporty | ITA Tools Sp. z o.o',
+        jsfiles: '/Reports/controller.js',
+        cssfiles: 'reports',
+        login: req.cookies.login
+    })
+})
+router.post('/data/get/summary', (req, res, next) => {
+    try {
+        const machines = req.body.machines,
+            FROM = req.body.from,
+            TO = req.body.to,
+            data = [];
+        machines.forEach((machine, index) => {
+            const NAME = machine.name;
+            getStatuses(NAME, FROM, TO)
+                .then(data => {
+                    const SUMMARY = summaryMachineStatistics(data, FROM, TO);
+                    return {
+                        data: SUMMARY,
+                        name: NAME
+                    };
+                }).then(val => {
+                    data.push({
+                        data: val.data,
+                        name: val.name
+                    })
+                    if (data.length == machines.length) {
+                        const sortedData = data.sort((a, b) => {
+                            if (a.name > b.name) {
+                                return 1
+                            } else {
+                                return -1;
+                            }
+                        })
+                        let final = [];
 
-]
-router.get('/', (req, res, next) => {
-    const cookie = authUser(req.cookies);
-    cookie.then(auth => {
-            if (auth) {
-                res.render('reports', {
-                    title: 'Raporty | ITA Tools Sp. z o.o',
-                    jsfiles: '/Reports/controller.js',
-                    cssfiles: 'reports',
-                    login: req.cookies.login
+                        sortedData.forEach((val, index) => {
+                            console.time('mozetu?'+index)
+                            let statuses = [];
+                            let sumOfTimes = val.data.sumOfTimes.data.time;
+                            Object.values(val.data)
+                                .filter(val => {
+                                    return val.data.time > 0;
+                                })
+                                .filter(val => {
+                                    return val.data.show;
+                                })
+                                .filter(val => {
+                                    val.data.percentage = ((val.data.time * 100) / sumOfTimes).toFixed(2);
+                                    return val;
+                                })
+                                .forEach((val, index) => {
+                                    statuses.push({
+                                        status: val.displayName,
+                                        time: parseMillisecondsIntoReadableTime(val.data.time),
+                                        percentage: `${val.data.percentage}`,
+                                        color: val.colors.argb
+                                    })
+
+                                })
+                            final.push({
+                                machineName: val.name,
+                                data: statuses
+                            })
+                            console.timeEnd('mozetu?'+index)
+                            if (index == sortedData.length - 1) {
+                                res.send({
+                                    status: 200,
+                                    data: final,
+                                })
+                            }
+                        })
+
+
+                    }
                 })
-            }
         })
-        .catch(error => {
-            res.redirect('/login')
-        });
+    } catch (e) {
+        console.log(e)
+    }
+
 })
 router.get('/mail', (req, res, next) => {
     const cookie = authUser(req.cookies);
@@ -109,7 +137,6 @@ router.put('/mail/users/update', (req, res, next) => {
     const user = req.body.user,
         daily = req.body.daily,
         monthly = req.body.monthly;
-    console.log(req.body)
     Email.findOne({
         user: user.user,
     }, (error, document) => {

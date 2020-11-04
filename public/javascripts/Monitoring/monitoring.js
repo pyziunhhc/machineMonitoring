@@ -66,96 +66,99 @@ class Monitoring extends Panel {
         this._container.appendChild(containerForMachines);
 
 
-        machines.getMachines().then(data => {
-            data.machines.forEach(machine => {
-                const machineContainer = document.createElement('div'),
-                    machinePicture = document.createElement('img'),
-                    machineTextContainer = document.createElement('div');
-                const tempShortName = machine.name.split('_')[0],
-                    shortName = tempShortName.slice(0, tempShortName.length - 1);
+        machines.getMachines()
+            .then(data => {
+                //console.log(data)
+                data.machines
+                    .forEach(machine => {
+                        const machineContainer = document.createElement('div'),
+                            machinePicture = document.createElement('img'),
+                            machineTextContainer = document.createElement('div');
+                        const tempShortName = machine.name.split('_')[0],
+                            shortName = tempShortName.slice(0, tempShortName.length - 1);
 
-                machineContainer.classList.add('monitoring__element');
-                machineTextContainer.classList.add('monitoring__element--text')
-                machinePicture.classList.add('monitoring__element--img');
-                machinePicture.setAttribute('src', `/images/machines/${shortName}.png`)
-
-
-                machineContainer.appendChild(machinePicture)
-                machinePicture.setAttribute('alt', 'Zdjęcie maszyny');
-                machinePicture.setAttribute('data-name', machine.name);
-                machinePicture.addEventListener('click', this.getData.bind(this));
+                        machineContainer.classList.add('monitoring__element');
+                        machineTextContainer.classList.add('monitoring__element--text')
+                        machinePicture.classList.add('monitoring__element--img');
+                        machinePicture.setAttribute('src', `/images/machines/${shortName}.png`)
 
 
-                switch (machine.type) {
-                    case 'Produkcja-Erodowanie': {
-                        const machineName = document.createElement('p'),
-                            machineStatus = document.createElement('p');
-                        machineName.innerText = machine.name;
-                        //this.getStatus(machine, machineStatus);
-                        machineTextContainer.appendChild(machineName)
-                        machineTextContainer.appendChild(machineStatus)
-                        machineContainer.appendChild(machineTextContainer)
-                        productionErodingContainer.appendChild(machineContainer)
-                    }
-                    break;
-                case 'Ostrzenie-VHM': {
-                    const machineName = document.createElement('p'),
-                        machineStatus = document.createElement('p');
-                    machineName.innerText = machine.name;
-                    //this.getStatus(machine, machineStatus);
-                    machineTextContainer.appendChild(machineName)
-                    machineTextContainer.appendChild(machineStatus)
-                    machineContainer.appendChild(machineTextContainer)
-                    sharpeningVHMContainer.appendChild(machineContainer)
-                }
-                break;
-                case 'Ostrzenie-Erodowanie': {
-                    const machineName = document.createElement('p'),
-                        machineStatus = document.createElement('p');
-                    machineName.innerText = machine.name;
-                    //this.getStatus(machine, machineStatus);
-                    machineTextContainer.appendChild(machineName)
-                    machineTextContainer.appendChild(machineStatus)
-                    machineContainer.appendChild(machineTextContainer)
-                    sharpeningErodingContainer.appendChild(machineContainer)
-                }
-                break;
-                case 'Ostrzenie-Wiertła VHM': {
-                    const machineName = document.createElement('p'),
-                        machineStatus = document.createElement('p');
-                    machineName.innerText = machine.name;
-                    // this.getStatus(machine, machineStatus);
-                    machineTextContainer.appendChild(machineName)
-                    machineTextContainer.appendChild(machineStatus)
-                    machineContainer.appendChild(machineTextContainer)
-                    drillSharpeningVHMContainer.appendChild(machineContainer)
-                }
-                break;
-                case 'Produkcja-VHM': {
-                    const machineName = document.createElement('p'),
-                        machineStatus = document.createElement('p');
-                    machineName.innerText = machine.name;
-                    //this.getStatus(machine, machineStatus);
-                    machineTextContainer.appendChild(machineName)
-                    machineTextContainer.appendChild(machineStatus)
-                    machineContainer.appendChild(machineTextContainer)
-                    vhmProductionContainer.appendChild(machineContainer)
-                }
-                break;
-                case 'Produkcja-Korpusy': {
-                    const machineName = document.createElement('p'),
-                        machineStatus = document.createElement('p');
-                    machineName.innerText = machine.name;
-                    //this.getStatus(machine, machineStatus);
-                    machineTextContainer.appendChild(machineName)
-                    machineTextContainer.appendChild(machineStatus)
-                    machineContainer.appendChild(machineTextContainer)
-                    bodyManufacturerContainer.appendChild(machineContainer)
-                }
-                break;
-                }
+                        machineContainer.appendChild(machinePicture)
+                        machinePicture.setAttribute('alt', 'Zdjęcie maszyny');
+                        machinePicture.setAttribute('data-name', machine.name);
+                        machinePicture.addEventListener('click', this.getData.bind(this));
+
+
+                        switch (machine.type) {
+                            case 'Produkcja-Erodowanie': {
+                                const machineName = document.createElement('p'),
+                                    machineStatus = document.createElement('p');
+                                machineName.innerText = machine.name;
+                                //this.getStatus(machine, machineStatus);
+                                machineTextContainer.appendChild(machineName)
+                                machineTextContainer.appendChild(machineStatus)
+                                machineContainer.appendChild(machineTextContainer)
+                                productionErodingContainer.appendChild(machineContainer)
+                            }
+                            break;
+                        case 'Ostrzenie-VHM': {
+                            const machineName = document.createElement('p'),
+                                machineStatus = document.createElement('p');
+                            machineName.innerText = machine.name;
+                            //this.getStatus(machine, machineStatus);
+                            machineTextContainer.appendChild(machineName)
+                            machineTextContainer.appendChild(machineStatus)
+                            machineContainer.appendChild(machineTextContainer)
+                            sharpeningVHMContainer.appendChild(machineContainer)
+                        }
+                        break;
+                        case 'Ostrzenie-Erodowanie': {
+                            const machineName = document.createElement('p'),
+                                machineStatus = document.createElement('p');
+                            machineName.innerText = machine.name;
+                            //this.getStatus(machine, machineStatus);
+                            machineTextContainer.appendChild(machineName)
+                            machineTextContainer.appendChild(machineStatus)
+                            machineContainer.appendChild(machineTextContainer)
+                            sharpeningErodingContainer.appendChild(machineContainer)
+                        }
+                        break;
+                        case 'Ostrzenie-Wiertła VHM': {
+                            const machineName = document.createElement('p'),
+                                machineStatus = document.createElement('p');
+                            machineName.innerText = machine.name;
+                            // this.getStatus(machine, machineStatus);
+                            machineTextContainer.appendChild(machineName)
+                            machineTextContainer.appendChild(machineStatus)
+                            machineContainer.appendChild(machineTextContainer)
+                            drillSharpeningVHMContainer.appendChild(machineContainer)
+                        }
+                        break;
+                        case 'Produkcja-VHM': {
+                            const machineName = document.createElement('p'),
+                                machineStatus = document.createElement('p');
+                            machineName.innerText = machine.name;
+                            //this.getStatus(machine, machineStatus);
+                            machineTextContainer.appendChild(machineName)
+                            machineTextContainer.appendChild(machineStatus)
+                            machineContainer.appendChild(machineTextContainer)
+                            vhmProductionContainer.appendChild(machineContainer)
+                        }
+                        break;
+                        case 'Produkcja-Korpusy': {
+                            const machineName = document.createElement('p'),
+                                machineStatus = document.createElement('p');
+                            machineName.innerText = machine.name;
+                            //this.getStatus(machine, machineStatus);
+                            machineTextContainer.appendChild(machineName)
+                            machineTextContainer.appendChild(machineStatus)
+                            machineContainer.appendChild(machineTextContainer)
+                            bodyManufacturerContainer.appendChild(machineContainer)
+                        }
+                        break;
+                        }
+                    })
             })
-        })
 
     }
 
@@ -166,10 +169,12 @@ class Monitoring extends Panel {
             to: new Date()
         };
         setInterval(() => {
-            machines.getAllStatuses(dataToSend).then(res => {
-                //status.classList.add(res.status.toLowerCase())
-                status.innerText = res.status;
-            })
+            machines
+                .getAllStatuses(dataToSend)
+                .then(res => {
+                    //status.classList.add(res.status.toLowerCase())
+                    status.innerText = res.status;
+                })
         }, 1000);
 
     }
@@ -189,6 +194,7 @@ class Monitoring extends Panel {
                     };
                     this._machineName = data.name;
                     machines.getAllStatuses(data).then(json => {
+
                         this._data = json;
                         this._currentStatus = json.status;
                         this.createCurrentChangePanel();

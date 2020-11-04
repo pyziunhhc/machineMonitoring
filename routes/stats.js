@@ -2,6 +2,7 @@ const express = require('express'),
     router = express.Router();
 const Stats = require('../models/Stats');
 const LockedMachines = require('../models/LockedMachines');
+const fetch = require('../helpers/fetchFromMainApp');
 router.get('/all', (req, res, next) => {
     const login = req.cookies.login;
     if (login) {
@@ -204,22 +205,7 @@ router.put('/update', (req, res, next) => {
     })
 
 });
-router.delete('/unlock', (req, res, next) => {
-    const user = req.cookies.login,
-        name = req.body.name;
-    LockedMachines.findOneAndDelete({
-        name
-    }, (err, document) => {
-        if (err) {
-            console.log(`Błąd ${err}`)
-        } else {
-            res.status(200).send({
-                status: 200,
-                message: [`Odblokowano maszynę ${name}`]
-            })
-        }
-    })
-});
+
 router.post('/show/all', (req, res, next) => {
     const start = req.body.start,
         end = req.body.end,
@@ -234,7 +220,6 @@ router.post('/show/all', (req, res, next) => {
         // },
         user: user
     }, (err, data) => {
-        console.log(data)
         if (err) {
             res.send({
                 status: 500,

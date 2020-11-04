@@ -1,5 +1,6 @@
 import Panel from '../Panel/panel.js';
 import machines from '../helpers/fetch/machines.js';
+import stats from '../helpers/fetch/stats.js';
 import message from '../helpers/messages.js';
 window.onload = function () {
     const currentChangeContainer = document.querySelector('.operator__container'),
@@ -221,7 +222,6 @@ class Operator extends Panel {
             agreeButton = document.createElement('button'),
             cancelButton = document.createElement('button'),
             container = this._containers.currentChangeContainer;
-
         startPanelWrapper.classList.add('accept__container--wrapper')
         startPanel.classList.add('accept__container')
 
@@ -276,11 +276,10 @@ class Operator extends Panel {
                                     from: new Date(),
                                     to: new Date(),
                                 }
-                                machines.checkUserStats({
+                                stats.checkUserStats({
                                         name: this._machineName
                                     })
                                     .then(json => {
-                                        console.log(json)
                                         if (json.exist) {
                                             this.updateSummaryStatuses({
                                                 data: json.data
@@ -296,7 +295,7 @@ class Operator extends Panel {
                                     from: new Date(),
                                     to: new Date(),
                                 }
-                                machines.checkUserStats({
+                                stats.checkUserStats({
                                         name: this._machineName
                                     })
                                     .then(json => {
@@ -384,7 +383,8 @@ class Operator extends Panel {
                     start: data.from,
                 }
                 this._userData = json.data;
-                machines.saveStatusesForUser(toSave)
+
+                stats.saveStatusesForUser(toSave)
                     .then(res => {})
             })
     }
@@ -394,7 +394,7 @@ class Operator extends Panel {
             data: data.data,
             start: data.start,
         }
-        machines.updateStatusesForUser(toSave)
+        stats.updateStatusesForUser(toSave)
             .then(res => {
                 if (!this._statsID) {
                     this._statsID = res.statsID;

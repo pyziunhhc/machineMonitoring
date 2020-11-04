@@ -19,10 +19,14 @@ html
         .logo__container
           img(src="/images/logo.png")
           h1=title
+        .notification
+          img(src='/images/bell.png', class='notification')
+          p(class='counter' data-count="0")
         .logged-user
           p=`Zalogowany: ${login}`
           a(href="/logout")
             img(src='/images/logout.png')
+
     .main__section
       aside.navigation__container
         button.button__hide-nav
@@ -34,5 +38,12 @@ html
       block content
 script(src=`/javascripts/${jsfiles}` type='module')
 script(src='/javascripts/datalabel_plugin.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js')
+
+script(src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.1.1/exceljs.min.js" integrity="sha512-zhDD6mpjQmjTOqcC2jd9iRgxmAlk/pmCCUPjKA9XWbcmvk7o0Jr8/9Dr0qQ5V54DPQJcRgCvlgFrtWMxgRjSOQ==" crossorigin="anonymous")
+script(src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.1.1/exceljs.bare.min.js" integrity="sha512-iqEmqv9F0tqrf0TBh2AVkCvIVgfw9dy0u9QmWZ354E9MtD1DhLjpMljXjPASNgodPCCwvyTSXMjoY6LE7VIz6g==" crossorigin="anonymous")
+script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" crossorigin="anonymous")
+//-script(src='/javascripts/socket.io.js')
+
     //- footer.footer__container
     //-   p='Copyright 2020 MPY'

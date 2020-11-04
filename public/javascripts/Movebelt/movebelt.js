@@ -1,7 +1,7 @@
 import helpers from '../helpers/auxiliaryFunctions.js'
 import machines from '../helpers/fetch/machines.js';
 import message from '../helpers/messages.js';
-
+import stats from '../helpers/fetch/stats.js'
 class Movebelt {
     constructor(machineName = null, panelContainer, minimizedPanelContainer, title, place, intervalID = null, statsIntervalID = null) {
         this._title = title;
@@ -53,7 +53,7 @@ class Movebelt {
                 name: this._machineName
             }).then(res => {
                 if (res.status == 200) {
-                    machines.lockStatusesForUser({
+                    stats.lockStatusesForUser({
                         name: this._machineName
                     })
                 } else {

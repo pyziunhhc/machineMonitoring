@@ -1,10 +1,11 @@
+import reports from '../helpers/fetch/reports.js'
 import machines from '../helpers/fetch/machines.js'
 import messages from '../helpers/messages.js';
 /**
  *
  * TODO:
  * poprawić przesłanie daty, problem z formatowaniem ISOString --- OK
- * dodać powiadomienie o dacie, jeśli jest nowsza niż dziś
+ * dodać powiadomienie o dacie, jeśli jest nowsza niż dziś --- OK
  */
 const months = [{
     name: 'Styczeń',
@@ -160,15 +161,15 @@ class Report {
                 if (this._monthly._from.getTime() > new Date().getTime() || this._monthly._to.getTime() > new Date().getTime()) {
                     messages.showMessage('error', [`Nie możesz wybrać miesiąca nowszego niż bieżący.`])
                 } else {
-                    machines.createXLSX({
+                    this.createLoadingText()
+                    reports.createXLSX({
+
                             machines: this._selectedMachines,
                             from,
                             to
                         })
                         .then(res => {
-                            if (res.status == 200) {
-                                messages.showMessage('success', res.message)
-                            }
+                            this.createExcel(res, `Statystyki wybranych maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                         })
                 }
 
@@ -178,15 +179,14 @@ class Report {
             if (this._monthly._from.getTime() > new Date().getTime() || this._monthly._to.getTime() > new Date().getTime()) {
                 messages.showMessage('error', [`Nie możesz wybrać miesiąca nowszego niż bieżący.`])
             } else {
-                machines.createXLSX({
+                this.createLoadingText()
+                reports.createXLSX({
                         machines: this._allMachines,
                         from,
                         to,
                     })
                     .then(res => {
-                        if (res.status == 200) {
-                            messages.showMessage('success', res.message)
-                        }
+                        this.createExcel(res, `Statystyki wszystkich maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                     })
 
             }
@@ -213,30 +213,27 @@ class Report {
                         name: machine.value
                     })
                 })
-
-                machines.createXLSX({
+                this.createLoadingText()
+                reports.createXLSX({
                         machines: this._selectedMachines,
                         from,
                         to
                     })
                     .then(res => {
-                        if (res.status == 200) {
-                            messages.showMessage('success', res.message);
-                        }
+                        this.createExcel(res, `Statystyki wybranych maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                     })
             }
 
 
         } else {
-            machines.createXLSX({
+            this.createLoadingText()
+            reports.createXLSX({
                     machines: this._allMachines,
                     from,
                     to,
                 })
                 .then(res => {
-                    if (res.status == 200) {
-                        messages.showMessage('success', res.message)
-                    }
+                    this.createExcel(res, `Statystyki wszystkich maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                 })
 
         }
@@ -260,31 +257,123 @@ class Report {
                             name: machine.value
                         })
                     })
-
-                    machines.createXLSX({
+                    this.createLoadingText()
+                    reports.createXLSX({
                             machines: this._selectedMachines,
                             from,
                             to
                         })
                         .then(res => {
-                            if (res.status == 200) {
-                                messages.showMessage('success', res.message);
-                            }
+                            this.createExcel(res, `Statystyki wybranych maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                         })
                 }
             } else {
-                machines.createXLSX({
+                this.createLoadingText()
+                reports.createXLSX({
                         machines: this._allMachines,
                         from,
                         to,
                     })
                     .then(res => {
-                        if (res.status == 200) {
-                            messages.showMessage('success', res.message)
-                        }
+                        this.createExcel(res, `Statystyki wszystkich maszyn ${from.toLocaleDateString()}-${to.toLocaleDateString()}`)
                     })
 
             }
+        }
+
+    }
+    async createExcel(res, fileName) {
+        //console.log(this)
+        if (res.status == 200) {
+            let workbook = new ExcelJS.Workbook();
+            res.data.forEach(json => {
+                let worksheet = workbook.addWorksheet(json.machineName);
+                worksheet.columns = [{
+                        header: 'Status',
+                        key: 'status',
+                        width: 20,
+                        style: {
+                            font: {
+                                bold: true
+                            }
+                        }
+
+                    },
+                    {
+                        header: 'Czas',
+                        key: 'time',
+                        width: 20,
+
+                    },
+                    {
+                        header: '%',
+                        key: 'percentage',
+                        width: 20,
+
+                    },
+                ];
+                worksheet.getRow(1).font = {
+                    bold: true,
+                    size: 16
+                }
+                json.data.forEach((data, index) => {
+                    worksheet.addRow({
+                        status: data.status,
+                        time: data.time,
+                        percentage: data.percentage
+                    })
+                })
+                worksheet._rows.forEach(row => {
+                    row._cells.forEach(cell => {
+                        cell.border = {
+                            top: {
+                                style: 'thin'
+                            },
+                            right: {
+                                style: 'thin'
+                            },
+                            bottom: {
+                                style: 'thin'
+                            },
+                            left: {
+                                style: 'thin'
+                            },
+                        }
+                        // cell.fill = {
+                        //     type: 'pattern',
+                        //     pattern: 'none',
+                        //     fgColor: {
+                        //         argb: data.colors.argb
+                        //     }
+                        // }
+
+                    })
+                })
+            })
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            })
+            saveAs(blob, `${fileName}.xlsx`)
+            messages.showMessage('success', ['Zapisano plik'])
+
+
+
+
+        }
+    }
+    createLoadingText() {
+        const isExist = document.querySelector('.loading')
+        if (isExist) {
+            isExist.remove();
+            this.createLoadingText()
+        } else {
+            const loadingText = document.createElement('p'),
+                container = document.querySelector('.main__container');
+            loadingText.innerText = 'ŁADOWANIE'
+            loadingText.classList.add('loading')
+            container.appendChild(loadingText)
         }
 
     }

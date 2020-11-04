@@ -1,4 +1,4 @@
-import machines from '../../helpers/fetch/machines.js';
+import stats from '../../helpers/fetch/stats.js';
 import message from '../../helpers/messages.js';
 import users from '/javascripts/helpers/fetch/user.js'
 import Table from '../../Table/table.js';
@@ -46,14 +46,12 @@ class Stats {
             if (start == 'Invalid Date' || end == 'Invalid Date') {
                 message.showMessage('error', ['Musisz wybrać datę od i do!'])
             } else {
-                console.log(this._user)
-                machines.showAllStats({
+                stats.showAllStats({
                         start,
                         end,
                         user: this._user
                     })
                     .then(res => {
-                        console.log(res)
                         if (res.status == 200) {
                             this.renderStats(res.data)
                         } else {
@@ -63,25 +61,7 @@ class Stats {
 
                     })
             }
-
-            // machines.showUserStats({
-            //         start,
-            //         end,
-            //         user: this._user
-            //     })
-            //     .then(res => {
-            //         if (res.status == 200) {
-            //             this.renderStats(res.data)
-            //         } else {
-            //             message.showMessage('error', res.message)
-
-            //         }
-
-            //}
-
-
         })
-
     }
     renderStats(stats) {
         const parent = document.querySelector('.stats'),
@@ -114,8 +94,8 @@ class Stats {
             informationContainer.appendChild(endContainer)
             container.appendChild(informationContainer)
 
-            const table = new Table(stat.data, stat.machine);
-            table.create(container);
+            const table = new Table(stat.data, stat.machine, container);
+            table.create();
             parent.appendChild(container)
         });
     }

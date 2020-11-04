@@ -673,6 +673,7 @@ body {
           animation: backgroundAnimation 30s ease infinite; }
   .main__container .header__container {
     display: flex;
+    position: relative;
     justify-content: flex-end;
     height: 10%;
     padding: 0.5%;
@@ -730,6 +731,12 @@ body {
           transform: scale(0.9); }
         .main__container .header__container .logged-user a img {
           width: 80%; }
+    .main__container .header__container .notification {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; }
+      .main__container .header__container .notification img {
+        width: 50%; }
   .main__container .main__section {
     display: flex;
     position: relative;
@@ -953,6 +960,55 @@ table tbody tr td {
         color: white;
         font-size: 1em; }
 
+.settings {
+  width: 98%;
+  height: 4vh;
+  margin-bottom: 1%;
+  padding: 1%;
+  display: flex;
+  align-items: center;
+  background: #17497c; }
+
+h3 {
+  display: flex;
+  align-items: center; }
+  h3 button.new {
+    width: 5%; }
+
+.message-popup {
+  position: absolute;
+  z-index: 1000;
+  top: 8%;
+  padding: 2%;
+  font-size: 1.5em;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.8);
+  color: black; }
+
+.messages__wrapper {
+  width: 15%;
+  padding: 0.3%;
+  height: 100%;
+  top: 80%;
+  z-index: 1000;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8); }
+  .messages__wrapper .messages__container {
+    width: 100%; }
+    .messages__wrapper .messages__container ul li.message {
+      width: 100%;
+      color: black;
+      font-weight: bold;
+      padding: 1%; }
+      .messages__wrapper .messages__container ul li.message .remove {
+        background-color: red;
+        color: white;
+        font-weight: bold;
+        margin-left: 3%; }
+
 @media screen and (min-width: 1366px) {
   .main__container .header__container .logo__container h1 {
     font-size: 1.2em; }
@@ -967,6 +1023,29 @@ table tbody tr td {
               animation: enlargeImg 0.3s ease; }
   .main__container .header__container .logged-user p {
     font-size: 2em; } }
+
+.loading {
+  position: absolute;
+  font-size: 3em;
+  font-weight: bold;
+  color: black;
+  text-shadow: 0px -1px 19px #969696;
+  top: 50%;
+  left: 50%;
+  -webkit-animation: loading 0.9s ease infinite;
+          animation: loading 0.9s ease infinite; }
+
+@-webkit-keyframes loading {
+  0% {
+    transform: scale(1); }
+  100% {
+    transform: scale(1.5); } }
+
+@keyframes loading {
+  0% {
+    transform: scale(1); }
+  100% {
+    transform: scale(1.5); } }
 
 .dashboard__container {
   display: flex;

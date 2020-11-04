@@ -1,6 +1,7 @@
-function showUsers() {
+function showUsers(data) {
     return fetch('/users/list', {
             method: 'POST',
+            body: JSON.stringify(data),
             credentials: 'include',
             headers: {
                 'Accept': '*',

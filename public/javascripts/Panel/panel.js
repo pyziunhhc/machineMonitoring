@@ -107,27 +107,25 @@ class Panel {
         this.containers._nightChangeContainer = nightChangeContainer;
     }
     createChartJS(data, name, type) {
-        const CHART = new ChartJS(data, name, type, this.charts.chartJS.container),
-            chart = CHART.create('summary');
+        const CHART = new ChartJS(data, name, type, this.charts.chartJS.container);
+        this.charts.chartJS.chart = CHART.create('summary');
         this.charts.chartJS.object = CHART;
-        this.charts.chartJS.chart = chart;
     }
     createDygraph(data, name) {
-        const GRAPH = new Dygraph(data, name, this.charts.dygraph.container),
-            graph = GRAPH.create();
+        const GRAPH = new Dygraph(data, name, this.charts.dygraph.container);
+        this.charts.dygraph.chart = GRAPH.create();
         this.charts.dygraph.object = GRAPH;
-        this.charts.dygraph.chart = graph;
     }
     createChangesChartJS(data, name, type, change) {
         if (change == 'morning') {
-            const CHART = new ChartJS(data, name, type, this.containers._morningChangeContainer),
-                chart = CHART.create('summary');
+            const CHART = new ChartJS(data, name, type, this.containers._morningChangeContainer);
+            CHART.create('summary');
         } else if (change == 'afternoon') {
-            const CHART = new ChartJS(data, name, type, this.containers._afternoonChangeContainer),
-                chart = CHART.create('summary');
+            const CHART = new ChartJS(data, name, type, this.containers._afternoonChangeContainer);
+            CHART.create('summary');
         } else if (change == 'night') {
-            const CHART = new ChartJS(data, name, type, this.containers._nightChangeContainer),
-                chart = CHART.create('summary');
+            const CHART = new ChartJS(data, name, type, this.containers._nightChangeContainer);
+            CHART.create('summary');
         }
     }
     createChangesPanel(name) {
@@ -159,10 +157,9 @@ class Panel {
 
     }
     createTable(data, name) {
-        const TABLE = new Table(data, name);
-        const parent = document.querySelector(`.statuses-panel__container.${name}`),
-            oldTable = document.querySelector(`.statuses-panel__container.${name} > table`);
-        TABLE.create(parent, oldTable);
+        const container = document.querySelector(`.statuses-panel__container.${name}`);
+        const TABLE = new Table(data, name, container);
+        TABLE.create();
         this.tables.table = TABLE;
     }
     updateTable(data, name) {
@@ -172,7 +169,6 @@ class Panel {
         this.charts.chartJS.object.update(data, this.charts.chartJS.chart)
     }
     updateDygraph(data) {
-        //przeniesc do klasy dygraph
         try {
             this.charts.dygraph.object.update(data, this.charts.dygraph.chart)
         } catch (e) {

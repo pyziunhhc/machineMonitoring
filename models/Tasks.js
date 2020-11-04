@@ -16,7 +16,7 @@ const taskSchema = new Schema({
         required: true
     },
     tasks: [{
-        id: Number,
+        id: String,
         name: String,
         done: Boolean,
         edit: Boolean
@@ -29,8 +29,8 @@ const taskSchema = new Schema({
         type: String,
         required: true
     },
-    userWhoPerforms: {
-        type: String,
+    usersWhoPerforms: {
+        type: Array,
         required: true
     }
 

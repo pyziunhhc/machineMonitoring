@@ -28,8 +28,20 @@ function addUser(data) {
         .then(res => res.json())
         .catch(e => console.log(e))
 }
-
+function createXLSX(data) {
+    return fetch('/reports/data/get/summary', {
+             method: 'POST',
+             body: JSON.stringify(data),
+             credentials: 'include',
+             headers: {
+                 'Accept': '*',
+                 'Content-Type': 'application/json',
+             }
+         })
+         .then(json => json.json())
+ }
 export default {
     showUsers,
-    addUser
+    addUser,
+    createXLSX
 }

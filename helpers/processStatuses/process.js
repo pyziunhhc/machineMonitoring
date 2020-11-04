@@ -1,4 +1,5 @@
 const summaryMachineStatistics = (data, from, to) => {
+    console.time('process')
     const DATA = data;
     let summaryMachineStatistics = {
         firstStatus: {
@@ -19,7 +20,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'erodowanie',
             displayName: 'Erodowanie',
             className: 'eroding',
-            color: 'rgba(0, 82, 20, 0.9)',
+            colors: {
+                rgba: 'rgba(0, 82, 20, 0.9)',
+                argb: '005214'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -33,7 +37,11 @@ const summaryMachineStatistics = (data, from, to) => {
         szlifowanie: {
             name: 'szlifowanie',
             displayName: 'Szlifowanie',
-            color: 'rgba(0, 209, 44, 0.9)',
+            colors: {
+                rgba: 'rgba(0, 209, 44, 0.9)',
+                argb: '00D12C'
+            },
+
             className: 'grinding',
             data: {
                 time: 0,
@@ -48,7 +56,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'praca',
             displayName: 'Praca',
             className: 'working',
-            color: 'rgba(0, 82, 20, 0.9)',
+            colors: {
+                rgba: 'rgba(0, 82, 20, 0.9)',
+                argb: '005214'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -62,7 +74,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'disconnect',
             displayName: 'Wyłączona',
             className: 'disconnect',
-            color: 'rgba(145, 145, 145, 1)',
+            colors: {
+                rgba: 'rgba(145, 145, 145, 1)',
+                argb: '919191'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -76,7 +92,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'manual',
             displayName: 'Załadunek\nRobotem',
             className: 'robotLoading',
-            color: 'rgba(200,0,200,1)',
+            colors: {
+                rgba: 'rgba(200,0,200,1)',
+                argb: 'C800C8'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -90,7 +110,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'warmup',
             displayName: 'Załadunek Ręczny',
             className: 'manualLoading',
-            color: 'rgba(81, 182, 215,1)',
+            colors: {
+                rgba: 'rgba(81, 182, 215,1)',
+                argb: '51B6D7'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -104,7 +128,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'stop',
             displayName: 'Stop',
             className: 'stop',
-            color: 'rgba(243, 230, 0, 1)',
+            colors: {
+                rgba: 'rgba(243, 230, 0, 1)',
+                argb: 'F3E600'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -118,7 +145,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'suspend',
             displayName: 'Pomiar',
             className: 'measuring',
-            color: 'rgba(255, 177, 51, 1)',
+            colors: {
+                rgba: 'rgba(255, 177, 51, 1)',
+                argb: 'FFB133'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -132,7 +163,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'emergency',
             displayName: 'Alarm',
             className: 'alarm',
-            color: 'rgba(255,0,0,1)',
+            colors: {
+                rgba: 'rgba(255,0,0,1)',
+                argb: 'FF0000'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -146,7 +181,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'rozgrzewka',
             displayName: 'Rozgrzewka',
             className: 'warmup',
-            color: 'rgba(168,80,80,1)',
+            colors: {
+                rgba: 'rgba(168,80,80,1)',
+                argb: 'A85050'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -160,7 +198,11 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'wymiana_sciernicy',
             displayName: 'Wymiana\nŚciernicy',
             className: 'wheelReplacement',
-            color: 'rgba(0,0,0,1)',
+            colors: {
+                rgba: 'rgba(0,0,0,1)',
+                argb: '000000'
+            },
+
             data: {
                 time: 0,
                 feed: 0,
@@ -174,7 +216,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'wymianaNarzedzia',
             displayName: 'Wymiana\nNarzędzia',
             className: 'toolChange',
-            color: 'rgba(206, 183, 119, 1)',
+            colors: {
+                rgba: 'rgba(206, 183, 119, 1)',
+                argb: 'CEB777'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -188,7 +233,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'przejscie',
             displayName: 'Przejście',
             className: 'transition',
-            color: 'rgba(255,112,183,1)',
+            colors: {
+                rgba: 'rgba(255,112,183,1)',
+                argb: 'FF70B7'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -202,7 +250,10 @@ const summaryMachineStatistics = (data, from, to) => {
             name: 'zatrzymanie',
             displayName: 'Zatrzymanie',
             className: 'suspend',
-            color: 'rgba(145,19,19,1)',
+            colors: {
+                rgba: 'rgba(145,19,19,1)',
+                argb: '911313'
+            },
             data: {
                 time: 0,
                 feed: 0,
@@ -214,20 +265,22 @@ const summaryMachineStatistics = (data, from, to) => {
         },
         sumOfTimes: {
             displayName: 'Suma',
+            colors: {
+                rgba: 'rgba(255,255,255,1)',
+                argb: 'FFFFFF'
+            },
             data: {
                 time: 0,
                 show: true
             }
         },
-
     };
-
     DATA.map((data, index) => {
+
         let start = new Date(data.start),
             end = new Date(data.end),
             time = end - start,
             status = `${data.value}`;
-        if (isNaN(time)) {}
         if (index == 0) {
             if (start != new Date(from)) {
                 let newStart = new Date(from);
@@ -242,11 +295,8 @@ const summaryMachineStatistics = (data, from, to) => {
                 }
             } else {
                 if (isNaN(time)) {}
-                summaryMachineStatistics.sumOfTimes.data.time += time;
-            }
-
-
-
+                 summaryMachineStatistics.sumOfTimes.data.time += time;
+             }
         } else {
             if (data.end == null) {
                 time = new Date() - start;
@@ -255,72 +305,60 @@ const summaryMachineStatistics = (data, from, to) => {
                 }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
                 summaryMachineStatistics.lastStatus.name = data.value;
-
                 if (end > new Date(to)) {
                     time = new Date(to) - new Date(start)
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 }
             } else {
                 if (isNaN(time)) {
-
                 }
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
         }
+
         switch (status) {
             case 'ERODOWANIE':
                 summaryMachineStatistics.erodowanie.data.time += time;
-
                 break;
             case 'SZLIFOWANIE':
                 summaryMachineStatistics.szlifowanie.data.time += time;
-
                 break;
             case 'DISCONNECT':
                 summaryMachineStatistics.disconnect.data.time += time;
-
                 break;
             case 'null':
                 summaryMachineStatistics.disconnect.data.time += time;
-
                 break;
             case 'WARMUP':
                 summaryMachineStatistics.warmup.data.time += time;
                 break;
             case 'MANUAL':
                 summaryMachineStatistics.manual.data.time += time;
-
                 break;
             case 'WYMIANA':
                 summaryMachineStatistics.wymianaSciernicy.data.time += time;
-
                 break;
             case 'STOP':
                 summaryMachineStatistics.stop.data.time += time;
-
                 break;
             case 'SUSPEND':
                 summaryMachineStatistics.suspend.data.time += time;
                 break;
-
-
             case 'EMERGENCY':
                 summaryMachineStatistics.emergency.data.time += time;
-
                 break;
             case 'ROZGRZEWKA':
                 summaryMachineStatistics.rozgrzewka.data.time += time;
-
                 break;
             case 'ZATRZYMANIE':
                 summaryMachineStatistics.zatrzymanie.data.time += time;
-
                 break;
             case 'PRACA':
                 summaryMachineStatistics.praca.data.time += time;
                 break;
         }
     });
+    console.timeEnd('process')
     return summaryMachineStatistics;
 }
 const statusesForDygraph = (data) => {
@@ -336,62 +374,45 @@ const statusesForDygraph = (data) => {
             time = new Date() - start;
         }
         switch (status) {
-            case 'ERODOWANIE': {
+            case 'ERODOWANIE':
                 machineStatsForDygraph.push([start, feedValue, time, null, null, null, null, null, null, null, null, null, null, null, null, null]);
-            }
-            break;
-        case 'SZLIFOWANIE': {
-            machineStatsForDygraph.push([start, feedValue, null, time, null, null, null, null, null, null, null, null, null, null, null, null]);
-
-        }
-        break;
-        case 'DISCONNECT': {
-            machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-        }
-        break;
-        case 'null': {
-            machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-        }
-        break;
-        case 'WARMUP': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, time, null, null, null, null, null, null, null, null, null, null]);
-        }
-        break;
-        case 'MANUAL': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, time, null, null, null, null, null, null, null, null, null]);
-
-        }
-        break;
-        case 'WYMIANA': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, time, null, null, null, null, null]);
-
-        }
-        break;
-        case 'STOP': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, time, null, null, null, null, null, null, null, null]);
-        }
-        break;
-        case 'SUSPEND': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
-
-        }
-        break;
-        case 'EMERGENCY': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
-        }
-        break;
-        case 'ROZGRZEWKA': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
-        }
-        break;
-        case 'ZATRZYMANIE': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, time, null]);
-        }
-        break;
-        case 'PRACA': {
-            machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, null, time]);
-        }
-        break;
+                break;
+            case 'SZLIFOWANIE':
+                machineStatsForDygraph.push([start, feedValue, null, time, null, null, null, null, null, null, null, null, null, null, null, null]);
+                break;
+            case 'DISCONNECT':
+                machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
+                break;
+            case 'null':
+                machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
+                break;
+            case 'WARMUP':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, time, null, null, null, null, null, null, null, null, null, null]);
+                break;
+            case 'MANUAL':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, time, null, null, null, null, null, null, null, null, null]);
+                break;
+            case 'WYMIANA':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, time, null, null, null, null, null]);
+                break;
+            case 'STOP':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, time, null, null, null, null, null, null, null, null]);
+                break;
+            case 'SUSPEND':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
+                break;
+            case 'EMERGENCY':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
+                break;
+            case 'ROZGRZEWKA':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
+                break;
+            case 'ZATRZYMANIE':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, time, null]);
+                break;
+            case 'PRACA':
+                machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, null, time]);
+                break;
         }
     })
     return machineStatsForDygraph;
@@ -409,9 +430,8 @@ const statusesForChartJS = (data) => {
         .map(val => {
             if (val.name) {
                 avaibleLabels.push(`${val.displayName}`);
-                statusesColors.push(val.color)
+                statusesColors.push(val.colors.rgba)
             }
-
             return val;
         })
         .map((val, index) => {
@@ -439,70 +459,55 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
     try {
         if (currentStatus != lastStatus) {
             const sumMachineStats = oldData,
-                data = newData[0],
-                status = `${data.value}`;
+                status = `${newData[0].value}`;
             switch (status) {
-                case 'ERODOWANIE': {
+                case 'ERODOWANIE':
                     sumMachineStats.erodowanie.data.time += 1000;
-                }
-                break;
-            case 'SZLIFOWANIE': {
-                sumMachineStats.szlifowanie.data.time += 1000;
+                    break;
+                case 'SZLIFOWANIE':
+                    sumMachineStats.szlifowanie.data.time += 1000;
+                    break;
+                case 'PRACA':
+                    sumMachineStats.praca.data.time += 1000;
+                    break;
+                case 'DISCONNECT':
+                    sumMachineStats.disconnect.data.time += 1000;
+                    break;
+                case 'null':
+                    sumMachineStats.disconnect.data.time += 1000;
+                    break;
+                case 'MANUAL':
+                    sumMachineStats.manual.data.time += 1000;
+                    break;
+                case 'WARMUP':
+                    sumMachineStats.warmup.data.time += 1000;
+                    break;
+                case 'WYMIANA_SCIERNICY':
+                    sumMachineStats.wymianaSciernicy.data.time += 1000;
+                    break;
+                case 'STOP':
+                    sumMachineStats.stop.data.time += 1000;
+                    break;
+                case 'SUSPEND':
+                    sumMachineStats.suspend.data.time += 1000;
+                    break;
+                case 'EMERGENCY':
+                    sumMachineStats.emergency.data.time += 1000;
+                    break;
+                case 'ROZGRZEWKA':
+                    sumMachineStats.rozgrzewka.data.time += 1000;
+                    break;
+                case 'ZATRZYMANIE':
+                    sumMachineStats.suspend.data.time += 1000;
+                    break;
             }
-            break;
-            case 'PRACA': {
-                sumMachineStats.praca.data.time += 1000;
-            }
-            break;
-            case 'DISCONNECT': {
-                sumMachineStats.disconnect.data.time += 1000;
-            }
-            break;
-            case 'null': {
-                sumMachineStats.disconnect.data.time += 1000;
-            }
-            break;
-            case 'MANUAL': {
-                sumMachineStats.manual.data.time += 1000;
-            }
-            break;
-            case 'WARMUP': {
-                sumMachineStats.warmup.data.time += 1000;
-            }
-            break;
-            case 'WYMIANA_SCIERNICY': {
-                sumMachineStats.wymiana_sciernicy.data.time += 1000;
-            }
-            break;
-            case 'STOP': {
-                sumMachineStats.stop.data.time += 1000;
-                break;
-            }
-            case 'SUSPEND': {
-                sumMachineStats.suspend.data.time += 1000;
-
-            }
-            break;
-            case 'EMERGENCY': {
-                sumMachineStats.emergency.data.time += 1000;
-            }
-            break;
-            case 'ROZGRZEWKA': {
-                sumMachineStats.rozgrzewka.data.time += 1000;
-            }
-            break;
-            case 'ZATRZYMANIE': {
-                sumMachineStats.suspend.data.time += 1000;
-            }
-            break;
-            }
+            sumMachineStats.sumOfTimes.data.time += 1000;
             return sumMachineStats;
         } else {
             const sumMachineStats = oldData;
             if (currentStatus == 'null') {
                 sumMachineStats.disconnect.data.time += 1000;
             } else {
-
                 sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
@@ -529,61 +534,45 @@ const updateStatusesForDygraph = (newData, oldData, currentStatus, lastStatus) =
                     feedValue = 0;
 
                 switch (status) {
-                    case 'ERODOWANIE': {
+                    case 'ERODOWANIE':
                         machineStatsForDygraph.push([start, feedValue, time, null, null, null, null, null, null, null, null, null, null, null, null, null]);
-                    }
-                    break;
-                case 'SZLIFOWANIE': {
-                    machineStatsForDygraph.push([start, feedValue, null, time, null, null, null, null, null, null, null, null, null, null, null, null]);
-
-                    break;
-                }
-                case 'DISCONNECT': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-                }
-                break;
-                case 'null': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
-                }
-                break;
-                case 'WARMUP': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, time, null, null, null, null, null, null, null, null, null, null]);
-                }
-
-                break;
-                case 'MANUAL': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, time, null, null, null, null, null, null, null, null, null]);
-                }
-                break;
-                case 'WYMIANA': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, time, null, null, null, null, null])
-                }
-                break;
-                case 'STOP': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, time, null, null, null, null, null, null, null, null]);
-                }
-                break;
-                case 'SUSPEND': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
-                    break;
-                }
-
-                case 'EMERGENCY': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
-                }
-                break;
-                case 'ROZGRZEWKA': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
-                }
-                break;
-                case 'ZATRZYMANIE': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, time, null]);
-                }
-                break;
-                case 'PRACA': {
-                    machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, null, time]);
-                }
-                break;
+                        break;
+                    case 'SZLIFOWANIE':
+                        machineStatsForDygraph.push([start, feedValue, null, time, null, null, null, null, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'DISCONNECT':
+                        machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'null':
+                        machineStatsForDygraph.push([start, feedValue, null, null, time, null, null, null, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'WARMUP':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, time, null, null, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'MANUAL':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, time, null, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'WYMIANA':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, time, null, null, null, null, null])
+                        break;
+                    case 'STOP':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, time, null, null, null, null, null, null, null, null]);
+                        break;
+                    case 'SUSPEND':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, time, null, null, null, null, null, null, null]);
+                        break;
+                    case 'EMERGENCY':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, time, null, null, null, null, null, null]);
+                        break;
+                    case 'ROZGRZEWKA':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, time, null, null]);
+                        break;
+                    case 'ZATRZYMANIE':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, time, null]);
+                        break;
+                    case 'PRACA':
+                        machineStatsForDygraph.push([start, feedValue, null, null, null, null, null, null, null, null, null, null, null, null, null, time]);
+                        break;
                 }
             })
             return machineStatsForDygraph;
@@ -608,7 +597,7 @@ const updateStatusesForChartJS = (data) => {
         .map(val => {
             if (val.name) {
                 avaibleLabels.push(`${val.displayName}`);
-                statusesColors.push(val.color)
+                statusesColors.push(val.colors.rgba)
             }
             return val;
         })
@@ -631,9 +620,6 @@ const updateStatusesForChartJS = (data) => {
         percentage: percentageValuesForChartJS,
         time: timeValuesForChartJS
     }
-}
-const updateStatusesForTable = (data, newData) => {
-
 }
 module.exports = {
     summaryMachineStatistics,
