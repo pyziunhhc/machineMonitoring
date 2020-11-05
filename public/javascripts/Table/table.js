@@ -23,7 +23,8 @@ class Table {
                     statusesName.push(_data.displayName);
                     statusesClass.push(_data.className);
                     statusesValues.push(helpers.parseMillisecondsIntoReadableTime(_data.data.time));
-                    statusesPercent.push(((_data.data.time * 100) / sumOfTimes).toFixed(2));
+                    //statusesPercent.push(((_data.data.time * 100) / sumOfTimes).toFixed(2)); //jeśli będzie działać poniższe to usunać
+                    statusesPercent.push(_data.data.percentage);
                 })
             table.classList.add(this._name);
             for (let i in statusesName) {
@@ -68,7 +69,8 @@ class Table {
                     statusesName.push(val.displayName);
                     statusesClass.push(val.className);
                     statusesValues.push(helpers.parseMillisecondsIntoReadableTime(val.data.time));
-                    statusesPercent.push(((val.data.time * 100) / sumOfTimes).toFixed(2));
+                    //statusesPercent.push(((val.data.time * 100) / sumOfTimes).toFixed(2));
+                    statusesPercent.push(val.data.percentage);
                 })
 
             table.classList.add(this._name);

@@ -1,5 +1,5 @@
 const summaryMachineStatistics = (data, from, to) => {
-    console.time('process')
+
     const DATA = data;
     let summaryMachineStatistics = {
         firstStatus: {
@@ -276,7 +276,6 @@ const summaryMachineStatistics = (data, from, to) => {
         },
     };
     DATA.map((data, index) => {
-
         let start = new Date(data.start),
             end = new Date(data.end),
             time = end - start,
@@ -295,8 +294,8 @@ const summaryMachineStatistics = (data, from, to) => {
                 }
             } else {
                 if (isNaN(time)) {}
-                 summaryMachineStatistics.sumOfTimes.data.time += time;
-             }
+                summaryMachineStatistics.sumOfTimes.data.time += time;
+            }
         } else {
             if (data.end == null) {
                 time = new Date() - start;
@@ -310,8 +309,7 @@ const summaryMachineStatistics = (data, from, to) => {
                     summaryMachineStatistics.sumOfTimes.data.time += time;
                 }
             } else {
-                if (isNaN(time)) {
-                }
+                if (isNaN(time)) {}
                 summaryMachineStatistics.sumOfTimes.data.time += time;
             }
         }
@@ -358,7 +356,10 @@ const summaryMachineStatistics = (data, from, to) => {
                 break;
         }
     });
-    console.timeEnd('process')
+    Object.values(summaryMachineStatistics)
+        .forEach(stat => {
+            stat.data.percentage = ((stat.data.time * 100) / summaryMachineStatistics.sumOfTimes.data.time).toFixed(2)
+        })
     return summaryMachineStatistics;
 }
 const statusesForDygraph = (data) => {
@@ -502,6 +503,10 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                     break;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
+            Object.values(summaryMachineStatistics)
+                .forEach(stat => {
+                    stat.data.percentage = ((stat.data.time * 100) / summaryMachineStatistics.sumOfTimes.data.time).toFixed(2)
+                })
             return sumMachineStats;
         } else {
             const sumMachineStats = oldData;
@@ -511,7 +516,10 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                 sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
-
+            Object.values(summaryMachineStatistics)
+                .forEach(stat => {
+                    stat.data.percentage = ((stat.data.time * 100) / summaryMachineStatistics.sumOfTimes.data.time).toFixed(2)
+                })
             return sumMachineStats;
         }
 

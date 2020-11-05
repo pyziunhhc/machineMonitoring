@@ -9,15 +9,9 @@ const fs = require('fs');
 const compression = require('compression');
 const cors = require('cors');
 const app = express();
-const http = require('http')
-const server = http.createServer(app)
-const io = require('socket.io').listen(server)
+const http = require('http');
+const server = http.createServer(app);
 
-// io.on('connection', socket => {
-//   socket.on('addTask', message => {
-//     socket.broadcast.emit('notify-user')
-//   })
-// })
 const {
   removeLoggedUsers,
 } = require('./helpers/background/removeLoggedUsers')
@@ -96,8 +90,7 @@ app.use('/machines', machinesRouter);
 app.use('/operator', operatorRouter);
 app.use('/stats', statsRouter);
 app.use('/tasks', tasksRouter)
-app.use('/notification', notificationRouter)
-
+//app.use('/notification', notificationRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -115,8 +108,7 @@ app.use(function (err, req, res, next) {
   res.render('error')
 });
 removeLoggedUsers()
-//sendEmails()
-
+sendEmails();
 module.exports = {
   app: app,
   server: server,

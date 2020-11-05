@@ -279,13 +279,25 @@ class Tasks {
             e.preventDefault();
             e.target.classList.add('over')
         }
+        this._containers._todoContainer.ondragleave = e => {
+            e.preventDefault();
+            e.target.classList.remove('over')
+        }
         this._containers._inProgressContainer.ondragover = e => {
             e.preventDefault();
             e.target.classList.add('over')
         }
+        this._containers._inProgressContainer.ondragleave = e => {
+            e.preventDefault();
+            e.target.classList.remove('over')
+        }
         this._containers._doneContainer.ondragover = e => {
             e.preventDefault();
             e.target.classList.add('over')
+        }
+        this._containers._doneContainer.ondragleave = e => {
+            e.preventDefault();
+            e.target.classList.remove('over')
         }
         tasks.getAllTasks()
             .then(json => {

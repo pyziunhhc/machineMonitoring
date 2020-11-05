@@ -971,7 +971,8 @@ table tbody tr td {
 
 h3 {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  justify-content: center; }
   h3 button.new {
     width: 5%; }
 

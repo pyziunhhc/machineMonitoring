@@ -24,10 +24,9 @@
           }
           .tasks-title {
             display: flex;
-            flex: .3;
             h1 {
               padding: 5%;
-              font-size: 3em;
+              font-size: 2em;
               writing-mode: vertical-lr;
               font-weight: bold;
               color: white;
@@ -47,16 +46,21 @@
           }
           .tasks {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
+            flex-direction: column;
+            overflow-y: scroll;
             flex:1;
+            padding: 1%;
+            &.over{
+              background: rgba(0, 0, 0, 0.1)
+            }
             div.task {
               padding: 2%;
               margin: 1%;
-              width: 32%;
-              height: 20%;
+              height: 15%;
+
               &:hover {
                 cursor: pointer;
+                box-shadow: 0px 0px 20px -6px rgba(0, 0, 0, 0.75);;
               }
               &:focus {
                 cursor: move;
@@ -69,10 +73,10 @@
               }
               &.drag {
                 cursor: pointer;
-                box-shadow: $shadowBackground;
+
               }
               &.task--todo {
-                border-left: 1vw solid rgba(255, 0, 0, 1);
+                border-right: 1vw solid rgba(255, 0, 0, 1);
                 p.status {
                   display: inline-block;
                   padding: 2%;
@@ -80,7 +84,7 @@
                 }
               }
               &.task--in-progress {
-                border-left: 1vw solid rgba(245, 231, 39, 1);
+                border-right: 1vw solid rgba(245, 231, 39, 1);
                 p.status {
                   display: inline-block;
                   padding: 2%;
@@ -88,7 +92,7 @@
                 }
               }
               &.task--done {
-                border-left: 1vw solid rgba(0, 190, 0, 1);
+                border-right: 1vw solid rgba(0, 190, 0, 1);
                 p.status {
                   display: inline-block;
                   padding: 2%;

@@ -9,19 +9,18 @@ function removeLoggedUsers() {
             loggedUsers.forEach(user => {
                 const loggedAt = new Date(user.loggedAt).getTime(),
                     logout = new Date(loggedAt + 3600000);
-                console.log(logout, new Date())
                 if (logout.getTime() < new Date().getTime()) {
                     LoggedUser.findOneAndDelete({
                         _id: user._id
                     }, (error, document) => {
-                        console.log(error, document)
+
                     })
                 } else {
                     schedule.scheduleJob(logout, () => {
                         LoggedUser.findOneAndDelete({
                             _id: user._id
                         }, (error, document) => {
-                            console.log(error, document)
+
                         })
                     })
                 }
@@ -35,13 +34,13 @@ function removeLoggedUsers() {
                 loggedUsers.forEach(user => {
                     const loggedAt = new Date(user.loggedAt).getTime(),
                         logout = new Date(loggedAt + 3600000);
-                    console.log(logout, new Date())
+
                     if (logout > new Date()) {
                         schedule.scheduleJob(new Date(), () => {
                             LoggedUser.findOneAndDelete({
                                 _id: user._id
                             }, (error, document) => {
-                                console.log(error, document)
+
                             })
                         })
                     } else {
@@ -49,7 +48,7 @@ function removeLoggedUsers() {
                             LoggedUser.findOneAndDelete({
                                 _id: user._id
                             }, (error, document) => {
-                                console.log(error, document)
+
                             })
                         })
                     }

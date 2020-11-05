@@ -971,7 +971,8 @@ table tbody tr td {
 
 h3 {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  justify-content: center; }
   h3 button.new {
     width: 5%; }
 
@@ -1119,11 +1120,10 @@ h3 {
       .main__container .main__section .container .main-tasks__container .tasks__container.over {
         background: rgba(100, 100, 100, 0.1); }
       .main__container .main__section .container .main-tasks__container .tasks__container .tasks-title {
-        display: flex;
-        flex: .3; }
+        display: flex; }
         .main__container .main__section .container .main-tasks__container .tasks__container .tasks-title h1 {
           padding: 5%;
-          font-size: 3em;
+          font-size: 2em;
           -ms-writing-mode: tb-lr;
               writing-mode: vertical-lr;
           font-weight: bold;
@@ -1138,16 +1138,19 @@ h3 {
             background: #00be00; }
       .main__container .main__section .container .main-tasks__container .tasks__container .tasks {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        flex: 1; }
+        flex-direction: column;
+        overflow-y: scroll;
+        flex: 1;
+        padding: 1%; }
+        .main__container .main__section .container .main-tasks__container .tasks__container .tasks.over {
+          background: rgba(0, 0, 0, 0.1); }
         .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task {
           padding: 2%;
           margin: 1%;
-          width: 32%;
-          height: 20%; }
+          height: 15%; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task:hover {
-            cursor: pointer; }
+            cursor: pointer;
+            box-shadow: 0px 0px 20px -6px rgba(0, 0, 0, 0.75); }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task:focus {
             cursor: move; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task h3.title {
@@ -1155,22 +1158,21 @@ h3 {
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task p.description {
             font-size: 1.2em; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.drag {
-            cursor: pointer;
-            box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75); }
+            cursor: pointer; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--todo {
-            border-left: 1vw solid red; }
+            border-right: 1vw solid red; }
             .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--todo p.status {
               display: inline-block;
               padding: 2%;
               background: red; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--in-progress {
-            border-left: 1vw solid #f5e727; }
+            border-right: 1vw solid #f5e727; }
             .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--in-progress p.status {
               display: inline-block;
               padding: 2%;
               background: #f5e727; }
           .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--done {
-            border-left: 1vw solid #00be00; }
+            border-right: 1vw solid #00be00; }
             .main__container .main__section .container .main-tasks__container .tasks__container .tasks div.task.task--done p.status {
               display: inline-block;
               padding: 2%;
