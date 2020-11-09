@@ -136,17 +136,20 @@ class Report {
 
     }
     selectTimePeriod(e) {
-        const index = e.target.value,
+
+        const index = parseInt(e.target.value),
             year = new Date().getFullYear(),
-            month = index > 10 ? index : '0' + index,
-            from = e.target[index - 1].dataset.from > 10 ? e.target[index - 1].dataset.from : '0' + e.target[index - 1].dataset.from,
-            to = e.target[index - 1].dataset.to > 10 ? e.target[index - 1].dataset.to : '0' + e.target[index - 1].dataset.to;
+            month = index >= 10 ? index : '0' + index,
+            from = '0' + e.target[index - 1].dataset.from,
+            to = e.target[index - 1].dataset.to;
         this._monthly._from = new Date(`${year}-${month}-${from}T00:00:00`);
         this._monthly._to = new Date(`${year}-${month}-${to}T23:59:59`);
+        console.log(this._monthly._from, this._monthly._to)
     }
     getMonthSummaryStatuses(type) {
         const from = new Date(this._monthly._from),
             to = new Date(this._monthly._to);
+
         if (type == 'selected') {
             const selectedMachines = document.querySelectorAll('input.machine:checked');
             this._selectedMachines = [];

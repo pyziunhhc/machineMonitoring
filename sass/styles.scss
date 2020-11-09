@@ -95,6 +95,7 @@ body {
 
   .main__section {
     display: flex;
+    align-items: center;
     position: relative;
     height: 90%;
     &.reduced {
@@ -105,7 +106,7 @@ body {
       animation: enlargeSection 0.3s ease;
     }
     .container {
-      width: 85%;
+      width: 92%;
       height: 90%;
       display: flex;
       margin-top: 1%;
@@ -131,46 +132,77 @@ body {
     }
   }
 }
-.settings__container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  width: 50%;
-  height: 50vh;
-  top: 25%;
-  left: 25%;
-  background: #d9d9d9d9;
-  box-shadow: $shadowBackground;
-  &.minimized {
-    display: none;
-  }
-  ul {
-    li {
-      a {
-        color: black;
-        font-size: 1.5em;
-        &:hover {
-          cursor: pointer;
-          font-weight: bold;
+.main__container {
+  .main__section {
+    .settings__container {
+      //display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      //width: 50%;
+      height: 50vh;
+      top: 25%;
+      left: 25%;
+      background: #d9d9d9d9;
+      box-shadow: $shadowBackground;
+      &.minimized {
+        display: none;
+      }
+      ul {
+        padding: 5%;
+        li {
+          a {
+            color: black;
+            font-size: 1.5em;
+            &:hover {
+              cursor: pointer;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0;
+        width: 100%;
+        padding: 4%;
+        background: none;
+        label {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          input {
+            width: 50%;
+            border: none;
+            margin: 1%;
+            background: none;
+            border-bottom: 1px solid black;
+            &:focus {
+              outline: none;
+              border-bottom: 2px solid black;
+            }
+          }
+        }
+
+        button {
+          background: green;
+          color: white;
+          font-size: 1.5em;
+          padding: 4%;
+          margin-top: 6%;
         }
       }
     }
   }
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    input {
-      width: 50%;
-    }
-  }
 }
+
 .move-belt {
   height: 5%;
-  width: 98%;
-  padding: 1%;
+  padding: 2%;
   display: flex;
   flex-direction: row;
   align-items: center;

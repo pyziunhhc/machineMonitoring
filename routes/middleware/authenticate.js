@@ -21,7 +21,7 @@ module.exports = auth = (req, res, next) => {
                         res.redirect('/logout')
                     })
                 req.login = decoded.login;
-                next();
+                //next();
             }
         })
     }

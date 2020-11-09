@@ -108,9 +108,9 @@ const sendEmail = type => {
     let transporter = mailer.createTransport({
         host: "serwer1376900.home.pl",
         port: 587,
-        secure: false, // true for 465, false for other ports
+        secure: false,
         auth: {
-            user: 'm.pyz@itatools.pl', // generated ethereal user
+            user: 'm.pyz@itatools.pl',
             pass: 'BH9v,TqgB2NZ'
         }
     });
@@ -159,7 +159,7 @@ const sendEmail = type => {
                     })
                     promise
                         .then(data => {
-                            if(type == 'daily'){
+                            if (type == 'daily') {
                                 Email.find((error, document) => {
                                     if (error) {
 
@@ -323,6 +323,7 @@ const prepareMail = (data) => {
                             flex: 1;
                             align-items: center;
                             justify-content: center;
+                            margin: 1%;
                         }
                         .mail__container > table {
                             border-collapse: collapse;
@@ -342,6 +343,7 @@ const prepareMail = (data) => {
                     <body><div class="mails__container">`;
 
     let bodyEroding = `<div class="machine-type__container"><div class="type-title"><h1>Ostrzenie-Erodowanie</h1></div><div class="mails">`,
+        bodyProductionEroding = `<div class="machine-type__container"><div class="type-title"><h1>Produkcja-Erodowanie</h1></div><div class="mails">`,
         bodyVHM = `<div class="machine-type__container"><div class="type-title"><h1>Ostrzenie-VHM</h1></div><div class="mails">`,
         bodyVHM2 = `<div class="machine-type__container"><div class="type-title"><h1>Ostrzenie-Wiertła VHM</h1></div><div class="mails">`,
         bodyProductionVHM = `<div class="machine-type__container"><div class="type-title"><h1>Produkcja-VHM</h1></div><div class="mails">`,
@@ -349,6 +351,32 @@ const prepareMail = (data) => {
     data.forEach((data, index) => {
         const type = data.type;
         switch (type) {
+            case 'Produkcja-Erodowanie':
+                bodyProductionEroding +=
+                    `<div class="mail__container">
+                        <h2>${data.name}</h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Czas</th>
+                                    <th>%</th>
+                                </tr>`
+                Object.values(data.stats)
+                    .filter(stat => {
+                        return stat.data.show && stat.data.time > 0;
+                    })
+                    .forEach((stat, index) => {
+                        bodyProductionEroding +=
+                            `<tr class="${stat.className}">
+                                <td>${stat.displayName}</td>
+                                <td>${parseMillisecondsIntoReadableTime(stat.data.time)}</td>
+                                <td>${stat.data.percentage}</td>
+                             </tr>`
+                    })
+                bodyProductionEroding += `</tbody></table></div>`
+                break;
+
             case 'Ostrzenie-Erodowanie':
                 bodyEroding +=
                     `<div class="mail__container">
@@ -480,11 +508,13 @@ const prepareMail = (data) => {
 
 
     bodyEroding += `</div></div>`
+    bodyProductionEroding += `</div></div>`
     bodyVHM += `</div></div>`
     bodyVHM2 += `</div></div>`
     bodyProductionVHM += `</div></div>`
     bodyProductionBodies += `</div></div>`
     body += bodyEroding;
+    body += bodyProductionEroding;
     body += bodyVHM;
     body += bodyVHM2;
     body += bodyProductionVHM;

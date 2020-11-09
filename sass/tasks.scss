@@ -7,8 +7,9 @@
       justify-content: flex-start;
       .tasks__settings {
         button.new {
-          width: 5%;
+          width: 3%;
           font-size: 2em;
+          padding: 0;
         }
       }
       .main-tasks__container {
@@ -48,19 +49,17 @@
             display: flex;
             flex-direction: column;
             overflow-y: scroll;
-            flex:1;
+            flex: 1;
             padding: 1%;
-            &.over{
-              background: rgba(0, 0, 0, 0.1)
+            &.over {
+              background: rgba(0, 0, 0, 0.1);
             }
             div.task {
               padding: 2%;
               margin: 1%;
-              height: 15%;
-
               &:hover {
                 cursor: pointer;
-                box-shadow: 0px 0px 20px -6px rgba(0, 0, 0, 0.75);;
+                box-shadow: 0px 0px 20px -6px rgba(0, 0, 0, 0.75);
               }
               &:focus {
                 cursor: move;
@@ -73,7 +72,6 @@
               }
               &.drag {
                 cursor: pointer;
-
               }
               &.task--todo {
                 border-right: 1vw solid rgba(255, 0, 0, 1);
@@ -112,6 +110,9 @@
           left: 40%;
           background: white;
           box-shadow: $shadowBackground;
+          &.minimized {
+            display: none;
+          }
           .task__container {
             display: flex;
             flex-direction: column;
@@ -186,14 +187,15 @@
 }
 
 .new-task__wrapper {
+  width: 100%;
   position: absolute;
   background: white;
   display: flex;
   flex-direction: column;
   top: 0%;
-  left: 50%;
-  width: 30%;
-  min-height: 80%;
+  left: 25%;
+  width: 50%;
+  min-height: 90%;
   box-shadow: $shadowBackground;
 
   .new-task__container {
@@ -230,13 +232,13 @@
       resize: none;
       &.select-users {
         flex: 0.05;
-        width: 80%;
+        width: 60%;
       }
     }
     .buttons__container {
       flex: 0.1;
       width: 80%;
-      margin: 5% 0% 5% 0%;
+      margin: 15% 0% 5% 0%;
       display: flex;
       flex-direction: row;
       justify-content: space-around;
@@ -264,10 +266,9 @@
       position: relative;
       .available-users {
         position: absolute;
-        width: 80%;
         padding: 2%;
         top: 173%;
-        background: gray;
+        background: rgba(0, 0, 0, 0.4);
         ul {
           width: 100%;
           display: flex;

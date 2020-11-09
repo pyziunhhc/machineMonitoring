@@ -426,9 +426,9 @@ class Tasks {
 
         })
         removeSubtask.addEventListener('click', this.removeSubtask.bind(this))
-        forWhoSelectArea.addEventListener('keypress', (e) => {
-            const isExist = document.querySelector('.available-users')
+        forWhoSelectArea.addEventListener('keydown', (e) => {
             if (e.target.value.length >= 3) {
+                const isExist = document.querySelector('.available-users')
                 user.showUsers({
                         user: e.target.value
                     })
@@ -444,6 +444,7 @@ class Tasks {
                         }
                     })
             } else {
+                const isExist = document.querySelector('.available-users')
                 if (isExist) {
                     isExist.remove()
                 }

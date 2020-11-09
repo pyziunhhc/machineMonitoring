@@ -280,6 +280,7 @@ const summaryMachineStatistics = (data, from, to) => {
             end = new Date(data.end),
             time = end - start,
             status = `${data.value}`;
+
         if (index == 0) {
             if (start != new Date(from)) {
                 let newStart = new Date(from);
@@ -333,8 +334,8 @@ const summaryMachineStatistics = (data, from, to) => {
             case 'MANUAL':
                 summaryMachineStatistics.manual.data.time += time;
                 break;
-            case 'WYMIANA':
-                summaryMachineStatistics.wymianaSciernicy.data.time += time;
+            case 'WYMIANA_SCIERNICY':
+                summaryMachineStatistics.wymiana_sciernicy.data.time += time;
                 break;
             case 'STOP':
                 summaryMachineStatistics.stop.data.time += time;
@@ -484,7 +485,7 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                     sumMachineStats.warmup.data.time += 1000;
                     break;
                 case 'WYMIANA_SCIERNICY':
-                    sumMachineStats.wymianaSciernicy.data.time += 1000;
+                    sumMachineStats.wymiana_sciernicy.data.time += 1000;
                     break;
                 case 'STOP':
                     sumMachineStats.stop.data.time += 1000;
@@ -503,9 +504,9 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                     break;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
-            Object.values(summaryMachineStatistics)
+            Object.values(sumMachineStats)
                 .forEach(stat => {
-                    stat.data.percentage = ((stat.data.time * 100) / summaryMachineStatistics.sumOfTimes.data.time).toFixed(2)
+                    stat.data.percentage = ((stat.data.time * 100) / sumMachineStats.sumOfTimes.data.time).toFixed(2)
                 })
             return sumMachineStats;
         } else {
@@ -516,9 +517,9 @@ const updateSummaryMachineStatistics = (newData, oldData, currentStatus, lastSta
                 sumMachineStats[currentStatus.toLowerCase()].data.time += 1000;
             }
             sumMachineStats.sumOfTimes.data.time += 1000;
-            Object.values(summaryMachineStatistics)
+            Object.values(sumMachineStats)
                 .forEach(stat => {
-                    stat.data.percentage = ((stat.data.time * 100) / summaryMachineStatistics.sumOfTimes.data.time).toFixed(2)
+                    stat.data.percentage = ((stat.data.time * 100) / sumMachineStats.sumOfTimes.data.time).toFixed(2)
                 })
             return sumMachineStats;
         }

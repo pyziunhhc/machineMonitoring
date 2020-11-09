@@ -56,19 +56,13 @@ router.post('/data/get/summary', (req, res, next) => {
                         let final = [];
 
                         sortedData.forEach((val, index) => {
-                            console.time('mozetu?'+index)
                             let statuses = [];
-                            let sumOfTimes = val.data.sumOfTimes.data.time;
                             Object.values(val.data)
                                 .filter(val => {
                                     return val.data.time > 0;
                                 })
                                 .filter(val => {
                                     return val.data.show;
-                                })
-                                .filter(val => {
-                                    val.data.percentage = ((val.data.time * 100) / sumOfTimes).toFixed(2);
-                                    return val;
                                 })
                                 .forEach((val, index) => {
                                     statuses.push({
@@ -83,7 +77,6 @@ router.post('/data/get/summary', (req, res, next) => {
                                 machineName: val.name,
                                 data: statuses
                             })
-                            console.timeEnd('mozetu?'+index)
                             if (index == sortedData.length - 1) {
                                 res.send({
                                     status: 200,

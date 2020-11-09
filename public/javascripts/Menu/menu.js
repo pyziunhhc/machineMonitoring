@@ -3,7 +3,7 @@ import User from '../Users/users.js';
 import LockedMachines from '../Machines/lockedMachines.js';
 import Movebelt from '../Movebelt/movebelt.js';
 import Server from '../Settings/settings.js'
-import notifications from '../helpers/fetch/notification.js'
+//import notifications from '../helpers/fetch/notification.js'
 // import {
 //     notification
 // } from '../helpers/fetch/notification.js'
@@ -265,5 +265,5 @@ class Menu {
 }
 const MENU = new Menu()
 MENU.createMenu();
-MENU.getStartNotifications()
+//MENU.getStartNotifications()
 //MENU.handleMessage()

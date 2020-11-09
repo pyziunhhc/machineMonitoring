@@ -1,0 +1,42 @@
+[
+    {
+    "name": "FIRST_HALL",
+    "displayName": "FIRST_HALL",
+    "imagePath": {
+    "normal": "/SettingImage/Tag/FIRST_HALL_001.png",
+    "trouble": "/SettingImage/Tag/FIRST_HALL_002.png"
+    }
+    },
+    {
+    "name": "WBA1_WES1_WBA2_WP1",
+    "displayName": "WBA1_WES1_WBA2_WP1",
+    "imagePath": {
+    "normal": "/SettingImage/Tag/WBA1_WES1_WBA2_WP1_001.png",
+    "trouble": "/SettingImage/Tag/WBA1_WES1_WBA2_WP1_002.png"
+    }
+    },
+    {
+    "name": "WES3_WES2_WPD4",
+    "displayName": "WES3_WES2_WPD4",
+    "imagePath": {
+    "normal": "/SettingImage/Tag/WES3_WES2_WPD4_001.png",
+    "trouble": "/SettingImage/Tag/WES3_WES2_WPD4_002.png"
+    }
+    },
+    {
+    "name": "WEV2_WEV1",
+    "displayName": "WEV2_WEV1",
+    "imagePath": {
+    "normal": "/SettingImage/Tag/WEV2_WEV1_001.png",
+    "trouble": "/SettingImage/Tag/WEV2_WEV1_002.png"
+    }
+    },
+    {
+    "name": "WPD2_WPD3",
+    "displayName": "WPD2_WPD3",
+    "imagePath": {
+    "normal": "/SettingImage/Tag/WPD2_WPD3_001.png",
+    "trouble": "/SettingImage/Tag/WPD2_WPD3_002.png"
+    }
+    }
+    ]

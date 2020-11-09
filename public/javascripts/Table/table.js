@@ -3,7 +3,6 @@ class Table {
     constructor(data, name, container) {
         this._data = data;
         this._name = name;
-        this._sumOfTimes = data.sumOfTimes.data.time;
         this._table = null;
         this._container = container;
     }
@@ -13,8 +12,7 @@ class Table {
                 statusesValues = ['Czas'],
                 statusesPercent = [''],
                 statusesClass = ['status'],
-                table = document.createElement('table'),
-                sumOfTimes = this._sumOfTimes;
+                table = document.createElement('table');
             Object.values(this._data)
                 .filter(_data => {
                     return _data.data.time > 0
@@ -23,7 +21,6 @@ class Table {
                     statusesName.push(_data.displayName);
                     statusesClass.push(_data.className);
                     statusesValues.push(helpers.parseMillisecondsIntoReadableTime(_data.data.time));
-                    //statusesPercent.push(((_data.data.time * 100) / sumOfTimes).toFixed(2)); //jeśli będzie działać poniższe to usunać
                     statusesPercent.push(_data.data.percentage);
                 })
             table.classList.add(this._name);
@@ -58,18 +55,16 @@ class Table {
                 statusesValues = ['Czas'],
                 statusesPercent = [''],
                 statusesClass = ['status'],
-                table = document.createElement('table'),
-                sumOfTimes = this._sumOfTimes;
+                table = document.createElement('table');
             const oldTable = document.querySelector(`.statuses-panel__container.${this._name} > table.${this._name}`);
             Object.values(data)
                 .filter(val => {
                     return val.data.time > 0;
                 })
-                .map(val => {
+                .forEach(val => {
                     statusesName.push(val.displayName);
                     statusesClass.push(val.className);
                     statusesValues.push(helpers.parseMillisecondsIntoReadableTime(val.data.time));
-                    //statusesPercent.push(((val.data.time * 100) / sumOfTimes).toFixed(2));
                     statusesPercent.push(val.data.percentage);
                 })
 

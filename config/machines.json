@@ -1,0 +1,241 @@
+[{
+        "name": "WEV1_2066-4001",
+        "displayName": "WEV1_2066-4001",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV1_2066-4001_001.png",
+            "disconnect": "/SettingImage/L1/WEV1_2066-4001_002.png",
+            "alarm": "/SettingImage/L1/WEV1_2066-4001_003.png",
+            "emergency": "/SettingImage/L1/WEV1_2066-4001_004.png",
+            "suspend": "/SettingImage/L1/WEV1_2066-4001_005.png",
+            "stop": "/SettingImage/L1/WEV1_2066-4001_006.png",
+            "manual": "/SettingImage/L1/WEV1_2066-4001_007.png",
+            "warmup": "/SettingImage/L1/WEV1_2066-4001_008.png"
+        }
+    },
+    {
+        "name": "WES1_2066-5215",
+        "displayName": "WES1_2066-5215",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WES1_2066-5215_001.png",
+            "disconnect": "/SettingImage/L1/WES1_2066-5215_002.png",
+            "alarm": "/SettingImage/L1/WES1_2066-5215_003.png",
+            "emergency": "/SettingImage/L1/WES1_2066-5215_004.png",
+            "suspend": "/SettingImage/L1/WES1_2066-5215_005.png",
+            "stop": "/SettingImage/L1/WES1_2066-5215_006.png",
+            "manual": "/SettingImage/L1/WES1_2066-5215_007.png",
+            "warmup": "/SettingImage/L1/WES1_2066-5215_008.png"
+        }
+    },
+    {
+        "name": "WBA1_2067-0330",
+        "displayName": "WBA1_2067-0330",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WBA1_2067-0330_001.png",
+            "disconnect": "/SettingImage/L1/WBA1_2067-0330_002.png",
+            "alarm": "/SettingImage/L1/WBA1_2067-0330_003.png",
+            "emergency": "/SettingImage/L1/WBA1_2067-0330_004.png",
+            "suspend": "/SettingImage/L1/WBA1_2067-0330_005.png",
+            "stop": "/SettingImage/L1/WBA1_2067-0330_006.png",
+            "manual": "/SettingImage/L1/WBA1_2067-0330_007.png",
+            "warmup": "/SettingImage/L1/WBA1_2067-0330_008.png"
+        }
+    },
+    {
+        "name": "WPD2_2064-6678",
+        "displayName": "WPD2_2064-6678",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WPD2_2064-6678_001.png",
+            "disconnect": "/SettingImage/L1/WPD2_2064-6678_002.png",
+            "alarm": "/SettingImage/L1/WPD2_2064-6678_003.png",
+            "emergency": "/SettingImage/L1/WPD2_2064-6678_004.png",
+            "suspend": "/SettingImage/L1/WPD2_2064-6678_005.png",
+            "stop": "/SettingImage/L1/WPD2_2064-6678_006.png",
+            "manual": "/SettingImage/L1/WPD2_2064-6678_007.png",
+            "warmup": "/SettingImage/L1/WPD2_2064-6678_008.png"
+        }
+    },
+    {
+        "name": "WPD3_2064-6839A",
+        "displayName": "WPD3_2064-6839A",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WPD3_2064-6839A_001.png",
+            "disconnect": "/SettingImage/L1/WPD3_2064-6839A_002.png",
+            "alarm": "/SettingImage/L1/WPD3_2064-6839A_003.png",
+            "emergency": "/SettingImage/L1/WPD3_2064-6839A_004.png",
+            "suspend": "/SettingImage/L1/WPD3_2064-6839A_005.png",
+            "stop": "/SettingImage/L1/WPD3_2064-6839A_006.png",
+            "manual": "/SettingImage/L1/WPD3_2064-6839A_007.png",
+            "warmup": "/SettingImage/L1/WPD3_2064-6839A_008.png"
+        }
+    },
+    {
+        "name": "WEV2_2066-4038",
+        "displayName": "WEV2_2066-4038",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV2_2066-4038_001.png",
+            "disconnect": "/SettingImage/L1/WEV2_2066-4038_002.png",
+            "alarm": "/SettingImage/L1/WEV2_2066-4038_003.png",
+            "emergency": "/SettingImage/L1/WEV2_2066-4038_004.png",
+            "suspend": "/SettingImage/L1/WEV2_2066-4038_005.png",
+            "stop": "/SettingImage/L1/WEV2_2066-4038_006.png",
+            "manual": "/SettingImage/L1/WEV2_2066-4038_007.png",
+            "warmup": "/SettingImage/L1/WEV2_2066-4038_008.png"
+        }
+    },
+    {
+        "name": "WES3_2066-5263FS",
+        "displayName": "WES3_2066-5263FS",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WES3_2066-5263FS_001.png",
+            "disconnect": "/SettingImage/L1/WES3_2066-5263FS_002.png",
+            "alarm": "/SettingImage/L1/WES3_2066-5263FS_003.png",
+            "emergency": "/SettingImage/L1/WES3_2066-5263FS_004.png",
+            "suspend": "/SettingImage/L1/WES3_2066-5263FS_005.png",
+            "stop": "/SettingImage/L1/WES3_2066-5263FS_006.png",
+            "manual": "/SettingImage/L1/WES3_2066-5263FS_007.png",
+            "warmup": "/SettingImage/L1/WES3_2066-5263FS_008.png"
+        }
+    },
+    {
+        "name": "WES2_2066-5264",
+        "displayName": "WES2_2066-5264",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WES2_2066-5264_001.png",
+            "disconnect": "/SettingImage/L1/WES2_2066-5264_002.png",
+            "alarm": "/SettingImage/L1/WES2_2066-5264_003.png",
+            "emergency": "/SettingImage/L1/WES2_2066-5264_004.png",
+            "suspend": "/SettingImage/L1/WES2_2066-5264_005.png",
+            "stop": "/SettingImage/L1/WES2_2066-5264_006.png",
+            "manual": "/SettingImage/L1/WES2_2066-5264_007.png",
+            "warmup": "/SettingImage/L1/WES2_2066-5264_008.png"
+        }
+    },
+    {
+        "name": "WPD4_2065-6307",
+        "displayName": "WPD4_2065-6307",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WPD4_2065-6307_001.png",
+            "disconnect": "/SettingImage/L1/WPD4_2065-6307_002.png",
+            "alarm": "/SettingImage/L1/WPD4_2065-6307_003.png",
+            "emergency": "/SettingImage/L1/WPD4_2065-6307_004.png",
+            "suspend": "/SettingImage/L1/WPD4_2065-6307_005.png",
+            "stop": "/SettingImage/L1/WPD4_2065-6307_006.png",
+            "manual": "/SettingImage/L1/WPD4_2065-6307_007.png",
+            "warmup": "/SettingImage/L1/WPD4_2065-6307_008.png"
+        }
+    },
+    {
+        "name": "WBA2_2067-2244",
+        "displayName": "WBA2_2067-2244",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WBA2_2067-2244_001.png",
+            "disconnect": "/SettingImage/L1/WBA2_2067-2244_002.png",
+            "alarm": "/SettingImage/L1/WBA2_2067-2244_003.png",
+            "emergency": "/SettingImage/L1/WBA2_2067-2244_004.png",
+            "suspend": "/SettingImage/L1/WBA2_2067-2244_005.png",
+            "stop": "/SettingImage/L1/WBA2_2067-2244_006.png",
+            "manual": "/SettingImage/L1/WBA2_2067-2244_007.png",
+            "warmup": "/SettingImage/L1/WBA2_2067-2244_008.png"
+        }
+    },
+    {
+        "name": "WP1_2065-6306",
+        "displayName": "WP1_2065-6306",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WP1_2065-6306_001.png",
+            "disconnect": "/SettingImage/L1/WP1_2065-6306_002.png",
+            "alarm": "/SettingImage/L1/WP1_2065-6306_003.png",
+            "emergency": "/SettingImage/L1/WP1_2065-6306_004.png",
+            "suspend": "/SettingImage/L1/WP1_2065-6306_005.png",
+            "stop": "/SettingImage/L1/WP1_2065-6306_006.png",
+            "manual": "/SettingImage/L1/WP1_2065-6306_007.png",
+            "warmup": "/SettingImage/L1/WP1_2065-6306_008.png"
+        }
+    },
+    {
+        "name": "DMG_NTX-1000",
+        "displayName": "DMG_NTX-1000",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/DMG_NTX-1000_001.png",
+            "disconnect": "/SettingImage/L1/DMG_NTX-1000_002.png",
+            "alarm": "/SettingImage/L1/DMG_NTX-1000_003.png",
+            "emergency": "/SettingImage/L1/DMG_NTX-1000_004.png",
+            "suspend": "/SettingImage/L1/DMG_NTX-1000_005.png",
+            "stop": "/SettingImage/L1/DMG_NTX-1000_006.png",
+            "manual": "/SettingImage/L1/DMG_NTX-1000_007.png",
+            "warmup": "/SettingImage/L1/DMG_NTX-1000_008.png"
+        }
+    },
+    {
+        "name": "WEV3_2066-4101",
+        "displayName": "WEV3_2066-4101",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV3_2066-4101_001.png",
+            "disconnect": "/SettingImage/L1/WEV3_2066-4101_002.png",
+            "alarm": "/SettingImage/L1/WEV3_2066-4101_003.png",
+            "emergency": "/SettingImage/L1/WEV3_2066-4101_004.png",
+            "suspend": "/SettingImage/L1/WEV3_2066-4101_005.png",
+            "stop": "/SettingImage/L1/WEV3_2066-4101_006.png",
+            "manual": "/SettingImage/L1/WEV3_2066-4101_007.png",
+            "warmup": "/SettingImage/L1/WEV3_2066-4101_008.png"
+        }
+    },
+    {
+        "name": "WEV4_2066-4102",
+        "displayName": "WEV4_2066-4102",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV4_2066-4102_001.png",
+            "disconnect": "/SettingImage/L1/WEV4_2066-4102_002.png",
+            "alarm": "/SettingImage/L1/WEV4_2066-4102_003.png",
+            "emergency": "/SettingImage/L1/WEV4_2066-4102_004.png",
+            "suspend": "/SettingImage/L1/WEV4_2066-4102_005.png",
+            "stop": "/SettingImage/L1/WEV4_2066-4102_006.png",
+            "manual": "/SettingImage/L1/WEV4_2066-4102_007.png",
+            "warmup": "/SettingImage/L1/WEV4_2066-4102_008.png"
+        }
+    },
+    {
+        "name": "WEV5_2066-4118",
+        "displayName": "WEV5_2066-4118",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV5_2066-4118_001.png",
+            "disconnect": "/SettingImage/L1/WEV5_2066-4118_002.png",
+            "alarm": "/SettingImage/L1/WEV5_2066-4118_003.png",
+            "emergency": "/SettingImage/L1/WEV5_2066-4118_004.png",
+            "suspend": "/SettingImage/L1/WEV5_2066-4118_005.png",
+            "stop": "/SettingImage/L1/WEV5_2066-4118_006.png",
+            "manual": "/SettingImage/L1/WEV5_2066-4118_007.png",
+            "warmup": "/SettingImage/L1/WEV5_2066-4118_008.png"
+        }
+    },
+    {
+        "name": "WEV6_2066-4117",
+        "displayName": "WEV6_2066-4117",
+        "enabled": true,
+        "imagePath": {
+            "operate": "/SettingImage/L1/WEV6_2066-4117_001.png",
+            "disconnect": "/SettingImage/L1/WEV6_2066-4117_002.png",
+            "alarm": "/SettingImage/L1/WEV6_2066-4117_003.png",
+            "emergency": "/SettingImage/L1/WEV6_2066-4117_004.png",
+            "suspend": "/SettingImage/L1/WEV6_2066-4117_005.png",
+            "stop": "/SettingImage/L1/WEV6_2066-4117_006.png",
+            "manual": "/SettingImage/L1/WEV6_2066-4117_007.png",
+            "warmup": "/SettingImage/L1/WEV6_2066-4117_008.png"
+        }
+    }
+]
