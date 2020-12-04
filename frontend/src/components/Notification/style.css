@@ -1,0 +1,15 @@
+.notification__container {
+  width: 30%;
+  padding: 2%;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+.notification__container.--error {
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  background: rgba(255, 0, 0, 0.9);
+}

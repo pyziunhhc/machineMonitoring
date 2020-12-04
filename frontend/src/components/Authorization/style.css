@@ -1,0 +1,97 @@
+.auth__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth__wrapper > .auth__container {
+  width: 30%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+.auth__wrapper > .auth__container > h1 {
+  color: #fff;
+  font-size: 3em;
+  font-weight: bolder;
+  margin-top: 10%;
+  margin-bottom: 5%;
+}
+.auth__wrapper > .auth__container > .logo__img {
+  width: 15%;
+  margin-bottom: 5%;
+}
+.auth__wrapper > .auth__container > .auth__fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.auth__wrapper > .auth__container > .auth__fields > .auth__inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+}
+.auth__wrapper > .auth__container > .auth__fields > .auth__inputs > label {
+  color: white;
+  padding: 1.5%;
+  margin-bottom: 3%;
+  position: relative;
+  width: 80%;
+  font-size: 1em;
+  border-bottom: 1px solid white;
+}
+
+.auth__wrapper
+  > .auth__container
+  > .auth__fields
+  > .auth__inputs
+  > label
+  > .auth__input {
+  width: 85%;
+  border: none;
+  background: none;
+  color: white;
+  font-size: 1em;
+  box-sizing: border-box;
+  position: absolute;
+  left: 60px;
+}
+.auth__input:hover {
+  outline: none;
+}
+.auth__wrapper > .auth__container > .auth__fields > .auth__button {
+  width: 50%;
+  height: 5vh;
+  background: none;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #117ec9 0%, #04c1bc 50%, #00b0ff 100%);
+  background-size: 400% 400%;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.75);
+}
+.auth__button:hover {
+  transform: scale(0.95);
+  cursor: pointer;
+}
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1,0 +1,150 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.eroding,
+.working,
+.erodowanie {
+  background-color: #005214;
+  color: white;
+}
+
+.grinding,
+.szlifowanie {
+  background-color: #00d12c;
+  color: white;
+}
+
+.measuring,
+.pomiar {
+  background-color: #ffb133;
+  color: white;
+}
+
+.robotLoading {
+  background-color: #c800c8;
+  color: white;
+}
+
+.manualLoading {
+  background-color: #51b6d7;
+  color: white;
+}
+
+.stop {
+  background-color: #ffe928;
+  color: black;
+}
+
+.alarm {
+  background-color: red;
+  color: white;
+}
+
+.disconnect {
+  background-color: #919191;
+  color: white;
+}
+
+.wheelReplacement {
+  background-color: black;
+  color: white;
+}
+
+.toolChange {
+  background-color: #ceb777;
+  color: white;
+}
+
+.transition {
+  background-color: #ff70b7;
+  color: white;
+}
+
+.warmup {
+  background-color: #a85050;
+  color: white;
+}
+
+.suspend {
+  background-color: #911313;
+  color: white;
+}
+
+.eroding,
+.working,
+.erodowanie {
+  background-color: #005214;
+  color: white;
+}
+
+.grinding,
+.szlifowanie {
+  background-color: #00d12c;
+  color: white;
+}
+
+.measuring,
+.pomiar {
+  background-color: #ffb133;
+  color: white;
+}
+
+.robotLoading {
+  background-color: #c800c8;
+  color: white;
+}
+
+.manualLoading {
+  background-color: #51b6d7;
+  color: white;
+}
+
+.stop {
+  background-color: #ffe928;
+  color: black;
+}
+
+.alarm {
+  background-color: red;
+  color: white;
+}
+
+.disconnect {
+  background-color: #919191;
+  color: white;
+}
+
+.wheelReplacement {
+  background-color: black;
+  color: white;
+}
+
+.toolChange {
+  background-color: #ceb777;
+  color: white;
+}
+
+.transition {
+  background-color: #ff70b7;
+  color: white;
+}
+
+.warmup {
+  background-color: #a85050;
+  color: white;
+}
+
+.suspend {
+  background-color: #911313;
+  color: white;
+}
+table > tbody > thead > tr > th,
+table > tbody > tr > td {
+  border: 1px solid black;
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  position: relative;
+}
