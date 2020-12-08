@@ -4,15 +4,50 @@
   width: 80%;
   height: 80%;
 }
+.belt {
+  box-sizing: border-box;
+  background: linear-gradient(270deg, #117ec9, #04c1bc, #00b0ff);
+  background-size: 600% 600%;
+  padding: 1%;
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+}
+.belt:hover {
+  cursor: move;
+}
+.belt > h1 {
+  flex: 1;
+  text-align: right;
+}
+.belt > .actions {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+.belt > .actions > button {
+  background: none;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  font-size: 1em;
+}
+.belt > .actions > button:hover {
+  transform: scale(0.95);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
+}
 .machine__wrapper > h1 {
-    font-weight: 100;
-    font-size:2em;
-    text-align: center;
+  font-weight: 100;
+  font-size: 2em;
+  text-align: center;
 }
 .machine__container {
-  width: 100%;
-  height: 100%;
   display: flex;
+  padding: 2%;
 }
 .left-panel__container {
   display: flex;
@@ -29,4 +64,24 @@
 }
 .left-panel__container > .table__container {
   flex: 1;
+}
+.middle-panel__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+.dygraph-legend{
+  position: absolute;
+  top: -10%!important;
+
+}
+.dygraph__container {
+  width:90%;
+  position: relative;
+  display: block;
+}
+#dygraph {
+  width:100%;
 }

@@ -2,13 +2,10 @@ import { Component } from "react";
 import "./style.css";
 
 export default class Table extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     let thead = [
         <thead>
-          <tr>
+          <tr key="table_tr_1">
             <th key="table_head1">Status</th>
             <th key="table_head2">Czas</th>
             <th key="table_head3">%</th>
@@ -34,6 +31,7 @@ export default class Table extends Component {
               className={data.className}>{`${data.data.percentage}%`}</td>
           </tr>
         );
+        return true;
       });
     return (
       <table>

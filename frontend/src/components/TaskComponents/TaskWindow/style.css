@@ -1,0 +1,18 @@
+.task-window__wrapper {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  background: rgba(255, 255, 255, 0.8);
+}
+.task__container > .description {
+  width: 100%;
+}
+.task__container > div > label {
+  font-weight: bold;
+}
+.task__container > div > label > p,
+.task__container > div > label > ul > li {
+  font-weight: 100;
+}

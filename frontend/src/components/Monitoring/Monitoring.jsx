@@ -13,6 +13,7 @@ class Monitoring extends React.Component {
       },
     };
     this.createWindowMachine = this.createWindowMachine.bind(this);
+    this.removeMachineWindow = this.removeMachineWindow.bind(this);
   }
   componentDidMount() {
     this.props.setActivePage("Monitoring");
@@ -50,11 +51,29 @@ class Monitoring extends React.Component {
       };
     });
   }
+  removeMachineWindow() {
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        showMachine: {
+          name: "",
+          show: !this.state.showMachine.show,
+        },
+      };
+    });
+  }
+  getIntervals(){
+
+  }
   render() {
     return (
       <div className="machines__container">
         <div className="machine-type__container">
-          <h1>Produkcja-Erodowanie</h1>
+          <h1>
+            Produkcja
+            <br />
+            Erodowanie
+          </h1>
           {this.state.machines.map((machine) => {
             if (machine.type === "Produkcja-Erodowanie") {
               return (
@@ -69,7 +88,11 @@ class Monitoring extends React.Component {
           })}
         </div>
         <div className="machine-type__container">
-          <h1>Ostrzenie-VHM</h1>
+          <h1>
+            Ostrzenie
+            <br />
+            VHM
+          </h1>
           {this.state.machines.map((machine) => {
             if (machine.type === "Ostrzenie-VHM") {
               return (
@@ -84,7 +107,11 @@ class Monitoring extends React.Component {
           })}
         </div>
         <div className="machine-type__container">
-          <h1>Ostrzenie-Erodowanie</h1>
+          <h1>
+            Ostrzenie
+            <br />
+            Erodowanie
+          </h1>
           {this.state.machines.map((machine) => {
             if (machine.type === "Ostrzenie-Erodowanie") {
               return (
@@ -99,7 +126,9 @@ class Monitoring extends React.Component {
           })}
         </div>
         <div className="machine-type__container">
-          <h1>Ostrzenie-Wiertła VHM</h1>
+          <h1>
+            Ostrzenie <br /> Wiertła VHM
+          </h1>
           {this.state.machines.map((machine) => {
             if (machine.type === "Ostrzenie-Wiertła VHM") {
               return (
@@ -114,7 +143,11 @@ class Monitoring extends React.Component {
           })}
         </div>
         <div className="machine-type__container">
-          <h1>Produkcja-Korpusy</h1>
+          <h1>
+            Produkcja
+            <br />
+            Korpusy
+          </h1>
           {this.state.machines.map((machine) => {
             if (machine.type === "Produkcja-Korpusy") {
               return (
@@ -129,7 +162,7 @@ class Monitoring extends React.Component {
           })}
         </div>
         {this.state.showMachine.show ? (
-          <MachineWindow name={this.state.showMachine.name} />
+          <MachineWindow name={this.state.showMachine.name} removeMachineWindow={this.removeMachineWindow} />
         ) : null}
       </div>
     );

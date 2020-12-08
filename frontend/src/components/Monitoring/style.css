@@ -13,25 +13,3 @@
   font-size: 2em;
   color: white;
 }
-
-.machine {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: rgba(255,255,255,0.8);
-  padding: 2%;
-  margin: 2%;
-}
-.machine > img {
-  width: 75%;
-}
-.machine:hover {
-  transform: scale(0.98);
-  cursor: pointer;
-}
-.machine-name {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: black;
-  text-align: center;
-}

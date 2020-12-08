@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import Dashboard from "../Dashboard/Dashboard";
 import Monitoring from "../Monitoring/Monitoring";
+import Auth from "../Authorization/Authorization";
+import TasksList from "../TaskComponents/TasksList/TasksList"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
@@ -16,7 +19,7 @@ import {
   faCogs,
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "../Header/Header";
-import Auth from "../Authorization/Authorization";
+
 import "./style.css";
 
 export default class Main extends React.Component {
@@ -142,7 +145,7 @@ export default class Main extends React.Component {
                     <Monitoring setActivePage={this.setActivePage} />
                   </Route>
                   <Route path="/operator"></Route>
-                  <Route path="/tasks"></Route>
+                  <Route path="/tasks"><TasksList setActivePage={this.setActivePage}/></Route>
                   <Route path="/statistics"></Route>
                   <Route path="/settings"></Route>
                 </Switch>
