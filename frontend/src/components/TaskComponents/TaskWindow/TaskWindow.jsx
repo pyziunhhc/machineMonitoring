@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./style.css";
 import Belt from "../../Belt/Belt";
-import Subtask from "../Subtasks/Subtasks";
+import Subtask from "../Subtasks/ListSubtasks";
 export default class TaskWindow extends Component {
   constructor(props) {
     super(props);

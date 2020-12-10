@@ -1,3 +1,79 @@
 .task--done {
   text-decoration: line-through;
 }
+.add-task__wrapper {
+  width: 40%;
+  height: 50%;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+}
+.add-task__container > div,
+.add-task__container > div > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.add-task__container {
+  padding: 2%;
+  height: 90%;
+}
+.inputs {
+  height: 30%;
+}
+input,
+textarea {
+  width: 50%;
+}
+textarea {
+  height: 100%;
+}
+.subtasks__container {
+  padding: 3%;
+}
+.subtask__container {
+  width: 100%;
+}
+.subtask__container > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.added-subtasks__container {
+  padding: 2%;
+}
+.add-task__container > .actions {
+  margin: 1%;
+}
+.add-task__container > .actions > button.add {
+  padding: 2%;
+  background: linear-gradient(270deg, #117ec9, #04c1bc, #00b0ff);
+  background-size: 600% 600%;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  font-size: 1em;
+}
+
+.available-users {
+  width: 50%;
+  border: 1px solid black;
+}
+.available-users > ul{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.available-users > ul > li{
+  width: 100%
+}
+.available-users > ul > li:hover {
+  background: linear-gradient(270deg, #117ec9, #04c1bc, #00b0ff);
+  background-size: 600% 600%;
+  cursor: pointer;
+  color: white
+}

@@ -8,8 +8,10 @@ export default class TaskCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: this.props.id,
       description: this.props.description,
       title: this.props.title,
+      status: this.props.status,
       tasks: this.props.tasks,
       usersWhoPerforms: this.props.usersWhoPerforms,
       usersWhoCreated: this.props.usersWhoCreated,
@@ -39,8 +41,13 @@ export default class TaskCard extends Component {
       <Fragment>
         <div
           className="task__container"
-          onDoubleClick={this.createTaskDetailsWindow}>
-          <div className={`task --${this.state.status}`}>
+          onDoubleClick={this.createTaskDetailsWindow}
+          onDragStart={(e) => {
+            e.dataTransfer.setData("id", this.state.id);
+            e.dataTransfer.setData('status', this.state.status)
+          }}
+          draggable="true">
+          <div className={`task`}>
             <div className="title">
               <h1>{this.state.title}</h1>
             </div>

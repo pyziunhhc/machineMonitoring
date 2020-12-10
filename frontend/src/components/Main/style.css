@@ -204,7 +204,7 @@ table {
 .aside__container > aside {
   width: 100%;
 }
-.navigation__element:hover::before {
+.navigation__element.hovered:hover::before {
   content: "";
   position: absolute;
   height: 40%;
@@ -224,7 +224,6 @@ table {
   color: white;
   font-weight: bold;
   background: rgba(0, 0, 0, 0.3);
-  animation: fromRightToLeft 0.4s ease;
 }
 .navigation__element:hover > a > span {
   left: 50%;

@@ -2,6 +2,7 @@ import React from "react";
 import "./style.css";
 import logo from "./logo.png";
 import Notification from "../Notification/Notifications";
+import history from "../../history";
 export default class Auth extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +41,7 @@ export default class Auth extends React.Component {
         body: JSON.stringify(credentials),
         credentials: "include",
         headers: {
-          "Accept": "*",
+          Accept: "*",
           "Content-Type": "application/json",
         },
       })
@@ -55,7 +56,8 @@ export default class Auth extends React.Component {
               };
             });
           } else if (res.status === "success") {
-            this.props.isLogged(res.login);
+            //this.props.isLogged(res.login)
+            history.push("/dashboard")
           }
         });
     } else {

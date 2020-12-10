@@ -6,6 +6,8 @@ import {
   NavLink,
   Redirect,
 } from "react-router-dom";
+
+import history from '../../history'
 import Dashboard from "../Dashboard/Dashboard";
 import Monitoring from "../Monitoring/Monitoring";
 import Auth from "../Authorization/Authorization";
@@ -84,6 +86,7 @@ export default class Main extends React.Component {
       })
       .then(() => {
         if (this.state.user.isLogged) {
+
           const page = (
             <React.Fragment>
               <Header
@@ -91,7 +94,7 @@ export default class Main extends React.Component {
                 title={this.state.page.active}
               />
               <div className="main__container">
-                <Router>
+                <Router history={history}>
                   <div className="aside__container">
                     <aside>
                       <nav className="navigation__container">

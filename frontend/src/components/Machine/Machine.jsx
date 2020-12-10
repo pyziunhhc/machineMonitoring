@@ -42,13 +42,13 @@ export default class Machine extends Component {
       });
   }
   componentDidMount() {
-    const intervalID = setInterval(this.getStatus, 1000);
-    this.setState(prevState=>{
-      return {
-        ...prevState,
-        intervalID
-      }
-    })
+    // const intervalID = setInterval(this.getStatus, 1000);
+    // this.setState(prevState=>{
+    //   return {
+    //     ...prevState,
+    //     intervalID
+    //   }
+    // })
   }
   componentWillUnmount(){
     clearInterval(this.state.intervalID)

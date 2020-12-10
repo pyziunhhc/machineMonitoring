@@ -8,7 +8,6 @@ import Dygraph from "dygraphs";
 export default class Dygraphs extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
     this.data = this.props.data;
     this.labels = [
       "start",
@@ -157,13 +156,13 @@ export default class Dygraphs extends Component {
       fillAlpha: 1,
       height: 150,
       valueRange: [0, 1],
-      displayAnnotations: true,
+      displayAnnotations: false,
       axes: {
         y: {
           drawAxis: false,
         },
       },
-      valueFormatter: function (value, opts, seriesName) {
+      valueFormatter(value, opts, seriesName) {
         if (seriesName !== "start") {
           return `Czas: ${parseMillisecondsIntoReadableTime(value)}`;
         } else {
@@ -172,7 +171,7 @@ export default class Dygraphs extends Component {
           ).toLocaleTimeString()}`;
         }
       },
-      zoomCallback: function (minDate, maxDate) {
+      zoomCallback(minDate, maxDate, yRanges) {
         this.updateOptions({
           valueRange: [0, 1]
         })

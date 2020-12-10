@@ -16,7 +16,6 @@ class Monitoring extends React.Component {
     this.removeMachineWindow = this.removeMachineWindow.bind(this);
   }
   componentDidMount() {
-    this.props.setActivePage("Monitoring");
     this.getMachines();
   }
   getMachines() {
